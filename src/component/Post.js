@@ -38,27 +38,32 @@ const Post = (props) => {
 };
 
 const DIV = styled.div`
-  margin: 10px;
+  margin: auto;
   border: 1px solid #eee;
   border-radius: 5px;
   width: 350px;
   height: 450px;
   position: relative;
   box-sizing: border-box;
+  transition: all 0.3s ease-out;
   &:hover {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 15px 0px;
     -webkit-transform: scale(1.05);
     -moz-transform: scale(1.05);
     -ms-transform: scale(1.05);
     -o-transform: scale(1.05);
-    transform: scale(1.05);
+    transform: translateY(-10px);
   }
 `;
 const Title = styled.div`
   white-space: initial;
   font-size: 1rem;
-  margin: 0px 0px 0.25rem;
+  margin: 0px 0px 0.6rem;
   font-weight: bold;
+  width: 296;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const Contents = styled.div`
@@ -71,7 +76,7 @@ const Contents = styled.div`
 
 const PostContent = styled.div`
   width: 296px;
-  height: 102px;
+  height: 110px;
   overflow: hidden;
 `;
 

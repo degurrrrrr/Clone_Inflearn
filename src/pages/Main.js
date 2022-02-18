@@ -1,5 +1,6 @@
 import React from 'react';
 import Post from '../component/Post'
+import Header from '../component/Header';
 
 const Main = () => {
     return(
