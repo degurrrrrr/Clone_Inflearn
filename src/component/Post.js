@@ -19,3 +19,6 @@ const Post = (props) => {
         </div>
     </React.Fragment>
 }
+
+
+export default Post;
