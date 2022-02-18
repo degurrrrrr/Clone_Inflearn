@@ -4,8 +4,15 @@ import { Grid } from "../element";
 import LogoImg from "../images/velog 로고.png"
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import SearchIcon from '@mui/icons-material/Search';
+import Login from "../pages/Login";
 
 const Header = (props) => {
+
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const modalClose = () => {
+        setModalOpen(!modalOpen);
+    }
+
     return (
         <React.Fragment>
            <HeaderContainer>    
@@ -18,7 +25,8 @@ const Header = (props) => {
                     <HeadItem>
                         <WbSunnyIcon style={{marginLeft: "20px"}}/>
                         <SearchIcon style={{marginLeft: "20px"}} />
-                        <LoginBtn>로그인</LoginBtn>
+                        <LoginBtn onClick={modalClose}>로그인</LoginBtn>
+                        {modalOpen && <Login modalClose={modalClose}></Login>}
                     </HeadItem>
                 </Wrap>
            </HeaderContainer>
