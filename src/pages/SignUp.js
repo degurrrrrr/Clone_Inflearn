@@ -15,7 +15,8 @@ const SignUp = (props) => {
 
   return (
     <React.Fragment>
-        <ModalContainer>
+        <ModalContainer >
+        <div className="modal">
       <DIV>
         <SignUpImage />
         <Container>
