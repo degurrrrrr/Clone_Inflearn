@@ -5,13 +5,13 @@ import { history } from "../redux/ConfigStore";
 import ClearIcon from '@mui/icons-material/Clear';
 
 const SignUp = (props) => {
-  const { modalClose, history } = props;
+  const { modalClose } = props;
 
     const [login, setLogin] = React.useState(true);
 
   const changeBtn = () => {
     setLogin(!login);
-  };
+    }
 
   return (
     <React.Fragment>
@@ -23,9 +23,7 @@ const SignUp = (props) => {
         <ClearIcon className="modal__button" onClick={modalClose} />
           <h3>{login ? '로그인' : '회원가입'}</h3>
           <div style={{ display: "flex" }}>
-            <InputForm placeholder="아이디를 입력해주세요" />
-              {/* <Button>중복확인</Button> */}
-          </div>
+            <InputForm placeholder="아이디를 입력해주세요" />          </div>
           {login ? "" : <InputForm
             placeholder="닉네임을 입력해주세요"
             is_submit
@@ -57,9 +55,11 @@ const SignUp = (props) => {
           
         </Container>
       </DIV>
+      </div>
       </ModalContainer>
     </React.Fragment>
   );
+
 };
 
 const ModalContainer = styled.div`
@@ -140,7 +140,7 @@ const Button = styled.button`
 
 const IsMember = styled.div`
 position: absolute;
-bottom: 30px;
+bottom: 25px;
 right: 20px
 `
 

@@ -52,5 +52,3 @@ const enhancer = composeEnhancers(
 let store = (initialStore) => createStore(rootReducer, enhancer);
 
 export default store();
-
-

@@ -12,7 +12,6 @@ function App() {
   return (
     <React.Fragment>
       <Background>
-        <Header></Header>
         <BrowserRouter>
           <Route path="/" component={Main} exact />
           <Route path="/signup" component={SignUp} />
