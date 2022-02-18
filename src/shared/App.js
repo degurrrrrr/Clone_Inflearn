@@ -4,7 +4,6 @@ import Main from "../pages/Main";
 import SignUp from "../pages/SignUp";
 import Write from "../pages/Write";
 import Detail from "../pages/Detail";
-import Header from "../component/Header";
 import { BrowserRouter } from "react-router-dom";
 import styled from "styled-components";
 
