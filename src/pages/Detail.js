@@ -16,20 +16,32 @@ const Detail = (props) => {
 
   //   const [post, setPost] = React.useState(post_data ? post_data : null);
 
+  const onDelete = () => {
+    return (
+      //   window.confirm("정말로 삭제하시겠습니까?"),
+      window.alert("삭제")
+    );
+  };
+
   return (
     <div style={{ backgroundColor: "#fff" }}>
       <Header></Header>
       <DIV>
-        <h1>겁나 긴 제목</h1>
+        <h1>{props.title}</h1>
         <EditDelBtn>
           {/* <div style={{ marginRight: "10px" }}>수정</div> */}
-          <div>삭제</div>
+          <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
         </EditDelBtn>
         <Info>
           <div style={{ display: "flex" }}>
-            <strong>{props.nickname}닉네임</strong>·<span>작성날짜</span>
+            <div style={{ fontWeight: "bold", marginRight: "10px" }}>
+              {props.user_info.nickname}
+            </div>
+            <div marginLeft="10px">{props.createAt}</div>
           </div>
-          <div>좋아요?ㅎ</div>
+          <div>
+            <ButtonWrap>❤️</ButtonWrap>
+          </div>
         </Info>
 
         <Thumbnail />
@@ -41,17 +53,31 @@ const Detail = (props) => {
           우리나라만세이동해물과 백두산이 마르고 닳도록 하느님이 보우하사
           우리나라만세이동해물과 백두산이 마르고 닳도록 하느님이 보우하사
           우리나라만세이
+          {props.context}
         </Context>
 
         <Profile>
           <ProfileImg />
           <div>
-            <div>{props.nickname}닉네임</div>
+            <h3>{props.user_info.nickname}</h3>
           </div>
         </Profile>
       </DIV>
+      <CommentWrite />
     </div>
   );
+};
+
+Detail.defaultProps = {
+  user_info: {
+    nickname: "initial_nickname",
+  },
+  title: "initial_title",
+  image: "http://www.ipon.co.kr/common/img/default_profile.png",
+  context: "initial_context",
+  createAt: "initial_2022-02-04 16:20:00",
+  commentCnt: "initial_100",
+  postID: "1234567",
 };
 
 const DIV = styled.div`
@@ -61,6 +87,11 @@ const DIV = styled.div`
   box-sizing: border-box;
   padding: 25px 40px 0px;
   word-wrap: break-word;
+`;
+
+const DeleteBtn = styled.div`
+  color: #868e96;
+  cursor: pointer;
 `;
 
 const EditDelBtn = styled.div`
@@ -76,6 +107,16 @@ const Info = styled.div`
   display: inline-flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  align-items: center;
+`;
+
+const ButtonWrap = styled.div`
+  width: 80px;
+  height: 30px;
+  border: 1px solid #adb5bd;
+  border-radius: 20px;
+  text-align: center;
+  /* justify-content: center; */
 `;
 
 const Thumbnail = styled.div`
@@ -91,7 +132,7 @@ const Thumbnail = styled.div`
 
 const Context = styled.div`
   width: 100%;
-  min-height: 
+  max-height: 800px;
   height: 100%;
   line-height: 200%;
 `;
