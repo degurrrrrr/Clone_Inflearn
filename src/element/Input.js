@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { Text, Grid } from './index';
 
 const Input = (props) => {
-  const {label, placeholder, _onChange, type, multiLine, value, is_submit, onSubmit, radio, paddingTop, width, margin} = props;
+  const {label, placeholder, _onChange, type, multiLine, value, is_submit, onSubmit, paddingTop, width, margin, height} = props;
   
   const styles = {
-    paddingTop, width, margin
+    paddingTop, width, margin, height
   }
 
   if (multiLine) {
@@ -76,6 +76,7 @@ const ElTextarea = styled.textarea`
 const ElInput = styled.input`
   border: 1px solid #212121;
   width: 100%;
+  height: ${(props) => props.height};
   padding: 12px 4px;
   box-sizing: border-box;
   font-family: '양진체';
