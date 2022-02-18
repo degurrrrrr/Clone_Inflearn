@@ -1,40 +1,52 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "../element/index";
+import { history } from "../redux/ConfigStore";
 
 const Post = (props) => {
+  const { history } = props;
+
+  const ToDetail = () => {
+    history.push(`/posts/${props.postId}`);
+  };
+
   return (
     <React.Fragment>
-      <DIV>
-        <Image height="40%" />
+      <DIV onClick={ToDetail}>
+        <Image height="40%" src={props.image} />
         <div style={{ textAlign: "left", margin: "10px" }}>
           <Contents>
-            <Title>
-              동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세
-            </Title>
-            <PostContent>
-              {" "}
-              동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세
-              동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세
-              동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세
-            </PostContent>
+            <Title>{props.title}</Title>
+            <PostContent>{props.context}</PostContent>
           </Contents>
           <div>
-            <PostTime>2022년 2월 18일 17:27:24</PostTime>
+            <PostTime>{props.createAt}</PostTime>
             <Footer>
               <Profile>
                 <Image shape="circle" size="30" />
                 <span>
-                  by<b> username</b>
+                  by<b> {props.user_info.nickname}</b>
                 </span>
               </Profile>
-              <div>코멘트 0개</div>
+              <div>코멘트 {props.commentCnt}개</div>
             </Footer>
           </div>
         </div>
       </DIV>
     </React.Fragment>
   );
+};
+
+Post.defaultProps = {
+  user_info: {
+    nickname: "initial_nickname",
+  },
+  title: "initial_title",
+  image: "http://www.ipon.co.kr/common/img/default_profile.png",
+  context: "initial_context",
+  createAt: "initial_2022-02-04 16:20:00",
+  commentCnt: "initial_100",
+  postID: "1234567",
 };
 
 const DIV = styled.div`
@@ -53,6 +65,9 @@ const DIV = styled.div`
     -ms-transform: scale(1.05);
     -o-transform: scale(1.05);
     transform: translateY(-10px);
+  }
+  /* @media screen and (max-width: 1024px) {
+    margin: 0 1%; */
   }
 `;
 const Title = styled.div`
