@@ -2,18 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "../element/index";
 import { history } from "../redux/ConfigStore";
+import ClearIcon from '@mui/icons-material/Clear';
 
-const Login = (props) => {
+const SignUp = (props) => {
   const { modalClose, history } = props;
 
-  const ToSignUp = () => {
-    // state나 value를 signup으로 바꿔주는것
-    window.alert("회원가입화면으로!");
-  };
+    const [login, setLogin] = React.useState(true);
 
-  const ToLogin = () => {
-    // state나 value를 login으로 바꿔주는것
-    window.alert("로그인화면으로!");
+  const changeBtn = () => {
+    setLogin(!login);
   };
 
   return (
@@ -23,38 +20,43 @@ const Login = (props) => {
       <DIV>
         <SignUpImage />
         <Container>
-          <h3>회원가입</h3>
+        <ClearIcon className="modal__button" onClick={modalClose} />
+          <h3>{login ? '로그인' : '회원가입'}</h3>
           <div style={{ display: "flex" }}>
-            <form>
-              <InputForm placeholder="아이디를 입력해주세요" />
+            <InputForm placeholder="아이디를 입력해주세요" />
               {/* <Button>중복확인</Button> */}
-            </form>
           </div>
+          {login ? "" : <InputForm
+            placeholder="닉네임을 입력해주세요"
+            is_submit
+          /> }
+          
           <InputForm
             type="password"
             placeholder="비밀번호를 입력해주세요"
             is_submit
           />
-          <InputForm
+
+          {login ? "" : <InputForm
             type="password"
             placeholder="비밀번호를 한 번 더 입력해주세요"
             is_submit
-          />
-          <Button>회원가입</Button>
+          /> }
+          
+          {login ? 
+          <Button>로그인</Button> 
+          :
+          <Button>회원가입</Button>}
+          
           <IsMember
             style={{ display: "flex", float: "right", alignItems: "center" }}
           >
-            계정이 이미 있으신가요?
-            <TextWrap onClick={ToLogin}>{""}로그인</TextWrap>
+            {login ? '아직 회원이 아니신가요?' : '계정이 이미 있으신가요?'}
+            <TextWrap onClick={changeBtn}>{login ? '회원가입' : '로그인'}</TextWrap>
           </IsMember>
-
-          {/* 클릭하면 div의 value 값이 */}
-          <button className="modal__button" onClick={modalClose}>
-            창 닫기
-          </button>
+          
         </Container>
       </DIV>
-      </div>
       </ModalContainer>
     </React.Fragment>
   );
@@ -69,24 +71,13 @@ const ModalContainer = styled.div`
   top: 0;
   left: 0;
   /* #f9f9f9  */
-  & .modal {
-    width: 300px;
-    height: 150px;
-    background-color: #fff;
-    // Modal 창 브라우저 가운데로 조정
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-  }
 
-  & .modal__button {
-    position: relative;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
+    & .modal__button{
+        position:absolute;
+        right: 20px;
+        cursor: pointer;
+    }
+
 `;
 
 const DIV = styled.div`
@@ -97,6 +88,11 @@ const DIV = styled.div`
   margin: auto;
   box-sizing: border-box;
   box-shadow: rgba(100, 100, 111, 0.2) 5px 5px 15px 0px;
+  position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
 `;
 
 const Container = styled.div`
@@ -155,4 +151,4 @@ const TextWrap = styled.div`
   margin-left: 0.5rem;
 `;
 
-export default Login;
+export default SignUp;

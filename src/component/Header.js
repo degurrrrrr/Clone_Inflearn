@@ -4,7 +4,7 @@ import { Grid } from "../element";
 import LogoImg from "../images/velog 로고.png"
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import SearchIcon from '@mui/icons-material/Search';
-import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
 
 const Header = (props) => {
 
@@ -26,7 +26,7 @@ const Header = (props) => {
                         <WbSunnyIcon style={{marginLeft: "20px"}}/>
                         <SearchIcon style={{marginLeft: "20px"}} />
                         <LoginBtn onClick={modalClose}>로그인</LoginBtn>
-                        {modalOpen && <Login modalClose={modalClose}></Login>}
+                        {modalOpen && <SignUp modalClose={modalClose}></SignUp>}
                     </HeadItem>
                 </Wrap>
            </HeaderContainer>
