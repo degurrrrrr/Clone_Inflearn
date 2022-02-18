@@ -1,23 +1,37 @@
 import React from 'react';
-import './App.css';
 import { Route } from 'react-router';
 import Main from '../pages/Main';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
 import Write from '../pages/Write';
 import Detail from '../pages/Detail';
+import Header from '../component/Header'
+import { BrowserRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 function App() {
   return (
-    <div className="App">
-      <Route path="/" component={Main} exact/>
-      <Route path="/login" component={Login}/>
-      <Route path="/signup" component={SignUp}/>
-      <Route path="/write" component={Write}/>
-      <Route path="/detail" component={Detail}/>
-
-    </div>
+    <React.Fragment>
+      <Background>
+        
+        <Header></Header>
+        <BrowserRouter>
+          <Route path="/" component={Main} exact/>
+          <Route path="/login" component={Login}/>
+          <Route path="/signup" component={SignUp}/>
+          <Route path="/write" component={Write}/>
+          <Route path="/detail" component={Detail}/>
+        </BrowserRouter>
+      </Background>
+    </React.Fragment>
   );
 }
+
+const Background = styled.div`
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  background-color: #f8f9fa;
+`;
 
 export default App;
