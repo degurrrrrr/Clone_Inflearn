@@ -5,6 +5,9 @@ import Header from "../component/Header";
 import CommentWrite from "../component/CommentWrite";
 import CommentList from "../component/CommentList";
 
+import { history } from "../redux/ConfigStore";
+
+
 const Detail = (props) => {
   //   const dispatch = useDispatch();
 
@@ -15,7 +18,7 @@ const Detail = (props) => {
   //   const post_data = post_list[post_idx];
 
   //   const [post, setPost] = React.useState(post_data ? post_data : null);
-
+  const {history} = props;
   const onDelete = () => {
     return (
       //   window.confirm("정말로 삭제하시겠습니까?"),
@@ -37,7 +40,7 @@ const Detail = (props) => {
             <div style={{ fontWeight: "bold", marginRight: "10px" }}>
               {props.user_info.nickname}
             </div>
-            <div style={{marginLeft: "10px"}}>{props.createAt}</div>
+            <div style={{ marginLeft: "10px" }}>{props.createAt}</div>
           </div>
           <div>
             <ButtonWrap>❤️</ButtonWrap>
@@ -84,6 +87,7 @@ Detail.defaultProps = {
 
 const DIV = styled.div`
   width: 1000px;
+  min-width: 540px;
   height: 100%;
   margin: auto;
   box-sizing: border-box;
