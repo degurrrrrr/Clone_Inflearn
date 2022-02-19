@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { size, src, width, height, margin, shape} = props;
+  const { size, src, width, height, margin, shape, borderRadius} = props;
 
   const styles = {
     src,
@@ -10,7 +10,8 @@ const Image = (props) => {
     height,
     margin,
     shape,
-    size
+    size,
+    borderRadius
   };
 
 
@@ -40,7 +41,8 @@ const ImageCircle = styled.div`
 --size: ${(props) => props.size}px;
   width: var(--size);
   height: var(--size);
-  border-radius: 18px;
+  border-radius: ${(props) => props.borderRadius};
+  ${(props)=> props.borderRadius ? `border-radius: ${props.borderRadius}`: ""};
   background-image: url('${(props) => props.src}');
   background-size: cover;
   margin: 2px 4px;

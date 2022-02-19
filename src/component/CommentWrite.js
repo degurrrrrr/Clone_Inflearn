@@ -1,10 +1,11 @@
 import React from 'react';
+import styled from 'styled-components';
 
 const CommentWrite = () => {
     return(
-    <React.Fragment>
-       
-    </React.Fragment>
+    <>
+       <div>엥</div>
+    </>
     )
 }
 
