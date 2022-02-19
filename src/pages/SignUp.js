@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Image } from "../element/index";
-import { history } from "../redux/ConfigStore";
+
+import { nicknameCheck, pwCheck } from "../shared/Common";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch } from "react-redux";
-// import { actionsCreators as loginAction } from '../redux/modules/user'
-// import { actionsCreators as signUpAction } from '../redux/modules/user'
+// import { actionCreators as loginAction } from '../redux/modules/user'
+// import { actionCreators as signUpAction } from '../redux/modules/user'
 
 import { api_token } from "../shared/api";
 
@@ -16,14 +17,9 @@ const SignUp = (props) => {
   const dispatch = useDispatch();
 
   const [login, setLogin] = React.useState(true);
-  
-  //로그인
+
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
-
-  //회원가입
-  const [signUpNickname, setSignUpNickName] = useState("");
-  const [signUpPw, setSignUpPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
 
   const changeBtn = () => {
@@ -39,60 +35,54 @@ const SignUp = (props) => {
     setPassword(e.target.value);
     console.log(e.target.value);
   };
-  
-  //회원가입
 
-  
   const handlePwConfirm = (e) => {
     setPwConfirm(e.target.value);
     console.log(e.target.value);
   };
 
-  // //페이지 렌더링 후 가장 처음 호출되는 함수
-  // useEffect(() => {
-  //   api_token.get('/user/login')
-  //   .then(res => console.log(res))
-  //   .catch()
-  // }, [])
-
-  // 위에가 없어서그런가 들어가자마자 냅다 뜨네
-
-  const onClickLogin = () => {
-    window.alert("로그인 버튼 눌렀다");
-    // if (nickname === '' || password === ''){
-    //   window.alert("빈칸을 모두 채워주세요")
-    //   return;
-    // }
+  const LoginBtn = () => {
+    if (!nickname || !password) {
+      window.alert("빈 칸을 채워주세요");
+      return;
+    }
+    if (nickname.length < 3 || nickname.length > 10) {
+      window.alert("닉네임은 3자 이상 10자 이하로 설정가능합니다");
+    }
+    nicknameCheck(nickname);
+    pwCheck(password);
     // dispatch(loginAction.loginFB(nickname, password));
   };
 
-  const onClickSignUp = () => {
-    window.alert("회원가입 한다");
-    // if (nickname.length < 3 || nickname.length > 10) {
-    //   window.alert("닉네임은 3자 이상 10자 이하로 설정가능합니다");
-    // }
-    // if (nickname === '' || password === ""){
-    //   window.alert("닉네임과 비밀번호를 모두 입력해주세요")
-    //   return;
-    // }
-    // if (password !== pwConfirm){
-    //   window.alert("비밀번호가 일치하지 않습니다.")
-    //   return;
-    // }
-    // if (
-    //   password.length < 4 ||
-    //   password.length > 30 ||
-    //   pwConfirm.length < 4 ||
-    //   pwConfirm.length > 30
-    // ) {
-    //   window.alert("비밀번호는 4자 이상 30자 이하로 설정가능합니다");
-    //   return;
-    // }
-    // if (nickname === password) {
-    //   window.alert("비밀번호는 닉네임과 같을 수 없습니다");
-    //   return;
-    // }
-    // dispatch(signUpAction.signUpFB(nickname, password));
+  const SignUpBtn = () => {
+    if (!nickname || !password || !pwConfirm) {
+      window.alert("빈 칸을 채워주세요");
+      return;
+    }
+
+    if (
+      password.length < 4 ||
+      pwConfirm.length < 4 ||
+      password.length > 30 ||
+      pwConfirm.length > 30
+    ) {
+      window.alert("비밀번호는 4자 이상 30자 이하로 설정가능합니다");
+      return;
+    }
+
+    if (password !== pwConfirm) {
+      window.alert("비밀번호가 일치하지 않습니다. 다시 한 번 입력해주세요");
+      return;
+    }
+
+    if (password === nickname) {
+      window.alert("비밀번호에는 아이디가 들어갈 수 없습니다.");
+      return;
+    }
+
+    nicknameCheck(nickname);
+    pwCheck(password, pwConfirm);
+    //  dispatch(signUpAction.signUpFB(nickname, password));
   };
 
   return (
@@ -107,7 +97,6 @@ const SignUp = (props) => {
               <InputForm
                 onChange={handleNickname}
                 placeholder="닉네임을 입력해주세요"
-                // 3~10자 / 영문,한글,숫자 허용 / 특수문자 불가
               />{" "}
             </div>
             <InputForm
@@ -130,9 +119,9 @@ const SignUp = (props) => {
             )}
 
             {login ? (
-              <Button onClick={onClickLogin}>로그인</Button>
+              <Button onClick={LoginBtn}>로그인</Button>
             ) : (
-              <Button onClick={onClickSignUp}>회원가입</Button>
+              <Button onClick={SignUpBtn}>회원가입</Button>
             )}
 
             <IsMember

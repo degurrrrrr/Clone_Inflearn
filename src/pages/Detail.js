@@ -5,6 +5,9 @@ import Header from "../component/Header";
 import CommentWrite from "../component/CommentWrite";
 import CommentList from "../component/CommentList";
 
+import { history } from "../redux/ConfigStore";
+
+
 const Detail = (props) => {
   //   const dispatch = useDispatch();
 
@@ -15,7 +18,7 @@ const Detail = (props) => {
   //   const post_data = post_list[post_idx];
 
   //   const [post, setPost] = React.useState(post_data ? post_data : null);
-
+  const {history} = props;
   const onDelete = () => {
     return (
       //   window.confirm("정말로 삭제하시겠습니까?"),
