@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 import Header from "../component/Header";
-import CommentWrite from "../component/Header";
-import CommentList from "../component/Header";
+import CommentWrite from "../component/CommentWrite";
+import CommentList from "../component/CommentList";
 
 const Detail = (props) => {
   //   const dispatch = useDispatch();
@@ -62,8 +62,10 @@ const Detail = (props) => {
             <h3>{props.user_info.nickname}</h3>
           </div>
         </Profile>
+
+        <CommentWrite />
+        <CommentList />
       </DIV>
-      <CommentWrite />
     </div>
   );
 };
@@ -81,12 +83,16 @@ Detail.defaultProps = {
 };
 
 const DIV = styled.div`
-  width: 100%;
+  width: 1000px;
   height: 100%;
   margin: auto;
   box-sizing: border-box;
-  padding: 25px 40px 0px;
+  padding: 25px 40px 25px;
   word-wrap: break-word;
+
+  @media screen and (max-width: 1024px) {
+    width: 850px;    
+  }
 `;
 
 const DeleteBtn = styled.div`
