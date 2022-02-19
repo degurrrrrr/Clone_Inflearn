@@ -1,18 +1,49 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import styled from "styled-components";
-import { Grid } from "../element";
 import LogoImg from "../images/velog 로고.png"
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import SearchIcon from '@mui/icons-material/Search';
+
 import SignUp from "../pages/SignUp";
+import { Grid } from "../element";
+import { actionCreators as userActions } from "../redux/modules/user";
+
 
 const Header = (props) => {
-
+    const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = React.useState(false);
     const modalClose = () => {
         setModalOpen(!modalOpen);
     }
 
+    // const is_login = useSelector((state) => state.user.is_login);
+    // const _logOut = () => {
+    //     dispatch(userActions.logOut())
+    // };
+
+    // if(is_login){
+    //     return (
+    //         <React.Fragment>
+    //            <HeaderContainer>    
+    //                 <Wrap>
+    //                     <Logo>
+    //                         <a href="/">
+    //                             <img src={LogoImg} alt="로고"/>
+    //                         </a>
+    //                     </Logo>
+    //                     <HeadItem>
+    //                         <WbSunnyIcon style={{marginLeft: "20px"}}/>
+    //                         <SearchIcon style={{marginLeft: "20px"}} />
+    //                         <LoginBtn onClick={_logOut}>로그아웃</LoginBtn>
+    //                     </HeadItem>
+    //                 </Wrap>
+    //            </HeaderContainer>
+    //         </React.Fragment>
+    //     )
+    // };
+    
     return (
         <React.Fragment>
            <HeaderContainer>    
@@ -31,7 +62,8 @@ const Header = (props) => {
                 </Wrap>
            </HeaderContainer>
         </React.Fragment>
-    )
+    );
+
 }
 
 const HeaderContainer = styled.div`
