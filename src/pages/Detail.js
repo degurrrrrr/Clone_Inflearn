@@ -82,6 +82,7 @@ Detail.defaultProps = {
 
 const DIV = styled.div`
   width: 100%;
+  min-width: 540px;
   height: 100%;
   margin: auto;
   box-sizing: border-box;
