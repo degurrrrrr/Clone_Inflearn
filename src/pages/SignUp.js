@@ -54,7 +54,6 @@ const SignUp = (props) => {
           
         </Container>
       </DIV>
-      </div>
       </ModalContainer>
     </React.Fragment>
   );
