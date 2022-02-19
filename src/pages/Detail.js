@@ -37,7 +37,7 @@ const Detail = (props) => {
             <div style={{ fontWeight: "bold", marginRight: "10px" }}>
               {props.user_info.nickname}
             </div>
-            <div marginLeft="10px">{props.createAt}</div>
+            <div style={{marginLeft: "10px"}}>{props.createAt}</div>
           </div>
           <div>
             <ButtonWrap>❤️</ButtonWrap>
