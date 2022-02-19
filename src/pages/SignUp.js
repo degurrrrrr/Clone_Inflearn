@@ -16,9 +16,14 @@ const SignUp = (props) => {
   const dispatch = useDispatch();
 
   const [login, setLogin] = React.useState(true);
-
+  
+  //로그인
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
+
+  //회원가입
+  const [signUpNickname, setSignUpNickName] = useState("");
+  const [signUpPw, setSignUpPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
 
   const changeBtn = () => {
@@ -34,7 +39,10 @@ const SignUp = (props) => {
     setPassword(e.target.value);
     console.log(e.target.value);
   };
+  
+  //회원가입
 
+  
   const handlePwConfirm = (e) => {
     setPwConfirm(e.target.value);
     console.log(e.target.value);
