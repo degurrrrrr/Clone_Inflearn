@@ -8,7 +8,7 @@ const SET_USER = "SET_USER";
 const LOG_OUT = "LOG_OUT";
 
 const getUser = createAction(GET_USER, (user) => ({ user }));
-const setUser = createAction(SET_USER, (user) => ({ user }));
+const setUser = createAction(SET_USER, (nickname) => (nickname));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 
 const initialState = {
@@ -81,9 +81,8 @@ const isLoginFB = () => {
 export default handleActions(
   {
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
-    [SET_USER]: (state, action) =>
-      produce(state, (draft) => {
-        draft.user = action.payload.user;
+    [SET_USER]: (state, action) => produce(state, (draft) => {
+        draft.nickname = action.payload.nickname;
         draft.is_login = true;
       }),
     [LOG_OUT]: (state, action) =>

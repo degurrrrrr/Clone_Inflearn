@@ -7,16 +7,21 @@ import Detail from "../pages/Detail";
 import { BrowserRouter } from "react-router-dom";
 import styled from "styled-components";
 
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "../redux/ConfigStore";
+
 function App() {
   return (
     <React.Fragment>
       <Background>
-        <BrowserRouter>
-          <Route path="/" component={Main} exact />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/write" component={Write} />
-          <Route path="/detail" component={Detail} />
-        </BrowserRouter>
+        <ConnectedRouter history={history}>
+          <BrowserRouter>
+            <Route path="/" component={Main} exact />
+            <Route path="/signup" component={SignUp} />
+            <Route path="/write" component={Write} />
+            <Route path="/detail" component={Detail} />
+          </BrowserRouter>
+        </ConnectedRouter>
       </Background>
     </React.Fragment>
   );

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Image } from "../element/index";
 
 import { nicknameCheck, pwCheck } from "../shared/Common";
 
 import ClearIcon from "@mui/icons-material/Clear";
-import { useDispatch } from "react-redux";
-// import { actionCreators as loginAction } from '../redux/modules/user'
+import { actionCreators as userActions } from "../redux/modules/user";
 // import { actionCreators as signUpAction } from '../redux/modules/user'
 
 import { api_token } from "../shared/api";
@@ -51,7 +50,8 @@ const SignUp = (props) => {
     }
     nicknameCheck(nickname);
     pwCheck(password);
-    // dispatch(loginAction.loginFB(nickname, password));
+    dispatch(userActions.setUser({nickname : 'test야'})) 
+    // dispatch(userActions.loginFB(nickname, password));
   };
 
   const SignUpBtn = () => {

@@ -13,7 +13,7 @@ const getCookie = (name) => {
 // 3번째 매개변수는 설정할 기간을 설정한다.
 const setCookie = (name, value, exp = 1) => {
   let date = new Date();
-  date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+  date.setTime(dat e.getTime() + exp * 24 * 60 * 60 * 1000);
   document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
 };
 
