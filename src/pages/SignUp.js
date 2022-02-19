@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Image } from "../element/index";
 import { history } from "../redux/ConfigStore";
@@ -14,22 +14,31 @@ const SignUp = (props) => {
   const { modalClose } = props;
 
   const dispatch = useDispatch();
-  // 회원가입
-  const [nickname, setNickname] = useState("");
-  const [pw, setPw] = useState("");
 
+  const [login, setLogin] = React.useState(true);
+
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
+  const [pwConfirm, setPwConfirm] = useState("");
+
+  const changeBtn = () => {
+    setLogin(!login);
+  };
   // 데이터의 변화가 있을 때마다 value값 변경하여 useState 해준다
   const handleNickname = (e) => {
     setNickname(e.target.value);
+    console.log(e.target.value);
   };
 
   const handlePw = (e) => {
-    setPw(e.target.value);
+    setPassword(e.target.value);
+    console.log(e.target.value);
   };
 
-  const onClickLogin = () => {
-    window.alert("로그인 버튼 눌렀다")
-  }
+  const handlePwConfirm = (e) => {
+    setPwConfirm(e.target.value);
+    console.log(e.target.value);
+  };
 
   // //페이지 렌더링 후 가장 처음 호출되는 함수
   // useEffect(() => {
@@ -38,11 +47,44 @@ const SignUp = (props) => {
   //   .catch()
   // }, [])
 
-  //로그인
-  const [login, setLogin] = React.useState(true);
+  // 위에가 없어서그런가 들어가자마자 냅다 뜨네
 
-  const changeBtn = () => {
-    setLogin(!login);
+  const onClickLogin = () => {
+    window.alert("로그인 버튼 눌렀다");
+    // if (nickname === '' || password === ''){
+    //   window.alert("빈칸을 모두 채워주세요")
+    //   return;
+    // }
+    // dispatch(loginAction.loginFB(nickname, password));
+  };
+
+  const onClickSignUp = () => {
+    window.alert("회원가입 한다");
+    // if (nickname.length < 3 || nickname.length > 10) {
+    //   window.alert("닉네임은 3자 이상 10자 이하로 설정가능합니다");
+    // }
+    // if (nickname === '' || password === ""){
+    //   window.alert("닉네임과 비밀번호를 모두 입력해주세요")
+    //   return;
+    // }
+    // if (password !== pwConfirm){
+    //   window.alert("비밀번호가 일치하지 않습니다.")
+    //   return;
+    // }
+    // if (
+    //   password.length < 4 ||
+    //   password.length > 30 ||
+    //   pwConfirm.length < 4 ||
+    //   pwConfirm.length > 30
+    // ) {
+    //   window.alert("비밀번호는 4자 이상 30자 이하로 설정가능합니다");
+    //   return;
+    // }
+    // if (nickname === password) {
+    //   window.alert("비밀번호는 닉네임과 같을 수 없습니다");
+    //   return;
+    // }
+    // dispatch(signUpAction.signUpFB(nickname, password));
   };
 
   return (
@@ -54,12 +96,17 @@ const SignUp = (props) => {
             <ClearIcon className="modal__button" onClick={modalClose} />
             <h3>{login ? "로그인" : "회원가입"}</h3>
             <div style={{ display: "flex" }}>
-              <InputForm placeholder="아이디를 입력해주세요" />{" "}
+              <InputForm
+                onChange={handleNickname}
+                placeholder="닉네임을 입력해주세요"
+                // 3~10자 / 영문,한글,숫자 허용 / 특수문자 불가
+              />{" "}
             </div>
             <InputForm
               type="password"
               placeholder="비밀번호를 입력해주세요"
               is_submit
+              onChange={handlePw}
             />
 
             {login ? (
@@ -67,12 +114,18 @@ const SignUp = (props) => {
             ) : (
               <InputForm
                 type="password"
+                vale="pwConfirm"
                 placeholder="비밀번호를 한 번 더 입력해주세요"
                 is_submit
+                onChange={handlePwConfirm}
               />
             )}
 
-            {login ? <Button>로그인</Button> : <Button>회원가입</Button>}
+            {login ? (
+              <Button onClick={onClickLogin}>로그인</Button>
+            ) : (
+              <Button onClick={onClickSignUp}>회원가입</Button>
+            )}
 
             <IsMember
               style={{ display: "flex", float: "right", alignItems: "center" }}

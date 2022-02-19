@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "../element/index";
+import { Image } from '../element/index';
 import { history } from "../redux/ConfigStore";
 
 const Post = (props) => {
@@ -23,7 +23,7 @@ const Post = (props) => {
             <PostTime>{props.createAt}</PostTime>
             <Footer>
               <Profile>
-                <Image shape="circle" size="30" />
+                <Image shape='circle' size='30' borderRadius="15px"/>
                 <span>
                   by<b> {props.user_info.nickname}</b>
                 </span>
@@ -118,6 +118,12 @@ const Footer = styled.div`
 const Profile = styled.div`
   display: inline-flex;
   align-items: center;
+`;
+
+const ProfileImg = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
 `;
 
 export default Post;
