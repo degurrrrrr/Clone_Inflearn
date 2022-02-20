@@ -9,9 +9,6 @@ import styled from "styled-components";
 import { ConnectedRouter } from "connected-react-router";
 import {history} from "../redux/ConfigStore";
 
-import { ConnectedRouter } from "connected-react-router";
-import { history } from "../redux/ConfigStore";
-
 function App() {
   return (
     <React.Fragment>

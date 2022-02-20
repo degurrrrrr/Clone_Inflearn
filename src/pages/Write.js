@@ -15,6 +15,8 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import styled from 'styled-components';
 
+import { api } from '../shared/api';
+import axios from 'axios';
 
 
 
@@ -22,28 +24,70 @@ const Write = () => {
 
     const [title, setTitle] = React.useState('');
 
-    const [text, setText] = React.useState('');
-
     const editorRef = useRef();
 
-    const onChangeeditorTextHandler = () => {
+    React.useEffect(() => {
+        if(editorRef.current){
+            // 기존의 imageUpload hook 제거
+            editorRef.current.getInstance().removeHook("addImageBlobHook");
 
-        const editor = editorRef.current.getInstance();
+            // 새로운 imageUpload hook 생성
+            editorRef.current.getInstance().addHook("addImageBlobHook", (blob, callback) => {
+                (async () => {
+                    let formData = new FormData();
+                    formData.append("image", blob);
 
-        const innerText = editor.getMarkdown();
-        setText(innerText);
-        console.log('text !! ',text);
-    }
+                    try{
 
-    const uploadImage = (blob) => {
-        console.log('blob !! ',blob);
-        const formData = new FormData();
-        formData.append('image', blob);
-    }
+                        const result = await axios.post('http://14.45.204.153:8023/api/image', 
+                            formData,
+                            {
+                                headers: {
+                                    "content-type": "multipart/formdata"
+                                }
+                            },
+                        );
 
-    const postBtn = () => {
-        console.log('저장 ㄱ');
+                        const imageSrc = 'http://14.45.204.153:8023/'+result.data;
 
+                        callback(imageSrc);
+
+                    }catch(error) {
+                        console.log(error);
+                    }
+
+                })();
+                return false;
+            })
+        }
+
+        return () => {};
+
+    }, [editorRef]);
+
+    const postAdd = async () => {
+
+        if(title === ''){
+            window.alert('제목을 작성해주세요~');
+            return;
+        }
+
+        const context = editorRef.current.getInstance().getHTML();        
+        
+        let span = document.createElement("span");
+        span.innerHTML = context;
+
+
+        // 미리보기 추출
+        const extractedText = span.textContent || span.innerText;
+        const preview = extractedText.slice(0, 70);
+
+        // 포스트 업로드
+        await axios.post("http://14.45.204.153:8023/api/post", {
+            title,
+            context,
+            preview,
+        })
     }
 
     return(
@@ -53,20 +97,19 @@ const Write = () => {
                 setTitle(e.target.value);
             }}></Title>
             <Editor
-            previewStyle='none'
-            height='80vh'
-            initialEditType='markdown'
-            placeholder='당신의 이야기를 적어보세요...'
             ref={editorRef}
+            previewStyle='vertical'
+            height='80vh'
+            useCommandShortcut={true}
+            placeholder='당신의 이야기를 적어보세요...'
+            usageStatistics={false}
             plugins={[colorSyntax, [codeSyntaxHighlight, {highlighter: Prism}]]}
-            onChange={onChangeeditorTextHandler} 
             autofocus={false}
-            hooks={{
-                addImageBlobHook: (blob, callback) => {
-                    const img_url = uploadImage(blob);
-                    callback(img_url, 'alt_text');
-                }
-            }}
+            toolbarItems={[
+                ["heading"],
+                ["bold", "italic", "strike"],
+                ["quote", "link", "image", "codeblock"],
+            ]}
             />
             
         </Container>
@@ -74,8 +117,9 @@ const Write = () => {
             <ExitBtn onClick={() => {
                 history.replace("/");
             }}>나가기</ExitBtn>
-            <SaveBtn onClick={postBtn}>출간하기</SaveBtn>            
+            <SaveBtn onClick={postAdd}>출간하기</SaveBtn>            
         </WriteFooter>
+
         
     </React.Fragment>
     )

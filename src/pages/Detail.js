@@ -8,6 +8,8 @@ import CommentList from "../component/CommentList";
 import { history } from "../redux/ConfigStore";
 
 
+
+
 const Detail = (props) => {
   //   const dispatch = useDispatch();
 
@@ -32,7 +34,6 @@ const Detail = (props) => {
       <DIV>
         <h1>{props.title}</h1>
         <EditDelBtn>
-          {/* <div style={{ marginRight: "10px" }}>수정</div> */}
           <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
         </EditDelBtn>
         <Info>
@@ -47,17 +48,7 @@ const Detail = (props) => {
           </div>
         </Info>
 
-        <Thumbnail />
-        <Context>
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세
-          이동해물과 백두산이 마르고 닳도록 하느님이 보우하사
-          우리나라만세이동해물과 백두산이 마르고 닳도록 하느님이 보우하사
-          우리나라만세이동해물과 백두산이 마르고 닳도록 하느님이 보우하사
-          우리나라만세이동해물과 백두산이 마르고 닳도록 하느님이 보우하사
-          우리나라만세이동해물과 백두산이 마르고 닳도록 하느님이 보우하사
-          우리나라만세이
-          {props.context}
-        </Context>
+        
 
         <Profile>
           <ProfileImg />
