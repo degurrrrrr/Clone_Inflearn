@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 
 import Header from "../component/Header";
@@ -7,25 +7,29 @@ import CommentList from "../component/CommentList";
 
 import { history } from "../redux/ConfigStore";
 
-
-
+import {Viewer} from "@toast-ui/react-editor";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import "prismjs/themes/prism.css";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+import Prism from "prismjs";
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 
 const Detail = (props) => {
-  //   const dispatch = useDispatch();
 
-  //   const post_list = useSelector((state) => state.post.list);
-  //   const user_info = useSelector((state) => state.user.user);
-  //   const id = props.match.params.post_id;
-  //   const post_idx = post_list.findIndex((p) => p.post_id === id);
-  //   const post_data = post_list[post_idx];
+  const postId = props.match.params.id;
 
-  //   const [post, setPost] = React.useState(post_data ? post_data : null);
+  const viewerRef = useRef();
+
+  React.useEffect(() => {
+    viewerRef.current.getInstance().setMarkdown('<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>');
+  }, [])
+  
   const {history} = props;
   const onDelete = () => {
-    return (
-      //   window.confirm("정말로 삭제하시겠습니까?"),
-      window.alert("삭제")
-    );
+    
+    window.alert("삭제")
+    
   };
 
   return (
@@ -47,8 +51,15 @@ const Detail = (props) => {
             <ButtonWrap>❤️</ButtonWrap>
           </div>
         </Info>
-
         
+        <Thumbnail />
+        
+        <ViewerContainer>
+          <Viewer
+            ref={viewerRef}
+            plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+          />
+        </ViewerContainer>
 
         <Profile>
           <ProfileImg />
@@ -156,6 +167,10 @@ const ProfileImg = styled.div`
   margin: auto 10px auto 20px;
   background-image: url("https://ilovecharacter.com/news/data/20210122/p179568629887999_597.jpg");
   background-size: contain;
+`;
+
+const ViewerContainer = styled.div`
+  height: 100%;
 `;
 
 export default Detail;
