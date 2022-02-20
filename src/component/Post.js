@@ -1,18 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { Image } from "../element/index";
+import { Image } from '../element/index';
 import { history } from "../redux/ConfigStore";
+import { useHistory } from "react-router-dom";
 
 const Post = (props) => {
-  const { history } = props;
+  const history = useHistory();
 
-  const ToDetail = () => {
-    history.push(`/posts/${props.postId}`);
-  };
 
   return (
     <React.Fragment>
-      <DIV onClick={ToDetail}>
+      <DIV onClick={() => {history.push('/detail')}}>
         <Image height="40%" src={props.image} />
         <div style={{ textAlign: "left", margin: "10px" }}>
           <Contents>
@@ -23,7 +21,7 @@ const Post = (props) => {
             <PostTime>{props.createAt}</PostTime>
             <Footer>
               <Profile>
-                <Image shape="circle" size="30" />
+                <Image shape='circle' size='30' borderRadius="15px"/>
                 <span>
                   by<b> {props.user_info.nickname}</b>
                 </span>
@@ -58,6 +56,7 @@ const DIV = styled.div`
   position: relative;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
+  cursor: pointer;
   &:hover {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 5px 15px 0px;
     -webkit-transform: scale(1.05);
@@ -118,6 +117,12 @@ const Footer = styled.div`
 const Profile = styled.div`
   display: inline-flex;
   align-items: center;
+`;
+
+const ProfileImg = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
 `;
 
 export default Post;
