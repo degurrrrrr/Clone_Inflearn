@@ -1,4 +1,7 @@
 import React, { createRef, useRef } from 'react';
+
+import {history} from '../redux/ConfigStore';
+
 import '@toast-ui/editor/dist/toastui-editor.css';
 import {Editor} from '@toast-ui/react-editor';
 
@@ -17,18 +20,40 @@ import styled from 'styled-components';
 
 const Write = () => {
 
+    const [title, setTitle] = React.useState('');
+
+    const [text, setText] = React.useState('');
+
     const editorRef = useRef();
 
     const onChangeeditorTextHandler = () => {
-        console.log(editorRef.current.getInstance().getMarkdown());
+
+        const editor = editorRef.current.getInstance();
+
+        const innerText = editor.getMarkdown();
+        setText(innerText);
+        console.log('text !! ',text);
+    }
+
+    const uploadImage = (blob) => {
+        console.log('blob !! ',blob);
+        const formData = new FormData();
+        formData.append('image', blob);
+    }
+
+    const postBtn = () => {
+        console.log('저장 ㄱ');
+
     }
 
     return(
     <React.Fragment>
         <Container>
-            <Title placeholder='제목을 입력하세요.'></Title>
+            <Title placeholder='제목을 입력하세요.' onChange={(e) => {
+                setTitle(e.target.value);
+            }}></Title>
             <Editor
-            previewStyle='vertical'
+            previewStyle='none'
             height='80vh'
             initialEditType='markdown'
             placeholder='당신의 이야기를 적어보세요...'
@@ -36,12 +61,20 @@ const Write = () => {
             plugins={[colorSyntax, [codeSyntaxHighlight, {highlighter: Prism}]]}
             onChange={onChangeeditorTextHandler} 
             autofocus={false}
+            hooks={{
+                addImageBlobHook: (blob, callback) => {
+                    const img_url = uploadImage(blob);
+                    callback(img_url, 'alt_text');
+                }
+            }}
             />
             
         </Container>
         <WriteFooter>
-            <ExitBtn>나가기</ExitBtn>
-            <SaveBtn>출간하기</SaveBtn>            
+            <ExitBtn onClick={() => {
+                history.replace("/");
+            }}>나가기</ExitBtn>
+            <SaveBtn onClick={postBtn}>출간하기</SaveBtn>            
         </WriteFooter>
         
     </React.Fragment>
