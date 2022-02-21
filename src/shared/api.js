@@ -18,3 +18,7 @@ export const api_token = axios.create({
     authorization: `${accessToken}`,
   },
 });
+
+export const test_api = axios.create({
+  baseURL: "http://14.45.204.153:8023"
+})

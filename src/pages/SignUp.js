@@ -6,7 +6,6 @@ import { nicknameCheck, pwCheck } from "../shared/Common";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import { actionCreators as userActions } from "../redux/modules/user";
-// import { actionCreators as signUpAction } from '../redux/modules/user'
 
 import { api_token } from "../shared/api";
 
@@ -24,6 +23,7 @@ const SignUp = (props) => {
   const changeBtn = () => {
     setLogin(!login);
   };
+
   // 데이터의 변화가 있을 때마다 value값 변경하여 useState 해준다
   const handleNickname = (e) => {
     setNickname(e.target.value);
@@ -50,8 +50,9 @@ const SignUp = (props) => {
     }
     nicknameCheck(nickname);
     pwCheck(password);
-    dispatch(userActions.setUser({nickname : 'test야'})) 
-    // dispatch(userActions.loginFB(nickname, password));
+
+    // dispatch(userActions.setUser({nickname, password}))  
+    dispatch(userActions.loginFB(nickname, password));
   };
 
   const SignUpBtn = () => {
@@ -79,10 +80,10 @@ const SignUp = (props) => {
       window.alert("비밀번호에는 아이디가 들어갈 수 없습니다.");
       return;
     }
-
     nicknameCheck(nickname);
     pwCheck(password, pwConfirm);
-    //  dispatch(signUpAction.signUpFB(nickname, password));
+
+     dispatch(userActions.signUpFB(nickname, password, pwConfirm));
   };
 
   return (
