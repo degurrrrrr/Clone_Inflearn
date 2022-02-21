@@ -11,7 +11,7 @@ const Post = (props) => {
 
   return (
     <React.Fragment>
-      <DIV onClick={() => {history.push('/detail')}}>
+      <DIV onClick={() => {history.push(`detail/${props.postId}`)}}>
         <Image height="40%" src={props.thumbnail} />
         <div style={{ textAlign: "left", margin: "10px" }}>
           <Contents>
@@ -47,7 +47,7 @@ Post.defaultProps = {
   commentCnt: "initial_100",
   dayBefore: '7일전',
   likeCnt: 1000,
-  postID: "1234567",
+  postId: "1234567",
 };
 
 const DIV = styled.div`
