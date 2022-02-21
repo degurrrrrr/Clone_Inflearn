@@ -26,8 +26,8 @@ const Main = () => {
       <MainWrap>
         <Menu />
         <PostList>
-          {post_list.map((p, d) => {
-            return <Post {...p} />;
+          {post_list.map((p, id) => {
+            return <Post key={p.id} {...p} />;
           })}
         </PostList>
       </MainWrap>

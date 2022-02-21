@@ -52,9 +52,9 @@ const ImageDefault = styled.div`
  ${(props)=> props.width ? `height: ${props.width}`: ""};
   ${(props)=> props.height ? `height: ${props.height}`: ""};
   ${(props)=> props.margin ? `margin: ${props.margin}`: ""};
-  background-color: #59c1c2;
+  background-color: #fff;
   background-image: url("${(props) => props.src}");
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 `;
