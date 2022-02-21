@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const accessToken = document.cookie.split("=")[1];
 
 export const api = axios.create({
