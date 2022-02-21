@@ -51,6 +51,7 @@ const getPostFB = () => {
       const post_list = [];
       postDB.forEach((p, i) => {
         let list = {
+          postId: p.id,
           nickname: p.user.nickname,
           title: p.title,
           thumbnail: p.thumbnail,
