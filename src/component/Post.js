@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from '../element/index';
+import Likes from '../element/Likes';
 import { history } from "../redux/ConfigStore";
 import { useHistory } from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -19,7 +20,7 @@ const Post = (props) => {
             <PostContent>{props.context}</PostContent>
           </Contents>
           <div>
-            <PostTime>{props.dayBefore} / 댓글 {props.commentCnt}개</PostTime>
+            <PostTime>{props.dayBefore}</PostTime>
             <Footer>
               <Profile>
                 <Image shape='circle' size='30' borderRadius="15px"/>
@@ -27,6 +28,7 @@ const Post = (props) => {
                   by<b> {props.nickname}</b>
                 </span>
               </Profile>
+              <Likes />
               <LikeCntWrap><FavoriteIcon style={{fontSize: 'small', marginRight: '3px'}} /> {props.likeCnt}개</LikeCntWrap>
             </Footer>
           </div>
@@ -37,14 +39,11 @@ const Post = (props) => {
 };
 
 Post.defaultProps = {
-  user_info: {
-    nickname: "initial_nickname",
-  },
+  nickname: "initial_nickname",
   title: "initial_title",
-  image: "http://www.ipon.co.kr/common/img/default_profile.png",
+  thumbnail: "http://www.ipon.co.kr/common/img/default_profile.png",
   context: "initial_context",
   createAt: "initial_2022-02-04 16:20:00",
-  commentCnt: "initial_100",
   dayBefore: '7일전',
   likeCnt: 1000,
   postId: "1234567",

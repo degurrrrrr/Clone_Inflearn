@@ -17,8 +17,8 @@ const initialState = {
 };
 
 const loginFB = (nickname, password) => {
-    return async (dispatch, getState, { history }) => {
-    await api_token
+    return (dispatch, getState, { history }) => {
+    api_token
       .post("/user/login", {
         nickname: nickname,
         password: password,
@@ -32,10 +32,10 @@ const loginFB = (nickname, password) => {
           })
         );
         window.alert(res.data.msg);
-        history
-          .push("/")
+        console.log(res.data);
+        history.push("/")
 
-          .catch((err) => {
+      .catch((err) => {
             console.log(err.response.data.errorMessage);
             window.alert(`error ${err.response.data.errorMessage}`);
           });
