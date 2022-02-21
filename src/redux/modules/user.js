@@ -78,32 +78,6 @@ const signUpFB = (nickname, password, pwConfirm) => {
   };
 };
 
-//로그인여부 확인
-// const isLoginFB = (nickname, token) => {
-//   //nickname, token
-//   return (dispatch, getState, { history }) => {
-//     const token = getCookie("is_login");
-//     // api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-//     console.log("isLoginFB의" + token);
-//     api
-//       .get("/user/login")
-//       .then((res) => {
-//         console.log(res.data); //res 콘솔값 확인
-//         dispatch(
-//           setUser({
-//             token: token,
-//             nickname: nickname, //res.data.nickname
-//           })
-//         );
-//         history.push("/");
-//         console.log("isLoginFB성공");
-//       })
-//       .catch((err) => {
-//         console.log(err.code, err.message);
-//       });
-//   };
-// };
-
 const logOutFB = () => {
   return (dispatch, getState, { history }) => {
     dispatch(logOut())
@@ -119,11 +93,6 @@ export default handleActions(
       draft.nickname = action.payload.nickname;
       draft.is_login = true;
     }),
-    // [SET_USER]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.nickname = action.payload.nickname;
-    //     draft.is_login = true;
-    //   }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
         localStorage.clear(); //localStorage 비워주는 작업

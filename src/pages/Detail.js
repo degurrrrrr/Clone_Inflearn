@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Header from "../component/Header";
 import CommentWrite from "../component/CommentWrite";
 import CommentList from "../component/CommentList";
-
+import Likes from '../element/Likes';
 import { history } from "../redux/ConfigStore";
 
 import {Viewer} from "@toast-ui/react-editor";
@@ -57,7 +57,8 @@ const Detail = (props) => {
             <div style={{ marginLeft: "10px" }}>{props.createAt}</div>
           </div>
           <div>
-            <ButtonWrap>❤️</ButtonWrap>
+            <Likes />
+            {/* <ButtonWrap>❤️</ButtonWrap> */}
           </div>
         </Info>
         

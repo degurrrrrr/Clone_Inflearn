@@ -15,7 +15,7 @@ const Likes = (props) => {
   const [bg, setBg] = useState('white');
   const [border, setBorder] = useState('#adb5bd')
 
-  const liked = () => {
+  const liked = (props) => { //2/22 props 추가했음
     if (like === true) {
       setLikedCnt(likeCnt + 1);
       setLike(false);
@@ -38,7 +38,7 @@ const Likes = (props) => {
         <FavoriteIcon
           style={{ fontSize: "medium", marginRight: "5px" }}
         />
-        {likeCnt}개
+        {props.likeCnt}개
       </ButtonWrap>
     </React.Fragment>
   );

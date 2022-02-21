@@ -29,7 +29,6 @@ const Post = (props) => {
                 </span>
               </Profile>
               <Likes />
-              <LikeCntWrap><FavoriteIcon style={{fontSize: 'small', marginRight: '3px'}} /> {props.likeCnt}개</LikeCntWrap>
             </Footer>
           </div>
         </div>
