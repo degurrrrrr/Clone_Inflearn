@@ -16,14 +16,11 @@ import Prism from "prismjs";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import {actionCreator as postActions} from "../redux/modules/post";
 import {useDispatch, useSelector} from "react-redux";
-import { useHistory } from "react-router-dom";
 
 const Detail = (props) => {
 
   const dispatch = useDispatch();
   const post_one = useSelector((state) => state.post.one_post);
-
-  const history2 = useHistory();
 
   const postId = props.match.params.id;
 
@@ -48,7 +45,7 @@ const Detail = (props) => {
         <h1>{props.title}</h1>
         <EditDelBtn>
           <DeleteBtn onClick={() => {
-            history.push('/update')
+            history.push(`/update/${postId}`);
           }}>수정</DeleteBtn>
           <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
         </EditDelBtn>
@@ -80,8 +77,8 @@ const Detail = (props) => {
           </div>
         </Profile>
 
-        <CommentWrite />
-        <CommentList />
+        <CommentWrite post_id={postId}/>
+        <CommentList post_id={postId}/>
       </DIV>
     </div>
   );

@@ -80,7 +80,7 @@ const Write = () => {
         
         let span = document.createElement("span");
         span.innerHTML = context;
-
+        
 
         // 미리보기 추출
         const extractedText = span.textContent || span.innerText;
@@ -88,12 +88,12 @@ const Write = () => {
 
 
         dispatch(postActions.addPostFB(title, context, preview));
-        // // 포스트 업로드
-        // await axios.post("http://14.45.204.153:8023/api/post", {
-        //     title,
-        //     context,
-        //     preview,
-        // })
+        // 포스트 업로드
+        await axios.post("http://14.45.204.153:8023/api/post", {
+            title,
+            context,
+            preview,
+        })
     }
 
     return(
