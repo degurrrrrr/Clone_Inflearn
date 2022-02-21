@@ -7,40 +7,46 @@ import CommentList from "../component/CommentList";
 
 import { history } from "../redux/ConfigStore";
 
-import {Viewer} from "@toast-ui/react-editor";
+import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import Prism from "prismjs";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
-import {actionCreator as postActions} from "../redux/modules/post";
-import {useDispatch, useSelector} from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
+import { useDispatch, useSelector } from "react-redux";
 
 const Detail = (props) => {
-
   const dispatch = useDispatch();
   const post_one = useSelector((state) => state.post.one_post);
-
+  const post_list = useSelector((state) => state.post.list);
   const postId = props.match.params.id;
+  // const post_idx = post_list.findIndex((p) => p.postId === postId)
+  // post_data = post_list[post_idx];
 
   const viewerRef = useRef();
 
   React.useEffect(() => {
     dispatch(postActions.getOnePostFB(1));
-    
-    viewerRef.current.getInstance().setMarkdown('<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>');
-  }, [])
-  
-  const {history} = props;
+
+    viewerRef.current
+      .getInstance()
+      .setMarkdown(
+        '<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>'
+      );
+  }, []);
+
+  const { history } = props;
   const onDelete = () => {
-    
-    window.alert("삭제")
-    
+    // if(window.confirm('삭제된 게시물은 복구할 수 없습니다. \n 정말로 삭제하시겠어요?')){
+    //   dispatch(postActions.deletePostFB(post_data.postId))
+    // }
+    window.alert("삭제");
   };
 
   return (
-    <div style={{ backgroundColor: "#fff" }}>
+    <DetailWrap>
       <Header></Header>
       <DIV>
         <h1>{props.title}</h1>
@@ -58,9 +64,9 @@ const Detail = (props) => {
             <ButtonWrap>❤️</ButtonWrap>
           </div>
         </Info>
-        
+
         <Thumbnail />
-        
+
         <ViewerContainer>
           <Viewer
             ref={viewerRef}
@@ -78,7 +84,7 @@ const Detail = (props) => {
         <CommentWrite />
         <CommentList />
       </DIV>
-    </div>
+    </DetailWrap>
   );
 };
 
@@ -94,6 +100,13 @@ Detail.defaultProps = {
   postID: "1234567",
 };
 
+const DetailWrap = styled.div`
+  background-color: #fff;
+  @media screen and (max-width: 1024px) {
+    margin: 0 1%;
+  }
+`;
+
 const DIV = styled.div`
   width: 1000px;
   min-width: 540px;
@@ -104,7 +117,7 @@ const DIV = styled.div`
   word-wrap: break-word;
 
   @media screen and (max-width: 1024px) {
-    width: 850px;    
+    width: 850px;
   }
 `;
 

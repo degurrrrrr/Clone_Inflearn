@@ -18,3 +18,11 @@ export const api_token = axios.create({
     authorization: `${accessToken}`,
   },
 });
+
+export const test_api = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com/users",
+  headers: {
+    "content-type": "application/json;charset=UTF-8",
+    accept: "application/json,",
+  }
+})

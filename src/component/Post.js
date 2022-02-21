@@ -18,7 +18,7 @@ const Post = (props) => {
             <PostContent>{props.context}</PostContent>
           </Contents>
           <div>
-            <PostTime>{props.createAt}</PostTime>
+            <PostTime>{props.dayBefore} / 댓글 {props.commentCnt}개</PostTime>
             <Footer>
               <Profile>
                 <Image shape='circle' size='30' borderRadius="15px"/>
@@ -26,7 +26,7 @@ const Post = (props) => {
                   by<b> {props.user_info.nickname}</b>
                 </span>
               </Profile>
-              <div>코멘트 {props.commentCnt}개</div>
+              <div>좋아요 {props.likeCnt}개</div>
             </Footer>
           </div>
         </div>
@@ -44,6 +44,8 @@ Post.defaultProps = {
   context: "initial_context",
   createAt: "initial_2022-02-04 16:20:00",
   commentCnt: "initial_100",
+  dayBefore: '7일전',
+  likeCnt: 1000,
   postID: "1234567",
 };
 

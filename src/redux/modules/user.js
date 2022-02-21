@@ -21,30 +21,31 @@ const loginFB = (nickname, password) => {
     await api_token
       .post("/user/login", {
         nickname: nickname,
-        password: password
+        password: password,
       })
       .then((res) => {
         const accessToken = "Bearer " + res.data.token;
         setCookie("is_login", `${accessToken}`);
-
+ 
         dispatch(setUser({
             nickname: res.data.nickname,
-          }) 
+          })
         );
         window.alert(res.data.msg);
-        history.push("/");
-      })
-      .catch((err) => {
-            console.log(err);
-            // err.response.data.errorMessage
-            window.alert(`error ${err}`);
+        history
+          .push("/")
+
+          .catch((err) => {
+            console.log(err.response.data.errorMessage);
+            window.alert(`error ${err.response.data.errorMessage}`);
+          });
       });
   };
 };
 
 const signUpFB = (nickname, password) => {
-    return async (dispatch, getState, { history }) => {
-    await api_token
+    return (dispatch, getState, { history }) => {
+    api_token
       .post("/user/signin", {
         nickname: nickname,
         password: password,
@@ -80,7 +81,6 @@ export default handleActions(
   {
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
     [SET_USER]: (state, action) => produce(state, (draft) => {
-        setCookie("is_login", "success")
         draft.nickname = action.payload.nickname;
         draft.is_login = true;
       }),
