@@ -43,15 +43,17 @@ const loginFB = (nickname, password) => {
   };
 };
 
-const signUpFB = (nickname, password) => {
-    return (dispatch, getState, { history }) => {
-    api_token
+const signUpFB = (nickname, password, pwConfirm) => {
+    return async (dispatch, getState, { history }) => {
+    await api_token
       .post("/user/signin", {
         nickname: nickname,
         password: password,
+        confirmPassword: pwConfirm
       })
       .then((res) => {
         window.alert(res.data.msg);
+        window.location.reload('/')
       })
       .catch((err) => {
         window.alert(err);
@@ -63,7 +65,7 @@ const signUpFB = (nickname, password) => {
 const isLoginFB = () => {
   return async (dispatch, getState, { history }) => {
     const token = getCookie("is_login");
-    await api_token.get('/user/logout')
+    await api_token.get('/user/login')
     .then((res) => {
         dispatch(setUser({
             token: token,

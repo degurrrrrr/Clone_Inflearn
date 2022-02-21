@@ -20,9 +20,5 @@ export const api_token = axios.create({
 });
 
 export const test_api = axios.create({
-  baseURL: "https://jsonplaceholder.typicode.com/users",
-  headers: {
-    "content-type": "application/json;charset=UTF-8",
-    accept: "application/json,",
-  }
+  baseURL: "http://14.45.204.153:8023"
 })

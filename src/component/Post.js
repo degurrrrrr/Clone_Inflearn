@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Image } from '../element/index';
 import { history } from "../redux/ConfigStore";
 import { useHistory } from "react-router-dom";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Post = (props) => {
   const history = useHistory();
@@ -11,7 +12,7 @@ const Post = (props) => {
   return (
     <React.Fragment>
       <DIV onClick={() => {history.push('/detail')}}>
-        <Image height="40%" src={props.image} />
+        <Image height="40%" src={props.thumbnail} />
         <div style={{ textAlign: "left", margin: "10px" }}>
           <Contents>
             <Title>{props.title}</Title>
@@ -23,10 +24,10 @@ const Post = (props) => {
               <Profile>
                 <Image shape='circle' size='30' borderRadius="15px"/>
                 <span>
-                  by<b> {props.user_info.nickname}</b>
+                  by<b> {props.nickname}</b>
                 </span>
               </Profile>
-              <div>좋아요 {props.likeCnt}개</div>
+              <LikeCntWrap><FavoriteIcon style={{fontSize: 'small', marginRight: '3px'}} /> {props.likeCnt}개</LikeCntWrap>
             </Footer>
           </div>
         </div>
@@ -69,7 +70,8 @@ const DIV = styled.div`
   }
   /* @media screen and (max-width: 1024px) {
     margin: 0 1%; */
-  }
+  /* }; */
+  margin-bottom: 40px;
 `;
 const Title = styled.div`
   white-space: initial;
@@ -127,4 +129,9 @@ const ProfileImg = styled.div`
   border-radius: 15px;
 `;
 
+const LikeCntWrap = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`
 export default Post;

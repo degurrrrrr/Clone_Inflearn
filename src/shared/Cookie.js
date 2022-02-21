@@ -5,6 +5,8 @@ const getCookie = (name) => {
   if (parts.length === 2) {
     return parts.pop().split(";").shift();
   }
+  console.log(parts.pop().split(";").shift()) //안나오네
+  
 };
 
 //setCookie('쿠키 설정할 이름','설정할 값',1); 으로 쿠키를 설정 할 수 있다
