@@ -26,9 +26,8 @@ const loginFB = (nickname, password) => {
       .then((res) => {
         const accessToken = "Bearer " + res.data.token;
         setCookie("is_login", `${accessToken}`);
-
-        dispatch(
-          setUser({
+ 
+        dispatch(setUser({
             nickname: res.data.nickname,
           })
         );
@@ -44,18 +43,20 @@ const loginFB = (nickname, password) => {
   };
 };
 
-const signUpFB = (nickname, password) => {
+const signUpFB = (nickname, password, pwConfirm) => {
     return async (dispatch, getState, { history }) => {
     await api_token
       .post("/user/signin", {
         nickname: nickname,
         password: password,
+        confirmPassword: pwConfirm
       })
       .then((res) => {
         window.alert(res.data.msg);
+        window.location.reload('/')
       })
       .catch((err) => {
-        window.alert(err.response.data.errorMessage);
+        window.alert(err);
       });
   };
 };
@@ -64,7 +65,7 @@ const signUpFB = (nickname, password) => {
 const isLoginFB = () => {
   return async (dispatch, getState, { history }) => {
     const token = getCookie("is_login");
-    await api_token.get('/user/logout')
+    await api_token.get('/user/login')
     .then((res) => {
         dispatch(setUser({
             token: token,
