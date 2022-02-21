@@ -7,6 +7,9 @@ import Main from "../pages/Main";
 import SignUp from "../pages/SignUp";
 import Write from "../pages/Write";
 import Detail from "../pages/Detail";
+import UpdatePage from "../pages/UpdatePage";
+
+import { BrowserRouter } from "react-router-dom";
 import styled from "styled-components";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/ConfigStore";
@@ -35,6 +38,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/write" component={Write} />
           <Route path="/detail" component={Detail} />
+          <Route path="/update" component={UpdatePage} />
         </ConnectedRouter>
       </Background>
     </React.Fragment>

@@ -15,19 +15,30 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import styled from 'styled-components';
 
-
+import { api } from '../shared/api';
 import axios from 'axios';
-import {useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {actionCreator as postActions} from '../redux/modules/post';
 
 
-const Write = () => {
+
+const UpdatePage = (props) => {
+
+    const postId = props.match.params.id;
+    const post_one = useSelector((state) => state.post.one_post);
 
     const dispatch = useDispatch();
 
     const [title, setTitle] = React.useState('');
 
     const editorRef = useRef();
+
+    React.useEffect(() => {
+        dispatch(postActions.getOnePostFB(postId));
+
+        editorRef.current.getInstance().setHTML('<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>');
+
+    }, []);
 
     React.useEffect(() => {
         if(editorRef.current){
@@ -68,7 +79,7 @@ const Write = () => {
 
     }, [editorRef]);
 
-    const postAdd = async () => {
+    const postUpdate = () => {
 
         if(title === ''){
             window.alert('제목을 작성해주세요~');
@@ -81,19 +92,13 @@ const Write = () => {
         let span = document.createElement("span");
         span.innerHTML = context;
 
-
         // 미리보기 추출
         const extractedText = span.textContent || span.innerText;
         const preview = extractedText.slice(0, 70);
 
+        
+        dispatch(postActions.updateOnePostFB(postId, title, context, preview));
 
-        dispatch(postActions.addPostFB(title, context, preview));
-        // // 포스트 업로드
-        // await axios.post("http://14.45.204.153:8023/api/post", {
-        //     title,
-        //     context,
-        //     preview,
-        // })
     }
 
     return(
@@ -121,9 +126,9 @@ const Write = () => {
         </Container>
         <WriteFooter>
             <ExitBtn onClick={() => {
-                history.replace("/");
+                history.goBack();
             }}>나가기</ExitBtn>
-            <SaveBtn onClick={postAdd}>출간하기</SaveBtn>            
+            <SaveBtn onClick={postUpdate}>수정하기</SaveBtn>            
         </WriteFooter>
 
         
@@ -203,4 +208,4 @@ const SaveBtn = styled.button`
     }
 `;
 
-export default Write;
+export default UpdatePage;
