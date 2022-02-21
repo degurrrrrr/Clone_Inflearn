@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { api_token, api, test_api } from "../../shared/api";
+import { api_token, api, test_api, test} from "../../shared/api";
 import axios from "axios";
 
 const GET_POST = "GET_POST";
@@ -44,14 +44,10 @@ const initialState = {
 
 const getPostFB = () => {
   return (dispatch, getState, { history }) => {
-    console.log('랄라')
-    test_api.get("/api/posts", {})
+    test.get("/posts", {})
     .then((res) => {
-      console.log(res);
-
       const postDB = res.data;
       console.log(postDB);
-
       const post_list = [];
       postDB.forEach((p, i) => {
         let list = {
@@ -166,6 +162,12 @@ const deletePostFB = (postId = null) => {
       });
   };
 };
+
+const likedFB = (likeCnt) => {
+    return (dispatch, getState, { history }) => {
+        const
+    }
+}
 
 export default handleActions(
   {
