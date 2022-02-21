@@ -29,9 +29,6 @@ const Main = () => {
           {post_list.map((p, d) => {
             return <Post {...p} />;
           })}
-          <Post />
-          <Post />
-          <Post />
         </PostList>
       </MainWrap>
       <Likes />
