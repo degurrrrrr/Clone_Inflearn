@@ -1,5 +1,3 @@
-//저번주에 썼던거
-
 //getCookie('쿠키 설정한 이름'); 으로 쿠키의 내용이 있는지 값을 가져 올 수 있다
 const getCookie = (name) => {
   let value = "; " + document.cookie;
@@ -13,7 +11,7 @@ const getCookie = (name) => {
 // 3번째 매개변수는 설정할 기간을 설정한다.
 const setCookie = (name, value, exp = 1) => {
   let date = new Date();
-  date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+  date.setTime(date .getTime() + exp * 24 * 60 * 60 * 1000);
   document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
 };
 

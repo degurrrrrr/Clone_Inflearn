@@ -21,25 +21,23 @@ const loginFB = (nickname, password) => {
     await api_token
       .post("/user/login", {
         nickname: nickname,
-        password: password,
+        password: password
       })
       .then((res) => {
         const accessToken = "Bearer " + res.data.token;
         setCookie("is_login", `${accessToken}`);
 
-        dispatch(
-          setUser({
+        dispatch(setUser({
             nickname: res.data.nickname,
-          })
+          }) 
         );
         window.alert(res.data.msg);
-        history
-          .push("/")
-
-          .catch((err) => {
-            console.log(err.response.data.errorMessage);
-            window.alert(`error ${err.response.data.errorMessage}`);
-          });
+        history.push("/");
+      })
+      .catch((err) => {
+            console.log(err);
+            // err.response.data.errorMessage
+            window.alert(`error ${err}`);
       });
   };
 };
@@ -55,7 +53,7 @@ const signUpFB = (nickname, password) => {
         window.alert(res.data.msg);
       })
       .catch((err) => {
-        window.alert(err.response.data.errorMessage);
+        window.alert(err);
       });
   };
 };
@@ -82,6 +80,7 @@ export default handleActions(
   {
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
     [SET_USER]: (state, action) => produce(state, (draft) => {
+        setCookie("is_login", "success")
         draft.nickname = action.payload.nickname;
         draft.is_login = true;
       }),

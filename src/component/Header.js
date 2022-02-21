@@ -18,31 +18,32 @@ const Header = (props) => {
         setModalOpen(!modalOpen);
     }
 
-    // const is_login = useSelector((state) => state.user.is_login);
-    // const _logOut = () => {
-    //     dispatch(userActions.logOut())
-    // };
+    const is_login = useSelector((state) => state.user.is_login);
 
-    // if(is_login){
-    //     return (
-    //         <React.Fragment>
-    //            <HeaderContainer>    
-    //                 <Wrap>
-    //                     <Logo>
-    //                         <a href="/">
-    //                             <img src={LogoImg} alt="로고"/>
-    //                         </a>
-    //                     </Logo>
-    //                     <HeadItem>
-    //                         <WbSunnyIcon style={{marginLeft: "20px"}}/>
-    //                         <SearchIcon style={{marginLeft: "20px"}} />
-    //                         <LoginBtn onClick={_logOut}>로그아웃</LoginBtn>
-    //                     </HeadItem>
-    //                 </Wrap>
-    //            </HeaderContainer>
-    //         </React.Fragment>
-    //     )
-    // };
+    const _logOut = () => {
+        dispatch(userActions.logOut({}))
+    };
+
+    if(is_login){
+        return (
+            <React.Fragment>
+               <HeaderContainer>    
+                    <Wrap>
+                        <Logo>
+                            <a href="/">
+                                <img src={LogoImg} alt="로고"/>
+                            </a>
+                        </Logo>
+                        <HeadItem>
+                            <WbSunnyIcon style={{marginLeft: "20px"}}/>
+                            <SearchIcon style={{marginLeft: "20px"}} />
+                            <LoginBtn onClick={_logOut}>로그아웃</LoginBtn>
+                        </HeadItem>
+                    </Wrap>
+               </HeaderContainer>
+            </React.Fragment>
+        )
+    };
     
     return (
         <React.Fragment>
