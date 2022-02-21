@@ -7,7 +7,7 @@ import CommentList from "../component/CommentList";
 
 import { history } from "../redux/ConfigStore";
 
-import { Viewer } from "@toast-ui/react-editor";
+import {Viewer} from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import "prismjs/themes/prism.css";
@@ -16,19 +16,13 @@ import Prism from "prismjs";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import {actionCreator as postActions} from "../redux/modules/post";
 import {useDispatch, useSelector} from "react-redux";
-import { useHistory } from "react-router-dom";
 
 const Detail = (props) => {
+
   const dispatch = useDispatch();
   const post_one = useSelector((state) => state.post.one_post);
 
-  const history2 = useHistory();
-  const post_list = useSelector((state) => state.post.list);
-
-
   const postId = props.match.params.id;
-  // const post_idx = post_list.findIndex((p) => p.postId === postId)
-  // post_data = post_list[post_idx];
 
   const viewerRef = useRef();
 
@@ -39,20 +33,19 @@ const Detail = (props) => {
   }, [])
   
   const onDelete = () => {
-    // if(window.confirm('삭제된 게시물은 복구할 수 없습니다. \n 정말로 삭제하시겠어요?')){
-    //   dispatch(postActions.deletePostFB(post_data.postId))
-    // }
-    window.alert("삭제");
+    
+    window.alert("삭제")
+    
   };
 
   return (
-    <DetailWrap>
+    <div style={{ backgroundColor: "#fff" }}>
       <Header></Header>
       <DIV>
         <h1>{props.title}</h1>
         <EditDelBtn>
           <DeleteBtn onClick={() => {
-            history.push('/update')
+            history.push(`/update/${postId}`);
           }}>수정</DeleteBtn>
           <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
         </EditDelBtn>
@@ -67,9 +60,9 @@ const Detail = (props) => {
             <ButtonWrap>❤️</ButtonWrap>
           </div>
         </Info>
-
+        
         <Thumbnail />
-
+        
         <ViewerContainer>
           <Viewer
             ref={viewerRef}
@@ -84,10 +77,10 @@ const Detail = (props) => {
           </div>
         </Profile>
 
-        <CommentWrite />
-        <CommentList />
+        <CommentWrite post_id={postId}/>
+        <CommentList post_id={postId}/>
       </DIV>
-    </DetailWrap>
+    </div>
   );
 };
 
@@ -103,13 +96,6 @@ Detail.defaultProps = {
   postID: "1234567",
 };
 
-const DetailWrap = styled.div`
-  background-color: #fff;
-  @media screen and (max-width: 1024px) {
-    margin: 0 1%;
-  }
-`;
-
 const DIV = styled.div`
   width: 1000px;
   min-width: 540px;
@@ -120,7 +106,7 @@ const DIV = styled.div`
   word-wrap: break-word;
 
   @media screen and (max-width: 1024px) {
-    width: 850px;
+    width: 850px;    
   }
 `;
 

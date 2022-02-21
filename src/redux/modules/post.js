@@ -73,6 +73,7 @@ const getPostFB = () => {
   };
 };
 
+
 const getOnePostFB = (postId) => {
   return async function (dispatch, getState, { history }) {
     console.log("postId !! ", postId);
@@ -103,21 +104,28 @@ const getOnePostFB = (postId) => {
 // }
 
 const addPostFB = (title, context, preview) => {
-  return async function (dispatch, getState, { history }) {
-    await api_token
-      .post("/post", {
-        title,
-        context,
-        preview,
-      })
-      .then((res) => {
-        console.log("작성 res !! ", res.data);
-      })
-      .catch((err) => {
-        console.log("err !! ", err);
-      });
-  };
-};
+
+    return async function(dispatch, getState, {history}){
+
+        console.log('title !! ',title);
+        console.log('context !! ',context);
+        console.log('preview !! ',preview);
+
+        await api_token.post('/post', {
+            title,
+            context,
+            preview,
+        })
+        .then((res) => {
+            
+            console.log('작성 res !! ',res.data);
+
+        })
+        .catch((err) => {
+            console.log('err !! ',err);
+        });
+    }
+}
 
 const updateOnePostFB = (postId, title, context, preview) => {
   return async function (dispatch, getState, { history }) {

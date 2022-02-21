@@ -1,9 +1,44 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import {actionCreators as commontActions} from '../redux/modules/comment';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-const CommentList = () => {
+
+const CommentList = (props) => {
+
+    const {post_id} = props;
+
+    const dispatch = useDispatch();
+    // const comment_list = useSelector(state => state.comment.list);
+
+    React.useEffect(() => {
+        // if(!comment_list[post_id]){
+        //     dispatch(commontActions.getCommentFB(post_id));
+        // }
+    }, []);
+
+    // if(!comment_list[post_id] || !post_id){
+    //     return null;
+    // }
+
     return(
     <React.Fragment>
+        <CommentItem />
+    </React.Fragment>
+    )
+}
+
+CommentList.defaultProps = {
+    post_id: null
+}
+
+
+const CommentItem = (props) => {
+
+
+
+    return (
         <Container>
             <UserBox>
                 <ProfileImg />
@@ -13,10 +48,11 @@ const CommentList = () => {
                 </Info>
             </UserBox>
                 <Text style={{margin: "20px 0"}}>때려 치고 싶다</Text>
+
         </Container>
-    </React.Fragment>
     )
 }
+
 
 const Container = styled.div`
     border-bottom: 1px solid #E9ECEF;
@@ -45,5 +81,6 @@ const Info = styled.div`
 const Text = styled.div`
 
 `;
+
 
 export default CommentList;
