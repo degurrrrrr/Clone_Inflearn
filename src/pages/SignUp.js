@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { nicknameCheck, pwCheck } from "../shared/Common";
@@ -13,6 +13,12 @@ const SignUp = (props) => {
   const { modalClose } = props;
 
   const dispatch = useDispatch();
+  const is_login = useSelector((state) => state.user.is_login);
+  const is_local = localStorage.getItem('is_login') ? true: false;
+  console.log(is_login)
+
+  React.useEffect(() => {}, [is_login]); //is_login일때만 실행시킬것임([]) / cf.{}는 한 번만 돌릴것임.
+
 
   const [login, setLogin] = React.useState(true);
 

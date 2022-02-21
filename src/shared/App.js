@@ -13,22 +13,23 @@ import { BrowserRouter } from "react-router-dom";
 import styled from "styled-components";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/ConfigStore";
-import {getCookie} from "./Cookie"
+import { getCookie } from "./Cookie";
 import { actionCreators as userActions } from "../redux/modules/user";
-
 
 function App() {
   const dispatch = useDispatch();
-  const is_login = getCookie("is_login") ? true : false;
-  const user = useSelector((state) => state.user);
+  // const is_login = useSelector((state) => state.user.is_login);
+  // const is_local = localStorage.getItem('is_login') ? true: false;
+  // // const is_login = getCookie("is_login") ? true : false;
 
-  console.log(user);
+  // // React.useEffect(() => {
+  // //   if (is_login) {
+  // //     dispatch(userActions.isLoginFB());
+  // //   }
+  // // }, []);
+  //  React.useEffect(() => {
 
-  React.useEffect(() => {
-    if (is_login) {
-      dispatch(userActions.isLoginFB());
-    }
-  }, []);
+  // }, [is_login]);
 
   return (
     <React.Fragment>

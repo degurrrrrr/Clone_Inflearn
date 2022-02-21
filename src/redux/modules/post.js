@@ -47,7 +47,6 @@ const getPostFB = () => {
     test.get("/posts", {})
     .then((res) => {
       const postDB = res.data;
-      console.log(postDB);
       const post_list = [];
       postDB.forEach((p, i) => {
         let list = {
@@ -164,18 +163,11 @@ const deletePostFB = (postId = null) => {
   };
 };
 
-const likedFB = (likeCnt) => {
-    return (dispatch, getState, { history }) => {
-        const
-    }
-}
-
 export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.list = action.payload.post_list;
-        console.log(action.payload)
       }),
 
     // [ADD_POST]: (state, action) => produce(state, (draft)=> {
