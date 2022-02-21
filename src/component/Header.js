@@ -23,14 +23,7 @@ const Header = (props) => {
 
   const is_login = useSelector((state) => state.user.is_login);
   const is_local = localStorage.getItem("is_login") ? true : false;
-  console.log(is_login);
-  // const is_login = getCookie("is_login") ? true : false;
 
-  // React.useEffect(() => {
-  //   if (is_login) {
-  //     dispatch(userActions.isLoginFB());
-  //   }
-  // }, []);
   React.useEffect(() => {}, [is_login]);
 
   const _logOut = () => {
