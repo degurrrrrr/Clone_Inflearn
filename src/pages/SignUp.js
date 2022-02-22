@@ -89,7 +89,7 @@ const SignUp = (props) => {
     nicknameCheck(nickname);
     pwCheck(password, pwConfirm);
 
-     dispatch(userActions.signUpFB(nickname, password, pwConfirm));
+    dispatch(userActions.signUpFB(nickname, password, pwConfirm));
   };
 
   return (

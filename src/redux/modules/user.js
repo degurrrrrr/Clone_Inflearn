@@ -45,6 +45,7 @@ const signUpFB = (nickname, password, pwConfirm) => {
       })
       .then((res) => {
         console.log(res.data);
+        window.alert('회원가입이 완료되었습니다. \n 로그인을 진행해주세요☺️')
         window.location.reload("/");
       })
       .catch((err) => {
