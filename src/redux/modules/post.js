@@ -10,6 +10,7 @@ const ADD_POST = "ADD_POST";
 const DELETE_POST = "DELETE_POST";
 
 const GET_ONE_USER = "GET_ONE_USER";
+const LIKE_POST = "LIKE_POST";
 
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const onePost = createAction(ONE_POST, (one_post) => ({ one_post }));
@@ -22,7 +23,10 @@ const getOneUser = createAction(GET_ONE_USER, (nickname, postId) => ({
   postId,
 }));
 
+const likePost = createAction(LIKE_POST, (post, postId) => ({post, postId}));
+
 const initialState = {
+  postId: 1,
   list: [],
   one_post: {},
   user_info: {
@@ -175,6 +179,12 @@ const deletePostFB = (postId = null) => {
   };
 };
 
+const LikePostFB = (post, postId) => {
+  return (dispatch) => {
+    console.log(post, postId)
+  }
+}
+
 export default handleActions(
   {
     [GET_POST]: (state, action) =>
@@ -197,6 +207,10 @@ export default handleActions(
           (p) => p.postId !== action.payload.postId
         );
       }),
+    [LIKE_POST]: (state, action) => produce(state, (draft) => {
+      let idx = draft.list.findIndex((p) => p.postId === action.payload.postId);
+      draft.list[idx] = {...draft.list[idx], ...action.payload.post}
+    })
   },
   initialState
 );
@@ -205,11 +219,13 @@ const actionCreator = {
   onePost,
   getPost,
   deletePost,
+  likePost,
   getPostFB,
   getOnePostFB,
   updateOnePostFB,
   addPostFB,
   deletePostFB,
+  LikePostFB
 };
 
 export { actionCreator };
