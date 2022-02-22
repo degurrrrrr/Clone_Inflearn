@@ -37,21 +37,26 @@ const Write = () => {
             // 새로운 imageUpload hook 생성
             editorRef.current.getInstance().addHook("addImageBlobHook", (blob, callback) => {
                 (async () => {
+                    let url = 'http://13.125.93.242:80';
+                    const accessToken = localStorage.getItem("is_login");
+
+                    console.log('accessToken !! ', accessToken);
                     let formData = new FormData();
                     formData.append("image", blob);
 
                     try{
 
-                        const result = await axios.post('http://14.45.204.153:8023/api/image', 
+                        const result = await axios.post(`${url}/api/image`, 
                             formData,
                             {
                                 headers: {
-                                    "content-type": "multipart/formdata"
+                                    "content-type": "multipart/formdata",
+                                    authorization: `Bearer ${accessToken}`,
                                 }
                             },
                         );
 
-                        const imageSrc = 'http://14.45.204.153:8023/'+result.data;
+                        const imageSrc = `${url}/`+result.data;
 
                         callback(imageSrc);
 
@@ -84,16 +89,16 @@ const Write = () => {
 
         // 미리보기 추출
         const extractedText = span.textContent || span.innerText;
-        const preview = extractedText.slice(0, 70);
+        const preview = extractedText.slice(0, 55);
 
 
         dispatch(postActions.addPostFB(title, context, preview));
         // 포스트 업로드
-        await axios.post("http://14.45.204.153:8023/api/post", {
-            title,
-            context,
-            preview,
-        })
+        // await axios.post("http://14.45.204.153:8023/api/post", {
+        //     title,
+        //     context,
+        //     preview,
+        // })
     }
 
     return(

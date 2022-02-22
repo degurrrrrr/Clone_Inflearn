@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { api_token, api, test_api, test} from "../../shared/api";
+import { api_token, api, test_api, test, test_api2} from "../../shared/api";
 import axios from "axios";
 
 const GET_POST = "GET_POST";
@@ -38,7 +38,7 @@ const initialState = {
 
 const getPostFB = () => {
   return (dispatch, getState, { history }) => {
-    api_token.get("/posts", {})
+    test_api2.get("/posts", {})
     .then((res) => {
       const postDB = res.data;
       const post_list = [];
@@ -63,27 +63,15 @@ const getPostFB = () => {
   };
 };
 
-// {post: {…}, isLiking: false}
-// isLiking: false
-// post:
-// commentCnt: 0
-// context: "<p>testest<img src=\"http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645498010375.jpg\" contenteditable=\"false\"><img class=\"ProseMirror-separator\"><br class=\"ProseMirror-trailingBreak\"></p>"
-// createdAt: "2022-02-22T02:46:52.000Z"
-// id: 12
-// likeCnt: 0
-// thumbnail: "http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645498010375.jpg"
-// title: "test"
-// user:
-// id: 3
-// nickname: "wkdgusrhkd"
+
 const getOnePostFB = (postId) => {
   return async function (dispatch, getState, { history }) {
     console.log("postId !! ", postId);
 
     await test_api
-      .get(`/api/post/${postId}`)
+      .get(`/post/${postId}`)
       .then((res) => {
-        console.log("상세피이지 res !! ", res.data);
+        // console.log("상세피이지 res !! ", res.data);
 
         dispatch(
           onePost({
@@ -94,8 +82,8 @@ const getOnePostFB = (postId) => {
                 commentCnt: res.data.post.commentCnt,
                 likeCnt: res.data.post.likeCnt,
                 thumbnail: res.data.post.thumbnail,
-                userId: res.data.user.id,
-                nickname: res.data.user.nickname,
+                userId: res.data.post.user.id,
+                nickname: res.data.post.user.nickname,
           })
         );
       })
@@ -118,7 +106,7 @@ const addPostFB = (title, context, preview) => {
         console.log('context !! ',context);
         console.log('preview !! ',preview);
 
-        await api_token.post('/post', {
+        await test_api2.post('/post', {
             title,
             context,
             preview,
@@ -141,7 +129,7 @@ const updateOnePostFB = (postId, title, context, preview) => {
     // console.log('context !! ',context);
     // console.log('preview !! ',preview);
 
-    await api_token
+    await test_api2
       .put(`/post/${postId}`, {
         title,
         context,

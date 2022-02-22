@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {actionCreators as commontActions} from '../redux/modules/comment';
@@ -14,7 +14,7 @@ const CommentList = (props) => {
     const dispatch = useDispatch();
     const comment_list = useSelector(state => state.comment.list);
 
-    console.log('comment_list !! ', comment_list);
+    // console.log('comment_list !! ', comment_list);
 
     React.useEffect(() => {
         if(!comment_list[post_id]){
@@ -43,7 +43,7 @@ CommentList.defaultProps = {
 
 const CommentItem = (props) => {
 
-
+    const [hide, setHide] = useState(false);
 
     return (
         <Container>
@@ -56,20 +56,100 @@ const CommentItem = (props) => {
                     </Info>
                 </div>
                 <BtnBox>
-                    <Text2>수정</Text2>
-                    <Text2>삭제</Text2>
+                    <Text2 className={hide ? 'hide' : ""} onClick={() => setHide(true)}>수정</Text2>
+                    <Text2 className={hide ? 'hide' : ""} >삭제</Text2>
                 </BtnBox>
             </UserBox>
-                <Text style={{margin: "20px 0"}}>{props.commentBody}</Text>
+                <Text className={hide ? 'hide' : ""} style={{margin: "20px 0"}}>{props.commentBody}</Text>
+                <UpdateCon className={hide ? '' : "hide"}>
+                    <UpdateText placeholder={props.commentBody}/>
+                    <UpBtnCon>
+                        <UpCancelBtn onClick={() => setHide(false)}>취소</UpCancelBtn>
+                        <UpdateBtn>댓글 수정</UpdateBtn>
+                    </UpBtnCon>
+                </UpdateCon>
+                {/* <CommentBtn>답글 달기</CommentBtn>
+                <ReplyCon>
+                    <Replytext placeholder='댓글을 작성하세요'/>
+                </ReplyCon> */}
 
         </Container>
     )
 }
 
+const UpdateCon = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+`;
+
+const UpdateText = styled.textarea`
+    resize: none;
+    padding: 1rem 1rem 1.5rem;
+    outline: none;
+    border: 1px solid #F1F3F5;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    min-height: 2.125rem;
+    font-size: 1rem;
+    color: black;
+    line-height: 1.75;
+    background: #FFFFFF;
+    font-weight: 500;
+`;
+
+const UpBtnCon = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
+
+const UpCancelBtn = styled.button`
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: none;
+    color: #12B886;
+    border-radius: 4px;
+    padding: 0px 1.25rem;
+    height: 2rem;
+    font-size: 1rem;
+    :hover {
+        background-color: rgba(0,0,0,0.05);
+    }
+`;
+
+const UpdateBtn = styled.button`
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: #12B886;
+    color: #FFFFFF;
+    border-radius: 4px;
+    padding: 0px 1.25rem;
+    height: 2rem;
+    font-size: 1rem;
+`;
 
 const Container = styled.div`
-    margin-top: 20px;
+    padding: 20px 0;
     border-bottom: 1px solid #E9ECEF;
+
+    .hide {
+        display: none;
+    }
+
 `;
 
 const UserBox = styled.div`
@@ -106,6 +186,48 @@ const Info = styled.div`
 `;
 
 const Text = styled.div`
+
+`;
+
+const CommentBtn = styled.span`
+    color: #20C997;
+    font-weight: bold;
+    cursor: pointer;
+`;
+
+const ReplyCon = styled.div`
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    background-color: rgba(0, 0, 0, 0.016);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-top: 1.3125rem;
+    display: flex;
+    flex-direction: column;
+`;
+
+const Replytext = styled.textarea`
+    resize: none;
+    padding: 1rem 1rem 1.5rem;
+    outline: none;
+    border: 1px solid #F1F3F5;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    min-height: 2.125rem;
+    font-size: 1rem;
+    color: #212529;
+    line-height: 1.75;
+    background: #FFFFFF;
+`;
+
+const BtnCon = styled.div`
+
+`;
+
+const CancelBtn = styled.button`
+
+`;
+
+const ReplyBtn = styled.button`
 
 `;
 
