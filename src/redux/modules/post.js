@@ -11,10 +11,11 @@ const DELETE_POST = "DELETE_POST";
 
 const GET_ONE_USER = "GET_ONE_USER";
 const LIKE_POST = "LIKE_POST";
+const DELETE_LIKE = "DELETE_LIKE";
 
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const onePost = createAction(ONE_POST, (one_post) => ({ one_post }));
-const updatePost = createAction(UPDATE_POST, () => ({  }));
+const updatePost = createAction(UPDATE_POST, () => ({}));
 const addPost = createAction(ADD_POST, (one_post) => ({ one_post }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
 
@@ -23,7 +24,8 @@ const getOneUser = createAction(GET_ONE_USER, (nickname, postId) => ({
   postId,
 }));
 
-const likePost = createAction(LIKE_POST, (post, postId) => ({ post, postId }));
+const likePost = createAction(LIKE_POST, (postId, likeCnt) => ({ postId,likeCnt }));
+const deleteLike = createAction(DELETE_LIKE, (postId) => ({}))
 
 const initialState = {
   postId: 1,
@@ -37,7 +39,7 @@ const initialState = {
   context: "내용",
   dayBefore: "10일 전",
   commentCnt: 100,
-  // likeCnt: 21,
+  likeCnt: 21,
 };
 
 const getPostFB = () => {
@@ -111,44 +113,21 @@ const addPostFB = (title, context, preview) => {
     console.log("context !! ", context);
     console.log("preview !! ", preview);
 
-await test_api2
-.post("/post", {
-  title,
-  context,
-  preview,
-})
-.then((res) => {
-  console.log("작성 res !! ", res.data);
-  history.replace("/");
-})
-.catch((err) => {
-  console.log("err !! ", err);
-});
+    await test_api2
+      .post("/post", {
+        title,
+        context,
+        preview,
+      })
+      .then((res) => {
+        console.log("작성 res !! ", res.data);
+        history.replace("/");
+      })
+      .catch((err) => {
+        console.log("err !! ", err);
+      });
+  };
 };
-};    
-
-return async function(dispatch, getState, {history}){
-
-        console.log('title !! ',title);
-        console.log('context !! ',context);
-        console.log('preview !! ',preview);
-
-        await api_token.post('/post', {
-            title,
-            context,
-            preview,
-        })
-        .then((res) => {
-            
-            console.log('작성 res !! ',res.data);
-            history.replace('/');
-
-        })
-        .catch((err) => {
-            console.log('err !! ',err);
-        });
-    }
-}
 
 const updateOnePostFB = (postId, title, context, preview) => {
   return async function (dispatch, getState, { history }) {
@@ -191,20 +170,10 @@ const deletePostFB = (postId = null) => {
 };
 
 const LikePostFB = (postId) => {
-  console.log("like눌렀다");
+  console.log("조하ㅇ요")
   return (dispatch, getState, { history }) => {
-    const is_local = localStorage.getItem("is_login");
-
-    test
-      .get(
-        `/post/${postId}/like`,
-        {},
-        {
-          headers: {
-            authorization: `Bearer ${is_local}`,
-          },
-        }
-      )
+    test_api
+      .get(`/post/${postId}/like`, {})
       .then((res) => {
         console.log(res.data);
         window.alert("like!");
@@ -217,11 +186,18 @@ const LikePostFB = (postId) => {
   };
 };
 
-const DeleteLikeFB = () => {
+const DeleteLikeFB = (postId, likeCnt) => {
   console.log("좋아요 취소 시작");
   const is_local = localStorage.getItem("is_login");
   return (dispatch, getState, { history }) => {
-    axios.delete()
+    test_api.delete(`/post/${postId}/like`)
+    .then((res) => {
+      console.log(res.data.msg)
+      window.alert("좋아요 취소!")
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   };
 };
 
@@ -252,14 +228,21 @@ export default handleActions(
         draft.list = draft.list.filter(
           (p) => p.postId !== action.payload.postId
         );
-      }),
+    }),
+
     [LIKE_POST]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.list.findIndex(
-          (p) => p.postId === action.payload.postId
-        );
-        draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
-      }),
+        draft.likeCnt = draft.payload.likeCnt + 1;
+        // let idx = draft.list.findIndex(
+        //   (p) => p.postId === action.payload.postId
+        // );
+        // draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
+        // draft.
+    }),
+    [DELETE_LIKE]: (state, action) => produce(state, (draft) => {
+      draft.likeCnt = draft.payload.likeCnt - 1;
+    })
+
   },
   initialState
 );

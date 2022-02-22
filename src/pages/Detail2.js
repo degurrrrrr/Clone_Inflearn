@@ -39,16 +39,16 @@ const Detail = (props) => {
   const viewerRef = useRef();
 
   React.useEffect(() => {
-    if (!post_one[0]) {
+    // if(!post_one[0]){
       dispatch(postActions.getOnePostFB(postId));
-    }
+    // }
 
     viewerRef.current
       .getInstance()
       .setMarkdown(
-        '<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>'
+        post_one.context
       );
-  }, []);
+  }, [post_one.nickname]);
 
   const liked = (props) => {
     if (!is_local) {

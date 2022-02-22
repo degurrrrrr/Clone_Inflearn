@@ -33,5 +33,4 @@ export const test_api2 = axios.create({
 
 export const test = axios.create({
   baseURL: "http://velog.milagros.shop/api"
-  
 })
