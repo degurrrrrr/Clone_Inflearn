@@ -12,6 +12,11 @@ const Post = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const is_local = localStorage.getItem("is_login") ? true : false;
+
+  const userId = localStorage.getItem("userId");
+
+
   return (
     <React.Fragment>
       <DIV

@@ -29,6 +29,7 @@ const loginFB = (nickname, password) => {
         console.log(res)
         localStorage.setItem("is_login", res.data.token);
         localStorage.setItem("nickname", res.data.nickname);
+        localStorage.setItem("userId", res.data.id);
         dispatch(setUser(nickname));
       })
       .catch((err) => {
