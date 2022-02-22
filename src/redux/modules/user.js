@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { getCookie, setCookie, deleteCookie } from "../../shared/Cookie";
-import { api, api_token } from "../../shared/api";
+import { api, api_token , test_api, test_api2} from "../../shared/api";
 import axios from "axios";
 
 const GET_USER = "GET_USER";
@@ -19,8 +19,8 @@ const initialState = {
 
 const loginFB = (nickname, password) => {
   return async (dispatch, getState, { history }) => {
-    axios
-      .post("http://velog.milagros.shop/api/user/login", {
+    test_api2
+      .post("/user/login", {
         nickname: nickname,
         password: password,
       })
@@ -39,7 +39,7 @@ const loginFB = (nickname, password) => {
 
 const signUpFB = (nickname, password, pwConfirm) => {
   return async (dispatch, getState, { history }) => {
-    await api_token
+    await test_api2
       .post("/user/signin", {
         nickname: nickname,
         password: password,

@@ -17,6 +17,8 @@ import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import { actionCreator as postActions } from "../redux/modules/post";
 import { useDispatch, useSelector } from "react-redux";
 
+import moment from "moment";
+
 const Detail = (props) => {
   const dispatch = useDispatch();
   const post_one = useSelector((state) => state.post.one_post);
@@ -25,17 +27,20 @@ const Detail = (props) => {
 
   const viewerRef = useRef();
 
+  console.log('post_one !! ', post_one);
+
   React.useEffect(() => {
-    if(!post_one[0]){
+    // if(!post_one[0]){
       dispatch(postActions.getOnePostFB(postId));
-    }
+    // }
 
     viewerRef.current
       .getInstance()
       .setMarkdown(
-        '<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>'
+        post_one.context
       );
   }, []);
+
 
   const onDelete = () => {
     window.alert("삭제");
@@ -49,7 +54,7 @@ const Detail = (props) => {
     <div style={{ backgroundColor: "#fff" }}>
       <Header></Header>
       <DIV>
-        <h1>{props.title}</h1>
+        <h1>{post_one.title}</h1>
         <EditDelBtn>
           <DeleteBtn
             onClick={() => {
@@ -63,14 +68,14 @@ const Detail = (props) => {
         <Info>
           <div style={{ display: "flex" }}>
             <div style={{ fontWeight: "bold", marginRight: "10px" }}>
-              {props.user_info.nickname}
+              {post_one.nickname}
             </div>
-            <div style={{ marginLeft: "10px" }}>{props.createAt}</div>
+            <div style={{ marginLeft: "10px" }}>{moment(post_one.createdAt).format('YYYY-MM-DD')}</div>
           </div>
           <Likes />
         </Info>
 
-        <Thumbnail />
+        <Thumbnail thumbnail={post_one.thumbnail} />
 
         <ViewerContainer>
           <Viewer
@@ -82,7 +87,7 @@ const Detail = (props) => {
         <Profile>
           <ProfileImg />
           <div>
-            <h3>{props.user_info.nickname}</h3>
+            <h3>{post_one.nickname}</h3>
           </div>
         </Profile>
         
@@ -157,7 +162,7 @@ const Thumbnail = styled.div`
   object-fit: contain; //이미지의 가로세로 비율을 유지하면서, 이미지가 보여질 틀 내부에 들어가도록 크기를 맞춤 조절한다.
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("https://ilovecharacter.com/news/data/20210122/p179568629887999_597.jpg");
+  background-image: url("${(props) => (props.thumbnail)}");
 `;
 
 const Context = styled.div`
