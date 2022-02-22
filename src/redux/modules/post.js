@@ -13,7 +13,7 @@ const GET_ONE_USER = "GET_ONE_USER";
 
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const onePost = createAction(ONE_POST, (one_post) => ({ one_post }));
-const updatePost = createAction(UPDATE_POST, (one_post) => ({ one_post }));
+const updatePost = createAction(UPDATE_POST, () => ({  }));
 const addPost = createAction(ADD_POST, (one_post) => ({ one_post }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
 
@@ -68,8 +68,11 @@ const getOnePostFB = (postId) => {
   return async function (dispatch, getState, { history }) {
     console.log("postId !! ", postId);
 
-    await test_api
-      .get(`/post/${postId}`)
+    const is_local = localStorage.getItem("is_login") ? true : false;
+    const userId = localStorage.getItem("userId");
+
+    await test_api2
+      .get(is_local ? `/post/${postId}?id=${userId}` : `/post/${postId}`)
       .then((res) => {
         // console.log("상세피이지 res !! ", res.data);
 
@@ -106,7 +109,7 @@ const addPostFB = (title, context, preview) => {
         console.log('context !! ',context);
         console.log('preview !! ',preview);
 
-        await test_api2.post('/post', {
+        await api_token.post('/post', {
             title,
             context,
             preview,
@@ -137,7 +140,7 @@ const updateOnePostFB = (postId, title, context, preview) => {
       })
       .then((res) => {
         console.log("수정하기 res !! ", res.data);
-
+        dispatch(updatePost());
         history.replace(`/detail/${postId}`);
       })
       .catch((err) => {
@@ -149,10 +152,10 @@ const updateOnePostFB = (postId, title, context, preview) => {
 const deletePostFB = (postId = null) => {
   return (dispatch, getState, { history }) => {
     const post_idx = getState().post.list.findIndex((p) => p.postId === postId);
-    api_token
+    test_api2
       .delete(`/post/${postId}`, {})
       .then((res) => {
-        dispatch(deletePost(post_idx));
+        console.log(res.data.msg);
         window.alert("삭제가 완료되었습니다");
         window.location.replace("/");
       })
@@ -167,6 +170,7 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
+        draft.one_post = initialState.one_post;
         draft.list = action.payload.post_list;
       }),
 
@@ -177,6 +181,11 @@ export default handleActions(
     [ONE_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.one_post = action.payload.one_post;
+      }),
+
+    [UPDATE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.one_post = initialState.one_post;
       }),
 
     [DELETE_POST]: (state, action) =>

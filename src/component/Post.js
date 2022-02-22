@@ -5,9 +5,14 @@ import Likes from '../element/Likes';
 import { history } from "../redux/ConfigStore";
 import { useHistory } from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import {useSelector} from 'react-redux';
 
 const Post = (props) => {
   const history = useHistory();
+
+  const is_local = localStorage.getItem("is_login") ? true : false;
+
+  const userId = localStorage.getItem("userId");
 
 
   return (

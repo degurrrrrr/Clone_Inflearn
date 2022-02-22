@@ -39,11 +39,11 @@ const Detail = (props) => {
       .setMarkdown(
         post_one.context
       );
-  }, []);
+  }, [post_one.nickname]);
 
 
   const onDelete = () => {
-    window.alert("삭제");
+    dispatch(postActions.deletePostFB(postId));
   };
 
   // if(!post_one[0]){

@@ -27,7 +27,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/write" component={Write} />
           <Route path="/detail/:postId" component={Detail} />
-          <Route path="/update" component={UpdatePage} />
+          <Route path="/update/:postId" component={UpdatePage} />
         </ConnectedRouter>
       </Background>
     </React.Fragment>

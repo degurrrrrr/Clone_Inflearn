@@ -24,7 +24,8 @@ import {actionCreator as postActions} from '../redux/modules/post';
 
 const UpdatePage = (props) => {
 
-    const postId = props.match.params.id;
+    const postId = props.match.params.postId;
+
     const post_one = useSelector((state) => state.post.one_post);
 
     const dispatch = useDispatch();
@@ -33,12 +34,15 @@ const UpdatePage = (props) => {
 
     const editorRef = useRef();
 
+    console.log('post_one !! ',post_one);
+
     React.useEffect(() => {
         dispatch(postActions.getOnePostFB(postId));
 
-        editorRef.current.getInstance().setHTML('<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>');
+        setTitle(post_one.title);
+        editorRef.current.getInstance().setHTML(post_one.context);
 
-    }, []);
+    }, [post_one.nickname]);
 
     React.useEffect(() => {
         if(editorRef.current){
@@ -48,21 +52,25 @@ const UpdatePage = (props) => {
             // 새로운 imageUpload hook 생성
             editorRef.current.getInstance().addHook("addImageBlobHook", (blob, callback) => {
                 (async () => {
+                    let url = 'http://13.125.93.242:80';
+                    const accessToken = localStorage.getItem("is_login");
+
                     let formData = new FormData();
                     formData.append("image", blob);
 
                     try{
 
-                        const result = await axios.post('http://14.45.204.153:8023/api/image', 
+                        const result = await axios.post(`${url}/api/image`, 
                             formData,
                             {
                                 headers: {
-                                    "content-type": "multipart/formdata"
+                                    "content-type": "multipart/formdata",
+                                    authorization: `Bearer ${accessToken}`,
                                 }
                             },
                         );
 
-                        const imageSrc = 'http://14.45.204.153:8023/'+result.data;
+                        const imageSrc = `${url}/`+result.data;
 
                         callback(imageSrc);
 
@@ -94,7 +102,7 @@ const UpdatePage = (props) => {
 
         // 미리보기 추출
         const extractedText = span.textContent || span.innerText;
-        const preview = extractedText.slice(0, 70);
+        const preview = extractedText.slice(0, 55);
 
         
         dispatch(postActions.updateOnePostFB(postId, title, context, preview));
@@ -104,7 +112,7 @@ const UpdatePage = (props) => {
     return(
     <React.Fragment>
         <Container>
-            <Title placeholder='제목을 입력하세요.' onChange={(e) => {
+            <Title placeholder='제목을 입력하세요.' defaultValue={title} onChange={(e) => {
                 setTitle(e.target.value);
             }}></Title>
             <Editor
