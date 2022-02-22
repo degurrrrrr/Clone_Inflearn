@@ -71,7 +71,7 @@ const Detail = (props) => {
       setTextColor("#adb5bd");
       setBg("white");
       setBorder("#adb5bd");
-      // dispatch(postActions.LikeDeleteFB(post,postId));
+      dispatch(postActions.DeleteLikeFB(postId));
     }
   };
 
