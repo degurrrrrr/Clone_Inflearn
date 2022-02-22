@@ -22,13 +22,15 @@ const Header = (props) => {
   };
 
   const is_login = useSelector((state) => state.user.is_login);
+  const is_local = localStorage.getItem("is_login") ? true : false;
+
+  React.useEffect(() => {}, [is_login]);
 
   const _logOut = () => {
-    dispatch(userActions.logOut({}));
+    dispatch(userActions.logOutFB());
   };
 
-
-  if (is_login) {
+  if (is_local) {
     return (
       <React.Fragment>
         <HeaderContainer>
@@ -41,7 +43,13 @@ const Header = (props) => {
             <HeadItem>
               <WbSunnyIcon style={{ marginLeft: "20px" }} />
               <SearchIcon style={{ marginLeft: "20px" }} />
-              <NewPostWrite onClick={() => {history.push("/write")}}>새 글 작성</NewPostWrite>
+              <NewPostWrite
+                onClick={() => {
+                  history.push("/write");
+                }}
+              >
+                새 글 작성
+              </NewPostWrite>
               <LoginBtn onClick={_logOut}>로그아웃</LoginBtn>
             </HeadItem>
           </Wrap>

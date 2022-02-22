@@ -4,21 +4,20 @@ import styled from "styled-components";
 import Header from "../component/Header";
 import CommentWrite from "../component/CommentWrite";
 import CommentList from "../component/CommentList";
-
+import Likes from "../element/Likes";
 import { history } from "../redux/ConfigStore";
 
-import {Viewer} from "@toast-ui/react-editor";
+import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import Prism from "prismjs";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
-import {actionCreator as postActions} from "../redux/modules/post";
-import {useDispatch, useSelector} from "react-redux";
+import { actionCreator as postActions } from "../redux/modules/post";
+import { useDispatch, useSelector } from "react-redux";
 
 const Detail = (props) => {
-
   const dispatch = useDispatch();
   const post_one = useSelector((state) => state.post.one_post);
 
@@ -28,14 +27,16 @@ const Detail = (props) => {
 
   React.useEffect(() => {
     dispatch(postActions.getOnePostFB(postId));
-    
-    viewerRef.current.getInstance().setMarkdown('<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>');
-  }, [])
-  
+
+    viewerRef.current
+      .getInstance()
+      .setMarkdown(
+        '<p><img src="http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645344158419.jpg" contenteditable="false"><img class="ProseMirror-separator"><br class="ProseMirror-trailingBreak"></p><p><br class="ProseMirror-trailingBreak"></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class="ProseMirror-trailingBreak"></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>'
+      );
+  }, []);
+
   const onDelete = () => {
-    
-    window.alert("삭제")
-    
+    window.alert("삭제");
   };
 
   return (
@@ -44,9 +45,13 @@ const Detail = (props) => {
       <DIV>
         <h1>{props.title}</h1>
         <EditDelBtn>
-          <DeleteBtn onClick={() => {
-            history.push(`/update/${postId}`);
-          }}>수정</DeleteBtn>
+          <DeleteBtn
+            onClick={() => {
+              history.push(`/update/${postId}`);
+            }}
+          >
+            수정
+          </DeleteBtn>
           <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
         </EditDelBtn>
         <Info>
@@ -56,13 +61,11 @@ const Detail = (props) => {
             </div>
             <div style={{ marginLeft: "10px" }}>{props.createAt}</div>
           </div>
-          <div>
-            <ButtonWrap>❤️</ButtonWrap>
-          </div>
+          <Likes />
         </Info>
-        
+
         <Thumbnail />
-        
+
         <ViewerContainer>
           <Viewer
             ref={viewerRef}
@@ -77,8 +80,8 @@ const Detail = (props) => {
           </div>
         </Profile>
 
-        <CommentWrite post_id={postId}/>
-        <CommentList post_id={postId}/>
+        <CommentWrite post_id={postId} />
+        <CommentList post_id={postId} />
       </DIV>
     </div>
   );
@@ -106,7 +109,7 @@ const DIV = styled.div`
   word-wrap: break-word;
 
   @media screen and (max-width: 1024px) {
-    width: 850px;    
+    width: 850px;
   }
 `;
 

@@ -15,13 +15,13 @@ const Likes = (props) => {
   const [bg, setBg] = useState('white');
   const [border, setBorder] = useState('#adb5bd')
 
-  const liked = () => {
+  const liked = (props) => { //2/22 props 추가했음
     if (like === true) {
       setLikedCnt(likeCnt + 1);
       setLike(false);
       setTextColor('white');
       setBg('#20c997');
-      setBorder('#20c997');
+      setBorder('#20c997');      
     }
     if (like === false) {
       setLikedCnt(likeCnt - 1);
@@ -35,7 +35,7 @@ const Likes = (props) => {
   return (
     <React.Fragment>
       <ButtonWrap style={{color: textColor, borderColor: border, backgroundColor:bg}} onClick={liked}>
-        <FavoriteBorderIcon
+        <FavoriteIcon
           style={{ fontSize: "medium", marginRight: "5px" }}
         />
         {likeCnt}개
