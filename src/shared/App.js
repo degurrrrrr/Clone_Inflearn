@@ -7,6 +7,7 @@ import Main from "../pages/Main";
 import SignUp from "../pages/SignUp";
 import Write from "../pages/Write";
 import Detail from "../pages/Detail";
+import Detail2 from '../pages/Detail2';
 import UpdatePage from "../pages/UpdatePage";
 
 import { BrowserRouter } from "react-router-dom";
@@ -26,7 +27,7 @@ function App() {
           <Route path="/" component={Main} exact />
           <Route path="/signup" component={SignUp} />
           <Route path="/write" component={Write} />
-          <Route path="/detail/:postId" component={Detail} />
+          <Route path="/detail/:postId" component={Detail2} />
           <Route path="/update" component={UpdatePage} />
         </ConnectedRouter>
       </Background>
