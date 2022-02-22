@@ -35,31 +35,6 @@ const loginFB = (nickname, password) => {
   };
 };
 
-// const loginFB = (nickname, password) => {
-//   return async (dispatch, getState, { history }) => {
-//     api_token
-//       .post("/user/login", {
-//         nickname: nickname,
-//         password: password,
-//       })
-//       .then((res) => {
-//         const accessToken = "Bearer " + res.data.token;
-//         setCookie("is_login", `${accessToken}`);
-//         console.log(res.data);
-//         dispatch(
-//           setUser({
-//             nickname: nickname, //res.data.nickname에서 바꿈
-//           })
-//         );
-//         // history.push("/")
-//       })
-//       .catch((err) => {
-//         console.log(err.response.data.errorMessage);
-//         window.alert(`error ${err.response.data.errorMessage}`);
-//       });
-//   };
-// };
-
 const signUpFB = (nickname, password, pwConfirm) => {
   return async (dispatch, getState, { history }) => {
     await api_token
@@ -110,7 +85,6 @@ const actionCreators = {
   logOutFB,
   loginFB,
   signUpFB,
-  // isLoginFB,
 };
 
 export { actionCreators };

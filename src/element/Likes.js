@@ -38,7 +38,7 @@ const Likes = (props) => {
         <FavoriteIcon
           style={{ fontSize: "medium", marginRight: "5px" }}
         />
-        {props.likeCnt}개
+        {likeCnt}개
       </ButtonWrap>
     </React.Fragment>
   );
