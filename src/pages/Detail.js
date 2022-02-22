@@ -26,7 +26,9 @@ const Detail = (props) => {
   const viewerRef = useRef();
 
   React.useEffect(() => {
-    dispatch(postActions.getOnePostFB(postId));
+    if(!post_one[0]){
+      dispatch(postActions.getOnePostFB(postId));
+    }
 
     viewerRef.current
       .getInstance()
@@ -38,6 +40,10 @@ const Detail = (props) => {
   const onDelete = () => {
     window.alert("삭제");
   };
+
+  // if(!post_one[0]){
+  //   return null;
+  // }
 
   return (
     <div style={{ backgroundColor: "#fff" }}>
@@ -79,8 +85,7 @@ const Detail = (props) => {
             <h3>{props.user_info.nickname}</h3>
           </div>
         </Profile>
-
-        <CommentWrite post_id={postId} />
+        
         <CommentList post_id={postId} />
       </DIV>
     </div>

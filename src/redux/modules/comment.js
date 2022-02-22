@@ -23,14 +23,6 @@ const initialState = {
     list: {},
     is_loading: false,
 }
-// commentBody: "hannahtest"
-// createdAt: "2021-10-09T00:00:00.000Z"
-// id: 3
-// isDeleted: "N"
-// parentsId: 0
-// postId: 3
-// updatedAt: "2021-10-09T00:00:00.000Z"
-// userId: 4
 
 const getCommentFB = (post_id = null) => {
     return async function(dispatch, getState, {history}){
@@ -41,10 +33,10 @@ const getCommentFB = (post_id = null) => {
             return;
         }
 
-        await test.get(`/post/${post_id}/comments`)
+        await api_token.get(`/post/${post_id}/comments`)
         .then((res) => {
 
-            // console.log('댓글 리스트 res !! ', res.data.comment);
+            console.log('댓글 리스트 res !! ', res.data.comment);
             
             const commentList = res.data.comment.reduce((acc, cur, i) => {  
                 acc.push({
@@ -75,12 +67,19 @@ const getCommentFB = (post_id = null) => {
 
 const addCommentFB = (post_id, contents) => {
     return async function(dispatch, getState, {history}){
-        
+
         await api_token.post(`/post/${post_id}/comment/${0}`, 
             {
-
+                commentId: "",
+                commentBody: contents,
             }
-        )
+        ).then((res) => {
+
+            console.log('addCommentFb !! ', res.data.msg);
+
+        }).catch((err) => {
+            console.log(err);
+        })
 
     }
 }

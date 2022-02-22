@@ -1,17 +1,34 @@
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {actionCreators as commentActions} from "../redux/modules/comment";
 
 
 
 const CommentWrite = (props) => {
+
+    const {post_id} = props;
+
+    const commentRef = useRef();
+
+    const [comment, setComment] = useState('');
+
+    const dispatch = useDispatch();
+
+    const commentAdd = () => {
+        dispatch(commentActions.addCommentFB(post_id, comment));
+        commentRef.current.value = "";
+    }
+
     return(
         <React.Fragment>
             <Wrap>
-                <Comment placeholder='댓글을 작성하세요'></Comment>
+                <Comment ref={commentRef} onChange={(e) => {
+                    setComment(e.target.value);
+                }} placeholder='댓글을 작성하세요'></Comment>
                 <BtnWrap>
-                    <CommentBtn>댓글 작성</CommentBtn>
+                    <CommentBtn onClick={commentAdd}>댓글 작성</CommentBtn>
                 </BtnWrap>
             </Wrap>
         </React.Fragment>

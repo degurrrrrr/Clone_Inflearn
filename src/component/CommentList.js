@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {actionCreators as commontActions} from '../redux/modules/comment';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import moment from 'moment';
-import { style } from '@mui/system';
+import CommentWrite from './CommentWrite';
+
 
 
 const CommentList = (props) => {
@@ -28,6 +28,7 @@ const CommentList = (props) => {
 
     return(
     <React.Fragment>
+        <CommentWrite post_id={post_id} />
         {comment_list[post_id].map((item, i) => {
             return <CommentItem key={item.id} {...item} />
         })}

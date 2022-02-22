@@ -24,13 +24,7 @@ const getOneUser = createAction(GET_ONE_USER, (nickname, postId) => ({
 
 const initialState = {
   list: [],
-  one_post: {
-    title: "test",
-    context:
-      "<p><br class='ProseMirror-trailingBreak'></p><p><br class='ProseMirror-trailingBreak'></p><p><strong>dfsdafsdafsafsadf</strong></p><h3>sdfasfdsafasdfdsfas</h3><p><em>sdfasfsafasfsafasfasf</em></p><p><br class='ProseMirror-trailingBreak'></p><p><del>sfdafsfsadfsfasfasfdsfasf</del></p>",
-    createdAt: "2021-10-09 00:00:00",
-    commentCnt: 23,
-  },
+  one_post: {},
   user_info: {
     nickname: "nickname_t",
   },
@@ -69,22 +63,39 @@ const getPostFB = () => {
   };
 };
 
-
+// {post: {…}, isLiking: false}
+// isLiking: false
+// post:
+// commentCnt: 0
+// context: "<p>testest<img src=\"http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645498010375.jpg\" contenteditable=\"false\"><img class=\"ProseMirror-separator\"><br class=\"ProseMirror-trailingBreak\"></p>"
+// createdAt: "2022-02-22T02:46:52.000Z"
+// id: 12
+// likeCnt: 0
+// thumbnail: "http://14.45.204.153:8023/%ED%95%98%EB%8A%98%EC%9D%B4_1645498010375.jpg"
+// title: "test"
+// user:
+// id: 3
+// nickname: "wkdgusrhkd"
 const getOnePostFB = (postId) => {
   return async function (dispatch, getState, { history }) {
     console.log("postId !! ", postId);
 
     await test_api
-      .get(`/api/posts/${postId}`)
+      .get(`/api/post/${postId}`)
       .then((res) => {
         console.log("상세피이지 res !! ", res.data);
 
         dispatch(
           onePost({
-            title: res.data.title,
-            context: res.data.context,
-            createdAt: res.data.createdAt,
-            commentCnt: res.data.commentCnt,
+                isLiking: res.data.isLiking,
+                title: res.data.post.title,
+                context: res.data.post.context,
+                createdAt: res.data.post.createdAt,
+                commentCnt: res.data.post.commentCnt,
+                likeCnt: res.data.post.likeCnt,
+                thumbnail: res.data.post.thumbnail,
+                userId: res.data.user.id,
+                nickname: res.data.user.nickname,
           })
         );
       })
