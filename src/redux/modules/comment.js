@@ -2,7 +2,7 @@ import {createAction, handleActions} from "redux-actions";
 import {produce} from "immer";
 import "moment";
 import moment from "moment";
-import {api, api_token} from "../../shared/api";
+import {api, api_token, test} from "../../shared/api";
 
 
 
@@ -23,20 +23,46 @@ const initialState = {
     list: {},
     is_loading: false,
 }
-
+// commentBody: "hannahtest"
+// createdAt: "2021-10-09T00:00:00.000Z"
+// id: 3
+// isDeleted: "N"
+// parentsId: 0
+// postId: 3
+// updatedAt: "2021-10-09T00:00:00.000Z"
+// userId: 4
 
 const getCommentFB = (post_id = null) => {
     return async function(dispatch, getState, {history}){
+
+        console.log('댓글 조회 post_id !! ',post_id);
 
         if(!post_id) {
             return;
         }
 
-        await api_token.get(`/post/${post_id}/comments`)
+        await test.get(`/post/${post_id}/comments`)
         .then((res) => {
 
-            console.log('댓글 리스트 res !! ', res.data);
+            // console.log('댓글 리스트 res !! ', res.data.comment);
             
+            const commentList = res.data.comment.reduce((acc, cur, i) => {  
+                acc.push({
+                    id: cur.id,
+                    userId: cur.userId,
+                    commentBody: cur.commentBody,
+                    createdAt: cur.createdAt,
+                    parentsId: cur.parentsId,
+                    updatedAt: cur.updatedAt,
+                });
+
+                return acc;
+            }, []);
+
+            // console.log('commentList !! ',commentList);
+
+
+            dispatch(getComment(post_id, commentList))
 
         })
         .catch((err) => {
@@ -80,6 +106,7 @@ export default handleActions(
     getCommentFB,
     getComment,
     addComment,
+    addCommentFB,
   };
   
   export { actionCreators };

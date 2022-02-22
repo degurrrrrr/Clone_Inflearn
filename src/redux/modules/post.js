@@ -79,8 +79,8 @@ const getOnePostFB = (postId) => {
   return async function (dispatch, getState, { history }) {
     console.log("postId !! ", postId);
 
-    await api_token
-      .get(`/posts/${postId}`)
+    await test_api
+      .get(`/api/posts/${postId}`)
       .then((res) => {
         console.log("상세피이지 res !! ", res.data);
 
