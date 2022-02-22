@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const accessToken = document.cookie.split("=")[1];
+const is_local = localStorage.getItem("is_login")
 
 export const api_token = axios.create({
   baseURL: "http://velog.milagros.shop/api",
@@ -17,4 +18,5 @@ export const test_api = axios.create({
 
 export const test = axios.create({
   baseURL: "http://velog.milagros.shop/api"
+  
 })
