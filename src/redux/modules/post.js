@@ -179,9 +179,24 @@ const deletePostFB = (postId = null) => {
   };
 };
 
-const LikePostFB = (post, postId) => {
-  return (dispatch) => {
-    console.log(post, postId)
+const LikePostFB = (postId) => {
+  console.log("like눌렀다")
+  const is_local = localStorage.getItem("is_login")
+  return (dispatch, getState, { history }) => {
+  test.get(`/post/${postId}/like`,{},{
+    headers: {
+      authorization: `Bearer ${is_local}`,
+    }
+  })
+  .then((res) => {
+    console.log(res.data)
+    window.alert("like!")
+    console.log(res)
+  })
+  .catch((err) => {
+    // window.alert(err)
+    console.log(err)
+  })
   }
 }
 

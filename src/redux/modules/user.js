@@ -9,7 +9,7 @@ const SET_USER = "SET_USER";
 const LOG_OUT = "LOG_OUT";
 
 const getUser = createAction(GET_USER, (user) => ({ user }));
-const setUser = createAction(SET_USER, () => ({}));
+const setUser = createAction(SET_USER, (nickname) => ({ nickname }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 
 const initialState = {
@@ -25,12 +25,14 @@ const loginFB = (nickname, password) => {
         password: password,
       })
       .then((res) => {
+        console.log("login!!!!!!")
+        console.log(res)
         localStorage.setItem("is_login", res.data.token);
         localStorage.setItem("nickname", res.data.nickname);
-        dispatch(setUser());
+        dispatch(setUser(nickname));
       })
       .catch((err) => {
-        console.log(err.response.data.msg);
+        console.log(err);
       });
   };
 };

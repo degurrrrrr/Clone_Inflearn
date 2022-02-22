@@ -59,10 +59,11 @@ const Detail = (props) => {
     if (like === true) {
       setLikedCnt(likeCnt + 1);
       setLike(false);
+
       setTextColor("white");
       setBg("#20c997");
       setBorder("#20c997");
-      dispatch(postActions.LikePostFB(post_one,postId));
+      dispatch(postActions.LikePostFB(postId));
     }
     if (like === false) {
       setLikedCnt(likeCnt - 1);
