@@ -15,9 +15,9 @@ const Main = () => {
   console.log(post_list.length);
 
   React.useEffect(() => {
-    if (post_list.length === 0) {
+    
       dispatch(postActions.getPostFB());
-    }
+    
   },[]);
 
   return (

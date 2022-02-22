@@ -38,7 +38,7 @@ const initialState = {
 
 const getPostFB = () => {
   return (dispatch, getState, { history }) => {
-    test.get("/posts", {})
+    api_token.get("/posts", {})
     .then((res) => {
       const postDB = res.data;
       const post_list = [];
@@ -126,6 +126,7 @@ const addPostFB = (title, context, preview) => {
         .then((res) => {
             
             console.log('작성 res !! ',res.data);
+            history.replace('/');
 
         })
         .catch((err) => {
