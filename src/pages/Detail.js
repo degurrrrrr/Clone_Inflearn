@@ -21,7 +21,7 @@ const Detail = (props) => {
   const dispatch = useDispatch();
   const post_one = useSelector((state) => state.post.one_post);
 
-  const postId = props.match.params.id;
+  const postId = props.match.params.postId;
 
   const viewerRef = useRef();
 
