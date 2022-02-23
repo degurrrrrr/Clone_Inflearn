@@ -7,6 +7,7 @@ import Main from "../pages/Main";
 import SignUp from "../pages/SignUp";
 import Write from "../pages/Write";
 import Detail from "../pages/Detail";
+import Detail2 from '../pages/Detail2';
 import UpdatePage from "../pages/UpdatePage";
 
 import { BrowserRouter } from "react-router-dom";

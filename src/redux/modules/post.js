@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { api_token, api, test_api, test, test_api2} from "../../shared/api";
+import { api_token, api, test_api, test, test_api2, api_token2 } from "../../shared/api";
 import axios from "axios";
 
 const GET_POST = "GET_POST";
@@ -10,10 +10,12 @@ const ADD_POST = "ADD_POST";
 const DELETE_POST = "DELETE_POST";
 
 const GET_ONE_USER = "GET_ONE_USER";
+const LIKE_POST = "LIKE_POST";
+const DELETE_LIKE = "DELETE_LIKE";
 
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const onePost = createAction(ONE_POST, (one_post) => ({ one_post }));
-const updatePost = createAction(UPDATE_POST, () => ({  }));
+const updatePost = createAction(UPDATE_POST, () => ({}));
 const addPost = createAction(ADD_POST, (one_post) => ({ one_post }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
 
@@ -22,7 +24,10 @@ const getOneUser = createAction(GET_ONE_USER, (nickname, postId) => ({
   postId,
 }));
 
+const likePost = createAction(LIKE_POST, (isLike, likeCnt) => ({ isLike, likeCnt }));
+const deleteLike = createAction(DELETE_LIKE, (postId, isLike, likeCnt) => ({ postId, isLike, likeCnt }));
 const initialState = {
+  postId: 1,
   list: [],
   one_post: {},
   user_info: {
@@ -33,36 +38,38 @@ const initialState = {
   context: "내용",
   dayBefore: "10일 전",
   commentCnt: 100,
-  // likeCnt: 21,
+  likeCnt: 21,
+  isLiking: false,
 };
 
 const getPostFB = () => {
   return (dispatch, getState, { history }) => {
-    api_token.get("/posts", {})
-    .then((res) => {
-      const postDB = res.data;
-      const post_list = [];
-      postDB.forEach((p, i) => {
-        let list = {
-          postId: p.id,
-          nickname: p.user.nickname,
-          title: p.title,
-          thumbnail: p.thumbnail,
-          context: p.preview,
-          dayBefore: p.createdAt,
-          commentCnt: p.commentCnt,
-          likeCnt: p.likeCnt,
-        };
-        post_list.push(list);
+    // api_token
+    api_token
+      .get("/posts", {})
+      .then((res) => {
+        const postDB = res.data;
+        const post_list = [];
+        postDB.forEach((p, i) => {
+          let list = {
+            postId: p.id,
+            nickname: p.user.nickname,
+            title: p.title,
+            thumbnail: p.thumbnail,
+            context: p.preview,
+            dayBefore: p.createdAt,
+            commentCnt: p.commentCnt,
+            likeCnt: p.likeCnt,
+          };
+          post_list.push(list);
+        });
+        dispatch(getPost(post_list));
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      dispatch(getPost(post_list));
-    })
-    .catch((err) => {
-        console.log(err)
-    })
   };
 };
-
 
 const getOnePostFB = (postId) => {
   return async function (dispatch, getState, { history }) {
@@ -78,15 +85,15 @@ const getOnePostFB = (postId) => {
 
         dispatch(
           onePost({
-                isLiking: res.data.isLiking,
-                title: res.data.post.title,
-                context: res.data.post.context,
-                createdAt: res.data.post.createdAt,
-                commentCnt: res.data.post.commentCnt,
-                likeCnt: res.data.post.likeCnt,
-                thumbnail: res.data.post.thumbnail,
-                userId: res.data.post.user.id,
-                nickname: res.data.post.user.nickname,
+            isLiking: res.data.isLiking,
+            title: res.data.post.title,
+            context: res.data.post.context,
+            createdAt: res.data.post.createdAt,
+            commentCnt: res.data.post.commentCnt,
+            likeCnt: res.data.post.likeCnt,
+            thumbnail: res.data.post.thumbnail,
+            userId: res.data.post.user.id,
+            nickname: res.data.post.user.nickname,
           })
         );
       })
@@ -102,29 +109,26 @@ const getOnePostFB = (postId) => {
 // }
 
 const addPostFB = (title, context, preview) => {
+  return async function (dispatch, getState, { history }) {
+    console.log("title !! ", title);
+    console.log("context !! ", context);
+    console.log("preview !! ", preview);
 
-    return async function(dispatch, getState, {history}){
-
-        console.log('title !! ',title);
-        console.log('context !! ',context);
-        console.log('preview !! ',preview);
-
-        await api_token.post('/post', {
-            title,
-            context,
-            preview,
-        })
-        .then((res) => {
-            
-            console.log('작성 res !! ',res.data);
-            history.replace('/');
-
-        })
-        .catch((err) => {
-            console.log('err !! ',err);
-        });
-    }
-}
+    await test_api2
+      .post("/post", {
+        title,
+        context,
+        preview,
+      })
+      .then((res) => {
+        console.log("작성 res !! ", res.data);
+        history.replace("/");
+      })
+      .catch((err) => {
+        console.log("err !! ", err);
+      });
+  };
+};
 
 const updateOnePostFB = (postId, title, context, preview) => {
   return async function (dispatch, getState, { history }) {
@@ -166,6 +170,39 @@ const deletePostFB = (postId = null) => {
   };
 };
 
+const LikePostFB = (postId, isLiking, likeCnt) => {
+  return (dispatch, getState, { history }) => {
+    api_token
+      .get(`/post/${postId}/likes`)
+      .then((res) => {
+        console.log(res.data)
+        dispatch(likePost(res.data.isLiking,res.data.post.likeCnt))
+      })
+      .catch((err) => {
+        // window.alert(err)
+        // window.alert(err.response.data.msg); //undefined
+        console.log(err)
+      });
+  };
+};
+
+const DeleteLikeFB = (postId, isLike, like_cnt) => {
+  console.log("좋아요 취소 시작");
+  return (dispatch, getState, { history }) => {
+    api_token
+      .delete(`/post/${postId}/likes`)
+      .then((res) => {
+        
+        console.log(res.data.msg);
+        window.alert("좋아요 취소!");
+        window.location.reload()
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 export default handleActions(
   {
     [GET_POST]: (state, action) =>
@@ -194,19 +231,34 @@ export default handleActions(
           (p) => p.postId !== action.payload.postId
         );
       }),
-  },
-  initialState
+
+    [LIKE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.likeCnt = action.payload.post_one.likeCnt + 1;
+        draft.isLiking = true;
+        console.log('reducer의' + draft.likeCnt)
+      }),
+
+    [DELETE_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.likeCnt = draft.payload.post_one.likeCnt - 1;
+        draft.isLiking = false;
+      }),
+    },initialState
 );
 
 const actionCreator = {
   onePost,
   getPost,
   deletePost,
+  likePost,
   getPostFB,
   getOnePostFB,
   updateOnePostFB,
   addPostFB,
   deletePostFB,
+  LikePostFB,
+  DeleteLikeFB,
 };
 
 export { actionCreator };

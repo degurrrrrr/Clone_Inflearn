@@ -1,13 +1,15 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import styled from "styled-components";
-import { Image } from '../element/index';
-import Likes from '../element/Likes';
+import { Image } from "../element/index";
+import Likes from "../element/Likes";
 import { history } from "../redux/ConfigStore";
 import { useHistory } from "react-router-dom";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import {useSelector} from 'react-redux';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const Post = (props) => {
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const is_local = localStorage.getItem("is_login") ? true : false;
@@ -17,7 +19,11 @@ const Post = (props) => {
 
   return (
     <React.Fragment>
-      <DIV onClick={() => {history.push(`detail/${props.postId}`)}}>
+      <DIV
+        onClick={() => {
+          history.push(`detail/${props.postId}`);
+        }}
+      >
         <Image height="40%" src={props.thumbnail} />
         <div style={{ textAlign: "left", margin: "10px" }}>
           <Contents>
@@ -28,12 +34,17 @@ const Post = (props) => {
             <PostTime>{props.dayBefore}</PostTime>
             <Footer>
               <Profile>
-                <Image shape='circle' size='30' borderRadius="15px"/>
+                <Image shape="circle" size="30" borderRadius="15px" />
                 <span>
                   by<b> {props.nickname}</b>
                 </span>
               </Profile>
-              <Likes />
+              <LikeCntWrap>
+                <FavoriteIcon
+                  style={{ fontSize: "small", marginRight: "3px" }}
+                />{" "}
+                {props.likeCnt}개
+              </LikeCntWrap>
             </Footer>
           </div>
         </div>
@@ -48,7 +59,7 @@ Post.defaultProps = {
   thumbnail: "http://www.ipon.co.kr/common/img/default_profile.png",
   context: "initial_context",
   createAt: "initial_2022-02-04 16:20:00",
-  dayBefore: '7일전',
+  dayBefore: "7일전",
   likeCnt: 1000,
   postId: "1234567",
 };
@@ -136,5 +147,5 @@ const LikeCntWrap = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-`
+`;
 export default Post;

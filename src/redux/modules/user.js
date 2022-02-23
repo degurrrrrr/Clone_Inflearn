@@ -9,7 +9,7 @@ const SET_USER = "SET_USER";
 const LOG_OUT = "LOG_OUT";
 
 const getUser = createAction(GET_USER, (user) => ({ user }));
-const setUser = createAction(SET_USER, () => ({}));
+const setUser = createAction(SET_USER, (nickname) => ({ nickname }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 
 const initialState = {
@@ -28,15 +28,16 @@ const loginFB = (nickname, password) => {
         localStorage.setItem("is_login", res.data.token);
         localStorage.setItem("nickname", res.data.nickname);
         localStorage.setItem("userId", res.data.id);
-        dispatch(setUser());
+        dispatch(setUser(nickname));
       })
       .catch((err) => {
-        console.log(err.response.data.msg);
+        console.log(err);
       });
   };
 };
 
 const signUpFB = (nickname, password, pwConfirm) => {
+
   return async (dispatch, getState, { history }) => {
     await api_token
       .post("/user/signin", {
@@ -45,12 +46,12 @@ const signUpFB = (nickname, password, pwConfirm) => {
         confirmPassword: pwConfirm,
       })
       .then((res) => {
-        console.log(res.data);
-        window.alert('회원가입이 완료되었습니다. \n 로그인을 진행해주세요☺️')
+        console.log(res);
+        window.alert(res.data.msg + '\n 로그인을 진행해주세요☺️')
         window.location.reload("/");
       })
       .catch((err) => {
-        window.alert(err);
+        window.alert(err.response.data.msg) 
       });
   };
 };

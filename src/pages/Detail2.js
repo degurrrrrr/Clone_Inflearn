@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useEffect, useState} from "react";
 import styled from "styled-components";
 
 import Header from "../component/Header";
@@ -13,137 +13,112 @@ import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import Prism from "prismjs";
-import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"; //빈 하트
 import FavoriteIcon from "@mui/icons-material/Favorite"; //꽉 찬 하트
+
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import { actionCreator as postActions } from "../redux/modules/post";
 import { useDispatch, useSelector } from "react-redux";
 
-import moment from "moment";
-
 const Detail = (props) => {
   const dispatch = useDispatch();
-  const is_local = localStorage.getItem("is_login") ? true : false;
-
-  // const [isLike, setIsLike] = useState(isLiking);
   const post_one = useSelector((state) => state.post.one_post);
-
-  const userId = localStorage.getItem("userId");
+  const nickname = useSelector((state) => state.user.nickname);
+  const is_login = useSelector((state) => state.user.is_login);
   const is_local = localStorage.getItem("is_login") ? true : false;
 
-  const isLike = post_one.isLiking ;
-  console.log(isLike)
   const postId = props.match.params.postId;
 
+  const [like, setLike] = useState(true); //클릭 상태
+  const [likeCnt, setLikedCnt] = useState(0); //좋아요 개수
+
+  const [textColor, setTextColor] = useState("#adb5bd");
+  const [bg, setBg] = useState("white");
+  const [border, setBorder] = useState("#adb5bd");
+
   const viewerRef = useRef();
-  console.log("post_one !! ", post_one);
 
   React.useEffect(() => {
     // if(!post_one[0]){
-    dispatch(postActions.getOnePostFB(postId));
+      dispatch(postActions.getOnePostFB(postId));
     // }
-    
+
     viewerRef.current
       .getInstance()
       .setMarkdown(
         post_one.context
       );
-
-    viewerRef.current.getInstance().setMarkdown(post_one.context);
-
   }, [post_one.nickname]);
-
-  const onDelete = () => {
-    dispatch(postActions.deletePostFB(postId));
-  };
-
-  // if(!post_one[0]){
-  //   return null;
-  // }
 
   const liked = (props) => {
     if (!is_local) {
       window.alert("로그인 후 이용가능합니다!");
       return;
     }
-    const like_cnt = post_one.likeCnt;
-    const isLiking = post_one.isLiking;
+    //2/22 props 추가했음
+    if (like === true) {
+      setLikedCnt(likeCnt + 1);
+      setLike(false);
 
-    dispatch(postActions.LikePostFB(postId, isLiking, like_cnt));
+      setTextColor("white");
+      setBg("#20c997");
+      setBorder("#20c997");
+      dispatch(postActions.LikePostFB(postId));
+    }
+    if (like === false) {
+      setLikedCnt(likeCnt - 1);
+      setLike(true);
+      setTextColor("#adb5bd");
+      setBg("white");
+      setBorder("#adb5bd");
+      dispatch(postActions.DeleteLikeFB(postId));
+    }
   };
 
-  const cancelLiked = (props) => {
-    const like_cnt = post_one.likeCnt;
-    const isLiking = post_one.isLiking;
-    dispatch(postActions.DeleteLikeFB(postId, isLike, like_cnt))
-  }
+  const onDelete = () => {
+    window.alert("삭제");
+  };
+
+  // if(!post_one[0]){
+  //   return null;
+  // }
 
   return (
     <div style={{ backgroundColor: "#fff" }}>
       <Header></Header>
       <DIV>
-        <h1>{post_one.title}</h1>
+        <h1>{props.title}</h1>
         <EditDelBtn>
           <DeleteBtn
-            style={{display: post_one.userId == userId ? "block" : "none" }}
             onClick={() => {
               history.push(`/update/${postId}`);
             }}
           >
             수정
           </DeleteBtn>
-          <DeleteBtn 
-          style={{display: post_one.userId == userId ? "block" : "none" }}
-          onClick={onDelete}>삭제</DeleteBtn>
+          <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
         </EditDelBtn>
         <Info>
           <div style={{ display: "flex" }}>
             <div style={{ fontWeight: "bold", marginRight: "10px" }}>
-              {post_one.nickname}
+              {props.user_info.nickname}
             </div>
-            <div style={{ marginLeft: "10px" }}>
-              {moment(post_one.createdAt).format("YYYY-MM-DD")}
-            </div>
+            <div style={{ marginLeft: "10px" }}>{props.createAt}</div>
           </div>
-
-          {isLike ? (
-            <HeartWrap
-              style={{
-                color: "white",
-                backgroundColor: "#20c997",
-                borderColor: "#20c997",
-              }}
-              onClick={cancelLiked}
-            >
-              <FavoriteIcon
-                style={{
-                  fontSize: "medium",
-                  marginRight: "5px",
-                }}
-              />
-              {post_one.likeCnt}개
-            </HeartWrap>
-          ) : (
-            <HeartWrap
-              style={{
-                color: "#adb5bd",
-                backgroundColor: "white",
-                borderColor: "#adb5bd",
-              }}
-              onClick={liked}
-            >
-              <FavoriteIcon
-                style={{
-                  fontSize: "medium",
-                  marginRight: "5px",
-                }}
-              />
-              {post_one.likeCnt}개
-            </HeartWrap>
-          )}
+          <HeartWrap
+            style={{
+              color: textColor,
+              borderColor: border,
+              backgroundColor: bg,
+            }}
+            onClick={liked}
+          >
+            <FavoriteIcon style={{ fontSize: "medium", marginRight: "5px" }} />
+            {likeCnt}개
+          </HeartWrap>
         </Info>
 
-        <Thumbnail thumbnail={post_one.thumbnail} />
+        <Thumbnail />
 
         <ViewerContainer>
           <Viewer
@@ -155,12 +130,10 @@ const Detail = (props) => {
         <Profile>
           <ProfileImg />
           <div>
-            <h3>{post_one.nickname}</h3>
+            <h3>{props.user_info.nickname}</h3>
           </div>
         </Profile>
 
-        
-        <CommentWrite post_id={postId} />
         <CommentList post_id={postId} />
       </DIV>
     </div>
@@ -215,14 +188,14 @@ const Info = styled.div`
   align-items: center;
 `;
 
-// const ButtonWrap = styled.div`
-//   width: 80px;
-//   height: 30px;
-//   border: 1px solid #adb5bd;
-//   border-radius: 20px;
-//   text-align: center;
-//   /* justify-content: center; */
-// `;
+const ButtonWrap = styled.div`
+  width: 80px;
+  height: 30px;
+  border: 1px solid #adb5bd;
+  border-radius: 20px;
+  text-align: center;
+  /* justify-content: center; */
+`;
 
 const HeartWrap = styled.div`
   width: 80px;
@@ -242,14 +215,14 @@ const HeartWrap = styled.div`
 `;
 
 const Thumbnail = styled.div`
-  max-width: 80%;
-  height: 350px;
+  max-width: 100%;
+  height: 500px;
   max-height: 800px;
   margin: 30px auto 50px;
   object-fit: contain; //이미지의 가로세로 비율을 유지하면서, 이미지가 보여질 틀 내부에 들어가도록 크기를 맞춤 조절한다.
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("${(props) => props.thumbnail}");
+  background-image: url("https://ilovecharacter.com/news/data/20210122/p179568629887999_597.jpg");
 `;
 
 const Context = styled.div`
