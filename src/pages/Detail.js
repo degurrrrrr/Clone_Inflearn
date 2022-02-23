@@ -23,8 +23,6 @@ import moment from "moment";
 
 const Detail = (props) => {
   const dispatch = useDispatch();
-  const is_local = localStorage.getItem("is_login") ? true : false;
-
   // const [isLike, setIsLike] = useState(isLiking);
   const post_one = useSelector((state) => state.post.one_post);
 
