@@ -37,10 +37,10 @@ const Write = () => {
             // 새로운 imageUpload hook 생성
             editorRef.current.getInstance().addHook("addImageBlobHook", (blob, callback) => {
                 (async () => {
-                    let url = 'http://13.125.93.242:80';
+                    let url = 'http://velog.milagros.shop';
                     const accessToken = localStorage.getItem("is_login");
 
-                    console.log('accessToken !! ', accessToken);
+                    // console.log('accessToken !! ', accessToken);
                     let formData = new FormData();
                     formData.append("image", blob);
 

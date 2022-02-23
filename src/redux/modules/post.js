@@ -115,7 +115,7 @@ const addPostFB = (title, context, preview) => {
     console.log("context !! ", context);
     console.log("preview !! ", preview);
 
-    await test_api2
+    await api_token
       .post("/post", {
         title,
         context,
