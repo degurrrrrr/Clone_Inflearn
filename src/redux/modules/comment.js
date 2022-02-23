@@ -77,7 +77,7 @@ const addCommentFB = (post_id, contents) => {
             }
         ).then((res) => {
             const preList = getState().comment.list[post_id];
-            console.log('preList !! ',preList);
+            // console.log('preList !! ',preList);
             console.log('addCommentFb !! ', res.data.comment);
 
             const newComment = {
@@ -146,8 +146,8 @@ const updateCommentFB = (postId, commentId, contents) => {
 const removeCommentFB = (postId, commentId) => {
     return async function(dispatch, getState, {history}) {
 
-        console.log('comment_id !! ',commentId);
-        console.log('postid !! ',postId);
+        // console.log('comment_id !! ',commentId);
+        // console.log('postid !! ',postId);
 
         await api_token.patch(`/post/${postId}/comment/${commentId}/disabled` 
         ).then((res) => {
@@ -155,7 +155,13 @@ const removeCommentFB = (postId, commentId) => {
             const preList = getState().comment.list[postId];
             // console.log('preList !! ',preList);
 
+            const deleteList = preList.filter((item) => item.commentId !== commentId);
+
+            // console.log('deleteList !! ', deleteList);
+
             console.log('removeCommentFB !! ', res);
+
+            dispatch(getComment(postId, deleteList));
 
 
         }).catch((err) => {

@@ -29,7 +29,6 @@ const Detail = (props) => {
   const post_one = useSelector((state) => state.post.one_post);
 
   const userId = localStorage.getItem("userId");
-  const is_local = localStorage.getItem("is_login") ? true : false;
 
   const isLike = post_one.isLiking ;
   console.log(isLike)

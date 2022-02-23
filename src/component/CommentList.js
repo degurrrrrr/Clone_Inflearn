@@ -57,7 +57,11 @@ const CommentItem = (props) => {
     }
 
     const removeComment = () => {
-        dispatch(commontActions.removeCommentFB(props.post_id, props.commentId));
+        if(window.confirm("정말로 삭제하시겠습니까?")){
+            dispatch(commontActions.removeCommentFB(props.post_id, props.commentId));
+        }else{
+            return;
+        }
     }
 
     return (
