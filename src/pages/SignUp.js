@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { nicknameCheck, pwCheck } from "../shared/Common";
+import {loginCheck} from "../shared/Common";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import { actionCreators as userActions } from "../redux/modules/user";
@@ -52,12 +52,8 @@ const SignUp = (props) => {
       return;
     }
     if (nickname.length < 3 || nickname.length > 10) {
-      window.alert("닉네임은 3자 이상 10자 이하로 설정가능합니다");
+      window.alert("닉네임은 3자 이상 10자 이하입니다");
     }
-    nicknameCheck(nickname);
-    pwCheck(password);
-
-    // dispatch(userActions.setUser({nickname, password}))  
     dispatch(userActions.loginFB(nickname, password));
   };
 
@@ -86,9 +82,6 @@ const SignUp = (props) => {
       window.alert("비밀번호에는 아이디가 들어갈 수 없습니다.");
       return;
     }
-    nicknameCheck(nickname);
-    pwCheck(password, pwConfirm);
-
     dispatch(userActions.signUpFB(nickname, password, pwConfirm));
   };
 

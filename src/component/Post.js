@@ -110,6 +110,7 @@ const PostContent = styled.div`
   width: 296px;
   height: 110px;
   overflow: hidden;
+  word-break:break-all; //줄바꿈
 `;
 
 const PostTime = styled.div`

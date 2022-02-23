@@ -26,6 +26,7 @@ const getOneUser = createAction(GET_ONE_USER, (nickname, postId) => ({
 
 const likePost = createAction(LIKE_POST, (isLike, likeCnt) => ({ isLike, likeCnt }));
 const deleteLike = createAction(DELETE_LIKE, (postId, isLike, likeCnt) => ({ postId, isLike, likeCnt }));
+
 const initialState = {
   postId: 1,
   list: [],
@@ -176,12 +177,15 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
       .get(`/post/${postId}/likes`)
       .then((res) => {
         console.log(res.data)
-        dispatch(likePost(res.data.isLiking,res.data.post.likeCnt))
+        let isLike = res.data.isLiking;
+        let likeCnt = res.data.post.likeCnt;
+        window.location.reload()
+
+        dispatch(likePost(isLike, likeCnt))
       })
       .catch((err) => {
-        // window.alert(err)
-        // window.alert(err.response.data.msg); //undefined
         console.log(err)
+        // window.alert(err.response.data.msg)
       });
   };
 };
@@ -192,9 +196,7 @@ const DeleteLikeFB = (postId, isLike, like_cnt) => {
     api_token
       .delete(`/post/${postId}/likes`)
       .then((res) => {
-        
         console.log(res.data.msg);
-        window.alert("좋아요 취소!");
         window.location.reload()
       })
       .catch((err) => {
