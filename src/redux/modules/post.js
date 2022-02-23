@@ -38,7 +38,7 @@ const initialState = {
 
 const getPostFB = () => {
   return (dispatch, getState, { history }) => {
-    test_api2.get("/posts", {})
+    api_token.get("/posts", {})
     .then((res) => {
       const postDB = res.data;
       const post_list = [];
@@ -71,7 +71,7 @@ const getOnePostFB = (postId) => {
     const is_local = localStorage.getItem("is_login") ? true : false;
     const userId = localStorage.getItem("userId");
 
-    await test_api2
+    await api_token
       .get(is_local ? `/post/${postId}?id=${userId}` : `/post/${postId}`)
       .then((res) => {
         // console.log("상세피이지 res !! ", res.data);
@@ -132,7 +132,7 @@ const updateOnePostFB = (postId, title, context, preview) => {
     // console.log('context !! ',context);
     // console.log('preview !! ',preview);
 
-    await test_api2
+    await api_token
       .put(`/post/${postId}`, {
         title,
         context,
@@ -152,7 +152,7 @@ const updateOnePostFB = (postId, title, context, preview) => {
 const deletePostFB = (postId = null) => {
   return (dispatch, getState, { history }) => {
     const post_idx = getState().post.list.findIndex((p) => p.postId === postId);
-    test_api2
+    api_token
       .delete(`/post/${postId}`, {})
       .then((res) => {
         console.log(res.data.msg);

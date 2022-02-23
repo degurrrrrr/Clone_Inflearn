@@ -14,7 +14,7 @@ const CommentList = (props) => {
     const dispatch = useDispatch();
     const comment_list = useSelector(state => state.comment.list);
 
-    // console.log('comment_list !! ', comment_list);
+    // console.log('comment_list[post_id] !! ', comment_list[post_id]);
 
     React.useEffect(() => {
         if(!comment_list[post_id]){
@@ -22,15 +22,15 @@ const CommentList = (props) => {
         }
     }, []);
 
+
     if(!comment_list[post_id] || !post_id){
         return null;
     }
 
     return(
     <React.Fragment>
-        <CommentWrite post_id={post_id} />
         {comment_list[post_id].map((item, i) => {
-            return <CommentItem key={item.id} {...item} />
+            return <CommentItem key={item.commentId} {...item} post_id={post_id} />
         })}
     </React.Fragment>
     )
@@ -44,6 +44,21 @@ CommentList.defaultProps = {
 const CommentItem = (props) => {
 
     const [hide, setHide] = useState(false);
+    const [upComment, setComment] = useState(props.commentBody);
+
+    const dispatch = useDispatch();
+
+    const userId = localStorage.getItem("userId");
+
+    const updateComment = (e) => {
+        
+        dispatch(commontActions.updateCommentFB(props.post_id, props.commentId, upComment));
+        setHide(false);
+    }
+
+    const removeComment = () => {
+        dispatch(commontActions.removeCommentFB(props.post_id, props.commentId));
+    }
 
     return (
         <Container>
@@ -51,21 +66,23 @@ const CommentItem = (props) => {
                 <div style={{display:"flex", alignItems: "center"}}>
                     <ProfileImg />
                     <Info>
-                        <Text style={{fontWeight: "bold"}}>{props.userId}</Text>
+                        <Text style={{fontWeight: "bold"}}>{props.nickname}</Text>
                         <Text style={{color: "#868E96"}}>{moment(props.createdAt).format('YYYY-MM-DD')}</Text>
                     </Info>
                 </div>
                 <BtnBox>
-                    <Text2 className={hide ? 'hide' : ""} onClick={() => setHide(true)}>수정</Text2>
-                    <Text2 className={hide ? 'hide' : ""} >삭제</Text2>
+                    <Text2 className={hide || userId != props.userId ? 'hide' : ""} onClick={() => setHide(true)}>수정</Text2>
+                    <Text2 className={hide || userId != props.userId ? 'hide' : ""} onClick={removeComment} >삭제</Text2>
                 </BtnBox>
             </UserBox>
                 <Text className={hide ? 'hide' : ""} style={{margin: "20px 0"}}>{props.commentBody}</Text>
                 <UpdateCon className={hide ? '' : "hide"}>
-                    <UpdateText placeholder={props.commentBody}/>
+                    <UpdateText defaultValue={props.commentBody} onChange={(e) => {
+                        setComment(e.target.value);
+                    }}/>
                     <UpBtnCon>
                         <UpCancelBtn onClick={() => setHide(false)}>취소</UpCancelBtn>
-                        <UpdateBtn>댓글 수정</UpdateBtn>
+                        <UpdateBtn onClick={updateComment}>댓글 수정</UpdateBtn>
                     </UpBtnCon>
                 </UpdateCon>
                 {/* <CommentBtn>답글 달기</CommentBtn>

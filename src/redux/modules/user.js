@@ -19,7 +19,7 @@ const initialState = {
 
 const loginFB = (nickname, password) => {
   return async (dispatch, getState, { history }) => {
-    test_api2
+    api_token
       .post("/user/login", {
         nickname: nickname,
         password: password,
@@ -38,7 +38,7 @@ const loginFB = (nickname, password) => {
 
 const signUpFB = (nickname, password, pwConfirm) => {
   return async (dispatch, getState, { history }) => {
-    await test_api2
+    await api_token
       .post("/user/signin", {
         nickname: nickname,
         password: password,

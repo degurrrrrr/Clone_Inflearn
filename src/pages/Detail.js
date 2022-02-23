@@ -22,7 +22,8 @@ import moment from "moment";
 const Detail = (props) => {
   const dispatch = useDispatch();
   const post_one = useSelector((state) => state.post.one_post);
-
+  const userId = localStorage.getItem("userId");
+  const is_local = localStorage.getItem("is_login") ? true : false;
   const postId = props.match.params.postId;
 
   const viewerRef = useRef();
@@ -33,7 +34,7 @@ const Detail = (props) => {
     // if(!post_one[0]){
       dispatch(postActions.getOnePostFB(postId));
     // }
-
+    
     viewerRef.current
       .getInstance()
       .setMarkdown(
@@ -57,13 +58,16 @@ const Detail = (props) => {
         <h1>{post_one.title}</h1>
         <EditDelBtn>
           <DeleteBtn
+            style={{display: post_one.userId == userId ? "block" : "none" }}
             onClick={() => {
               history.push(`/update/${postId}`);
             }}
           >
             수정
           </DeleteBtn>
-          <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
+          <DeleteBtn 
+          style={{display: post_one.userId == userId ? "block" : "none" }}
+          onClick={onDelete}>삭제</DeleteBtn>
         </EditDelBtn>
         <Info>
           <div style={{ display: "flex" }}>
@@ -91,6 +95,7 @@ const Detail = (props) => {
           </div>
         </Profile>
         
+        <CommentWrite post_id={postId} />
         <CommentList post_id={postId} />
       </DIV>
     </div>
@@ -155,8 +160,8 @@ const ButtonWrap = styled.div`
 `;
 
 const Thumbnail = styled.div`
-  max-width: 100%;
-  height: 500px;
+  max-width: 80%;
+  height: 350px;
   max-height: 800px;
   margin: 30px auto 50px;
   object-fit: contain; //이미지의 가로세로 비율을 유지하면서, 이미지가 보여질 틀 내부에 들어가도록 크기를 맞춤 조절한다.
