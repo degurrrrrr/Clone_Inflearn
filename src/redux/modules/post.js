@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { api_token, api, test_api, test, test_api2 } from "../../shared/api";
+import { api_token, api, test_api, test, test_api2, api_token2 } from "../../shared/api";
 import axios from "axios";
 
 const GET_POST = "GET_POST";
@@ -24,9 +24,8 @@ const getOneUser = createAction(GET_ONE_USER, (nickname, postId) => ({
   postId,
 }));
 
-const likePost = createAction(LIKE_POST, (postId, likeCnt) => ({ postId,likeCnt }));
-const deleteLike = createAction(DELETE_LIKE, (postId) => ({}))
-
+const likePost = createAction(LIKE_POST, (isLike, likeCnt) => ({ isLike, likeCnt }));
+const deleteLike = createAction(DELETE_LIKE, (postId, isLike, likeCnt) => ({ postId, isLike, likeCnt }));
 const initialState = {
   postId: 1,
   list: [],
@@ -40,11 +39,13 @@ const initialState = {
   dayBefore: "10일 전",
   commentCnt: 100,
   likeCnt: 21,
+  isLiking: false,
 };
 
 const getPostFB = () => {
   return (dispatch, getState, { history }) => {
-    test_api2
+    // api_token
+    api_token
       .get("/posts", {})
       .then((res) => {
         const postDB = res.data;
@@ -77,7 +78,7 @@ const getOnePostFB = (postId) => {
     const is_local = localStorage.getItem("is_login") ? true : false;
     const userId = localStorage.getItem("userId");
 
-    await test_api2
+    await api_token
       .get(is_local ? `/post/${postId}?id=${userId}` : `/post/${postId}`)
       .then((res) => {
         // console.log("상세피이지 res !! ", res.data);
@@ -135,7 +136,7 @@ const updateOnePostFB = (postId, title, context, preview) => {
     // console.log('context !! ',context);
     // console.log('preview !! ',preview);
 
-    await test_api2
+    await api_token
       .put(`/post/${postId}`, {
         title,
         context,
@@ -155,7 +156,7 @@ const updateOnePostFB = (postId, title, context, preview) => {
 const deletePostFB = (postId = null) => {
   return (dispatch, getState, { history }) => {
     const post_idx = getState().post.list.findIndex((p) => p.postId === postId);
-    test_api2
+    api_token
       .delete(`/post/${postId}`, {})
       .then((res) => {
         console.log(res.data.msg);
@@ -169,35 +170,36 @@ const deletePostFB = (postId = null) => {
   };
 };
 
-const LikePostFB = (postId) => {
-  console.log("조하ㅇ요")
+const LikePostFB = (postId, isLiking, likeCnt) => {
   return (dispatch, getState, { history }) => {
-    test_api
-      .get(`/post/${postId}/like`, {})
+    api_token
+      .get(`/post/${postId}/likes`)
       .then((res) => {
-        console.log(res.data);
-        window.alert("like!");
-        console.log(res);
+        console.log(res.data)
+        dispatch(likePost(res.data.isLiking,res.data.post.likeCnt))
       })
       .catch((err) => {
         // window.alert(err)
-        console.log(err);
+        // window.alert(err.response.data.msg); //undefined
+        console.log(err)
       });
   };
 };
 
-const DeleteLikeFB = (postId, likeCnt) => {
+const DeleteLikeFB = (postId, isLike, like_cnt) => {
   console.log("좋아요 취소 시작");
-  const is_local = localStorage.getItem("is_login");
   return (dispatch, getState, { history }) => {
-    test_api.delete(`/post/${postId}/like`)
-    .then((res) => {
-      console.log(res.data.msg)
-      window.alert("좋아요 취소!")
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    api_token
+      .delete(`/post/${postId}/likes`)
+      .then((res) => {
+        
+        console.log(res.data.msg);
+        window.alert("좋아요 취소!");
+        window.location.reload()
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
@@ -228,23 +230,21 @@ export default handleActions(
         draft.list = draft.list.filter(
           (p) => p.postId !== action.payload.postId
         );
-    }),
+      }),
 
     [LIKE_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.likeCnt = draft.payload.likeCnt + 1;
-        // let idx = draft.list.findIndex(
-        //   (p) => p.postId === action.payload.postId
-        // );
-        // draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
-        // draft.
-    }),
-    [DELETE_LIKE]: (state, action) => produce(state, (draft) => {
-      draft.likeCnt = draft.payload.likeCnt - 1;
-    })
+        draft.likeCnt = action.payload.post_one.likeCnt + 1;
+        draft.isLiking = true;
+        console.log('reducer의' + draft.likeCnt)
+      }),
 
-  },
-  initialState
+    [DELETE_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.likeCnt = draft.payload.post_one.likeCnt - 1;
+        draft.isLiking = false;
+      }),
+    },initialState
 );
 
 const actionCreator = {
