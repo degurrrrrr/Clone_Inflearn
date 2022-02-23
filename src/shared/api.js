@@ -13,6 +13,7 @@ export const api_token = axios.create({
   },
 });
 
+
 export const api_token2 = axios.create({
   baseURL: "http://velog.milagros.shop/api",
   headers: {
@@ -20,7 +21,6 @@ export const api_token2 = axios.create({
     accept: "application/json,",
   },
 });
-
 
 export const test_api = axios.create({
   baseURL: "http://14.45.204.153:7979/api",

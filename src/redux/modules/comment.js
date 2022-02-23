@@ -8,6 +8,7 @@ import {api, api_token, test} from "../../shared/api";
 
 const GET_COMMENT = "GET_COMMENT";
 const ADD_COMMENT = "ADD_COMMENT";
+const DELETE_COMMENT = "DELETE_COMMENT";
 
 const LOADING = "LOADING";
 
@@ -36,16 +37,18 @@ const getCommentFB = (post_id = null) => {
         await api_token.get(`/post/${post_id}/comments`)
         .then((res) => {
 
-            console.log('댓글 리스트 res !! ', res.data.comment);
+            // console.log('댓글 리스트 res !! ', res.data.commentsParents); 
             
-            const commentList = res.data.comment.reduce((acc, cur, i) => {  
+            const commentList = res.data.commentsParents.reduce((acc, cur, i) => {
+                
                 acc.push({
-                    id: cur.id,
+                    commentId: cur.id,
                     userId: cur.userId,
                     commentBody: cur.commentBody,
                     createdAt: cur.createdAt,
                     parentsId: cur.parentsId,
                     updatedAt: cur.updatedAt,
+                    nickname: cur.user !== null ? cur.user.nickname : "닉네임없음",
                 });
 
                 return acc;
@@ -67,15 +70,93 @@ const getCommentFB = (post_id = null) => {
 
 const addCommentFB = (post_id, contents) => {
     return async function(dispatch, getState, {history}){
-
         await api_token.post(`/post/${post_id}/comment/${0}`, 
             {
-                commentId: "",
+                commentBody: contents,
+                userId: localStorage.getItem('userId'),
+            }
+        ).then((res) => {
+            const preList = getState().comment.list[post_id];
+            console.log('preList !! ',preList);
+            console.log('addCommentFb !! ', res.data.comment);
+
+            const newComment = {
+                commentId: res.data.comment.id,
+                userId: res.data.comment.userId,
+                commentBody: res.data.comment.commentBody,
+                createdAt: res.data.comment.createdAt,
+                parentsId: res.data.comment.parentsId,
+                updatedAt: res.data.comment.updatedAt,
+                nickname: "닉네임없음",
+            };
+
+            const addList = [...preList, newComment];
+
+            // console.log('addList !! ',addList);
+
+            dispatch(getComment(post_id, addList))
+
+
+        }).catch((err) => {
+            console.log(err);
+        })
+
+    }
+}
+
+
+const updateCommentFB = (postId, commentId, contents) => {
+    return async function(dispatch, getState, {history}) {
+
+        // console.log('comment_id !! ',commentId);
+        // console.log('postid !! ',postId);
+
+        await api_token.patch(`/post/${postId}/comment/${commentId}`, 
+            {
                 commentBody: contents,
             }
         ).then((res) => {
 
-            console.log('addCommentFb !! ', res.data.msg);
+            const preList = getState().comment.list[postId];
+            // console.log('preList !! ',preList);
+
+            // console.log('updateCommentFb !! ', res);
+
+            const upDateList = preList.reduce((arr, cur, i) => {    
+                if(cur.commentId === commentId){
+                    arr.push({...cur, commentBody: contents});
+                }else {
+                    arr.push(cur);
+                }
+                
+                return arr;
+            }, []);
+
+            // console.log('upDateList !! ',upDateList);
+
+            dispatch(getComment(postId, upDateList));
+
+        }).catch((err) => {
+            console.log(err);
+        })
+
+    }
+}
+
+const removeCommentFB = (postId, commentId) => {
+    return async function(dispatch, getState, {history}) {
+
+        console.log('comment_id !! ',commentId);
+        console.log('postid !! ',postId);
+
+        await api_token.patch(`/post/${postId}/comment/${commentId}/disabled` 
+        ).then((res) => {
+
+            const preList = getState().comment.list[postId];
+            // console.log('preList !! ',preList);
+
+            console.log('removeCommentFB !! ', res);
+
 
         }).catch((err) => {
             console.log(err);
@@ -106,6 +187,8 @@ export default handleActions(
     getComment,
     addComment,
     addCommentFB,
+    updateCommentFB,
+    removeCommentFB,
   };
   
   export { actionCreators };

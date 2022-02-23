@@ -39,8 +39,9 @@ const loginFB = (nickname, password) => {
 };
 
 const signUpFB = (nickname, password, pwConfirm) => {
-  return (dispatch, getState, { history }) => {
-    api_token
+
+  return async (dispatch, getState, { history }) => {
+    await api_token
       .post("/user/signin", {
         nickname: nickname,
         password: password,
