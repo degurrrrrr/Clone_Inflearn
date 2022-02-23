@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
 import Header from "../component/Header";
@@ -14,6 +14,8 @@ import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import Prism from "prismjs";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"; //빈 하트
+import FavoriteIcon from "@mui/icons-material/Favorite"; //꽉 찬 하트
 import { actionCreator as postActions } from "../redux/modules/post";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,26 +23,25 @@ import moment from "moment";
 
 const Detail = (props) => {
   const dispatch = useDispatch();
+  const is_local = localStorage.getItem("is_login") ? true : false;
+
+  // const [isLike, setIsLike] = useState(isLiking);
   const post_one = useSelector((state) => state.post.one_post);
+  const isLike = post_one.isLiking ;
+  console.log(isLike)
 
   const postId = props.match.params.postId;
 
   const viewerRef = useRef();
-
-  console.log('post_one !! ', post_one);
+  console.log("post_one !! ", post_one);
 
   React.useEffect(() => {
     // if(!post_one[0]){
-      dispatch(postActions.getOnePostFB(postId));
+    dispatch(postActions.getOnePostFB(postId));
     // }
 
-    viewerRef.current
-      .getInstance()
-      .setMarkdown(
-        post_one.context
-      );
+    viewerRef.current.getInstance().setMarkdown(post_one.context);
   }, [post_one.nickname]);
-
 
   const onDelete = () => {
     dispatch(postActions.deletePostFB(postId));
@@ -49,6 +50,23 @@ const Detail = (props) => {
   // if(!post_one[0]){
   //   return null;
   // }
+
+  const liked = (props) => {
+    if (!is_local) {
+      window.alert("로그인 후 이용가능합니다!");
+      return;
+    }
+    const like_cnt = post_one.likeCnt;
+    const isLiking = post_one.isLiking;
+
+    dispatch(postActions.LikePostFB(postId, isLiking, like_cnt));
+  };
+
+  const cancelLiked = (props) => {
+    const like_cnt = post_one.likeCnt;
+    const isLiking = post_one.isLiking;
+    dispatch(postActions.DeleteLikeFB(postId, isLike, like_cnt))
+  }
 
   return (
     <div style={{ backgroundColor: "#fff" }}>
@@ -70,9 +88,46 @@ const Detail = (props) => {
             <div style={{ fontWeight: "bold", marginRight: "10px" }}>
               {post_one.nickname}
             </div>
-            <div style={{ marginLeft: "10px" }}>{moment(post_one.createdAt).format('YYYY-MM-DD')}</div>
+            <div style={{ marginLeft: "10px" }}>
+              {moment(post_one.createdAt).format("YYYY-MM-DD")}
+            </div>
           </div>
-          <Likes />
+
+          {isLike ? (
+            <HeartWrap
+              style={{
+                color: "white",
+                backgroundColor: "#20c997",
+                borderColor: "#20c997",
+              }}
+              onClick={cancelLiked}
+            >
+              <FavoriteIcon
+                style={{
+                  fontSize: "medium",
+                  marginRight: "5px",
+                }}
+              />
+              {post_one.likeCnt}개
+            </HeartWrap>
+          ) : (
+            <HeartWrap
+              style={{
+                color: "#adb5bd",
+                backgroundColor: "white",
+                borderColor: "#adb5bd",
+              }}
+              onClick={liked}
+            >
+              <FavoriteIcon
+                style={{
+                  fontSize: "medium",
+                  marginRight: "5px",
+                }}
+              />
+              {post_one.likeCnt}개
+            </HeartWrap>
+          )}
         </Info>
 
         <Thumbnail thumbnail={post_one.thumbnail} />
@@ -90,7 +145,7 @@ const Detail = (props) => {
             <h3>{post_one.nickname}</h3>
           </div>
         </Profile>
-        
+
         <CommentList post_id={postId} />
       </DIV>
     </div>
@@ -145,13 +200,30 @@ const Info = styled.div`
   align-items: center;
 `;
 
-const ButtonWrap = styled.div`
+// const ButtonWrap = styled.div`
+//   width: 80px;
+//   height: 30px;
+//   border: 1px solid #adb5bd;
+//   border-radius: 20px;
+//   text-align: center;
+//   /* justify-content: center; */
+// `;
+
+const HeartWrap = styled.div`
   width: 80px;
   height: 30px;
+  font-size: 10px;
   border: 1px solid #adb5bd;
   border-radius: 20px;
-  text-align: center;
-  /* justify-content: center; */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    border-color: #20c997;
+    background-color: #20c997;
+    color: white;
+  }
 `;
 
 const Thumbnail = styled.div`
@@ -162,7 +234,7 @@ const Thumbnail = styled.div`
   object-fit: contain; //이미지의 가로세로 비율을 유지하면서, 이미지가 보여질 틀 내부에 들어가도록 크기를 맞춤 조절한다.
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("${(props) => (props.thumbnail)}");
+  background-image: url("${(props) => props.thumbnail}");
 `;
 
 const Context = styled.div`

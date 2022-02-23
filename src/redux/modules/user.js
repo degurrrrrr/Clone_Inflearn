@@ -19,14 +19,12 @@ const initialState = {
 
 const loginFB = (nickname, password) => {
   return async (dispatch, getState, { history }) => {
-    test_api2
+    api_token
       .post("/user/login", {
         nickname: nickname,
         password: password,
       })
       .then((res) => {
-        console.log("login!!!!!!")
-        console.log(res)
         localStorage.setItem("is_login", res.data.token);
         localStorage.setItem("nickname", res.data.nickname);
         localStorage.setItem("userId", res.data.id);
@@ -39,20 +37,20 @@ const loginFB = (nickname, password) => {
 };
 
 const signUpFB = (nickname, password, pwConfirm) => {
-  return async (dispatch, getState, { history }) => {
-    await test_api2
+  return (dispatch, getState, { history }) => {
+    api_token
       .post("/user/signin", {
         nickname: nickname,
         password: password,
         confirmPassword: pwConfirm,
       })
       .then((res) => {
-        console.log(res.data);
-        window.alert('회원가입이 완료되었습니다. \n 로그인을 진행해주세요☺️')
+        console.log(res);
+        window.alert(res.data.msg + '\n 로그인을 진행해주세요☺️')
         window.location.reload("/");
       })
       .catch((err) => {
-        window.alert(err);
+        window.alert(err.response.data.msg) 
       });
   };
 };
