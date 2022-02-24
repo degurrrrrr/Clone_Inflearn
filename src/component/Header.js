@@ -10,12 +10,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import SignUp from "../pages/SignUp";
 import { Grid } from "../element";
 import { actionCreators as userActions } from "../redux/modules/user";
-// import { history } from "../redux/ConfigStore";
 import { useHistory } from "react-router-dom";
 
 const Header = (props) => {
   const history = useHistory();
-  //   const { history } = props;
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = React.useState(false);
   const modalClose = () => {
@@ -147,7 +145,6 @@ const LoginBtn = styled.button`
 `;
 
 const NewPostWrite = styled.button` 
-  /* width: 99px; */
   border: 1px solid black;
   margin-left: 20px;
   height: 2rem;
@@ -165,11 +162,6 @@ const NewPostWrite = styled.button`
   &:hover {
     background-color: black;
     color: white;
-    -webkit-transform: scale(1.05);
-    -moz-transform: scale(1.05);
-    -ms-transform: scale(1.05);
-    -o-transform: scale(1.05);
-    /* transform: translateY(-10px); */
   }
 `;
 

@@ -12,9 +12,6 @@ const DELETE_POST = "DELETE_POST";
 const LIKE_POST = "LIKE_POST";
 const DELETE_LIKE = "DELETE_LIKE";
 
-const GET_SPECIFIC = "GET_SPECIFIC";
-
-// action
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const onePost = createAction(ONE_POST, (one_post) => ({ one_post }));
 const updatePost = createAction(UPDATE_POST, () => ({}));
@@ -23,8 +20,6 @@ const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
 
 const likePost = createAction(LIKE_POST, (isLike, likeCnt) => ({ isLike, likeCnt }));
 const deleteLike = createAction(DELETE_LIKE, (isLike, likeCnt) => ({ isLike, likeCnt }));
-
-const getSpecific = createAction(GET_SPECIFIC, (postId, userId) => (postId, userId))
 
 const initialState = {
   postId: 1,
@@ -44,7 +39,6 @@ const initialState = {
 
 const getPostFB = () => {
   return (dispatch, getState, { history }) => {
-    // api_token
     api_token
       .get("/posts", {
         headers: {
@@ -90,8 +84,6 @@ const getOnePostFB = (postId) => {
         }
       })
       .then((res) => {
-        // console.log("상세피이지 res !! ", res.data);
-
         dispatch(
           onePost({
             isLiking: res.data.isLiking,
@@ -161,10 +153,6 @@ const addPostFB = (title, context, preview) => {
 
 const updateOnePostFB = (postId, title, context, preview) => {
   return async function (dispatch, getState, { history }) {
-    // console.log('title !! ',title);
-    // console.log('context !! ',context);
-    // console.log('preview !! ',preview);
-
     await api_token
       .put(`/post/${postId}`, {
         title,
@@ -188,7 +176,6 @@ const updateOnePostFB = (postId, title, context, preview) => {
 
 const deletePostFB = (postId = null) => {
   return (dispatch, getState, { history }) => {
-    // const post_idx = getState().post.list.findIndex((p) => p.postId === postId);
     api_token
       .delete(`/post/${postId}`, {
         headers: {
@@ -216,14 +203,12 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
         }
       })
       .then((res) => {
-        // window.location.reload();
         let isLike = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
         dispatch(likePost(isLike, likeCnt));
       })
       .catch((err) => {
         console.log(err)
-        // window.alert(err)
       });
   };
 };
@@ -237,7 +222,6 @@ const DeleteLikeFB = (postId, isLiking, like_cnt) => {
         }
       })
       .then((res) => {
-        // window.location.reload()
         console.log(res.data.msg);
         let isLiking = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
@@ -256,11 +240,6 @@ export default handleActions(
         draft.one_post = initialState.one_post;
         draft.list = action.payload.post_list;
       }),
-
-    // [ADD_POST]: (state, action) => produce(state, (draft)=> {
-
-    // }),
-
     [ONE_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.one_post = action.payload.one_post;
@@ -290,12 +269,6 @@ export default handleActions(
         draft.one_post.likeCnt = action.payload.likeCnt ;
         draft.one_post.isLiking = action.payload.isLike;
       }),
-    
-    [GET_SPECIFIC]: (state, action) => produce(state, (draft) => {
-      draft.userId = action.payload.user.id;
-      draft.nickname = action.payload.user.nickname;
-      draft.postId = action.payload.postId //res에는 postId 없음
-    })
     },initialState
 );
 

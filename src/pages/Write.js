@@ -40,7 +40,6 @@ const Write = () => {
                     let url = 'http://velog.milagros.shop';
                     const accessToken = localStorage.getItem("is_login");
 
-                    // console.log('accessToken !! ', accessToken);
                     let formData = new FormData();
                     formData.append("image", blob);
 
@@ -93,12 +92,7 @@ const Write = () => {
 
 
         dispatch(postActions.addPostFB(title, context, preview));
-        // 포스트 업로드
-        // await axios.post("http://14.45.204.153:8023/api/post", {
-        //     title,
-        //     context,
-        //     preview,
-        // })
+
     }
 
     return(
