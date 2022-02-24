@@ -87,7 +87,7 @@ const addCommentFB = (post_id, contents) => {
                 createdAt: res.data.comment.createdAt,
                 parentsId: res.data.comment.parentsId,
                 updatedAt: res.data.comment.updatedAt,
-                nickname: "닉네임없음",
+                nickname: localStorage.getItem('nickname'),
             };
 
             const addList = [...preList, newComment];
