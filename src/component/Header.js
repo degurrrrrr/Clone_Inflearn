@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import styled from "styled-components";
 import LogoImg from "../images/velog 로고.png";
+import detailImg from "../images/상세 헤더 로고.png";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -21,8 +22,15 @@ const Header = (props) => {
     setModalOpen(!modalOpen);
   };
 
+  
+  const currentUrl = window.location.href.split("/");
+
   const is_login = useSelector((state) => state.user.is_login);
   const is_local = localStorage.getItem("is_login") ? true : false;
+
+  const detailNickName = useSelector((state) => state.post.one_post.nickname);
+
+  console.log(detailNickName);
 
   React.useEffect(() => {}, [is_login]);
 
@@ -37,7 +45,13 @@ const Header = (props) => {
           <Wrap>
             <Logo>
               <a href="/">
-                <img src={LogoImg} alt="로고" />
+                {currentUrl.indexOf('detail') !== -1 ?
+                <React.Fragment>
+                  <img src={detailImg} alt="로고" />
+                  <span>{detailNickName}</span>
+                </React.Fragment>
+                 :
+                <img src={LogoImg} alt="로고" /> }
               </a>
             </Logo>
             <HeadItem>
