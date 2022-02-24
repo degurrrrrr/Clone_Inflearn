@@ -65,7 +65,7 @@ const Trending = styled.div`
 `;
 
 const MyPost = styled.div`
-  width: 63px;
+  /* width: 63px; */
   border: 1px solid black;
   margin-left: 10px;
   height: 2rem;
