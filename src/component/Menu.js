@@ -9,19 +9,25 @@ const Menu = () => {
   return (
     <React.Fragment>
       <MenuWrap>
-        <Trending>
-          <TrendingUpIcon style={{ marginRight: "8px" }} />
-          트렌딩
-        </Trending>
-        <Updated
-          onClick={() => {
-            history.push("/recent");
-          }}
-        >
-          <AccessTimeIcon style={{ marginLeft: "20px", marginRight: "8px" }} />
+        <Updated>
+          <AccessTimeIcon style={{ marginRight: "6px" }} />
           최신순
         </Updated>
-        <MyPost>내가 쓴 글</MyPost>
+        <Trending
+          onClick={() => {
+            window.alert("준비중인 컨텐츠입니다");
+          }}
+        >
+          <TrendingUpIcon style={{ marginRight: "6px" }} />
+          트렌딩
+        </Trending>{" "}
+        <MyPost
+          onClick={() => {
+            window.alert("준비중인 컨텐츠입니다");
+          }}
+        >
+          내가 쓴 글
+        </MyPost>
       </MenuWrap>
     </React.Fragment>
   );
@@ -34,9 +40,13 @@ const MenuWrap = styled.div`
   justify-content: center;
   margin-top: 30px;
   margin-bottom: 38px;
+  @media screen and (max-width: 1024px) {
+  }
 `;
 
-const Trending = styled.div`
+const Updated = styled.div`
+  width: 80px;
+  margin-right: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -44,17 +54,19 @@ const Trending = styled.div`
   border-bottom: 2px solid black;
 `;
 
-const Updated = styled.div`
+const Trending = styled.div`
+  width: 90px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   color: #868e96;
+  cursor: pointer;
 `;
 
 const MyPost = styled.div`
+  width: 63px;
   border: 1px solid black;
-  margin-left: 20px;
+  margin-left: 10px;
   height: 2rem;
   padding-left: 1rem;
   padding-right: 1rem;

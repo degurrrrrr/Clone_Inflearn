@@ -23,8 +23,6 @@ import moment from "moment";
 
 const Detail = (props) => {
   const dispatch = useDispatch();
-  const is_local = localStorage.getItem("is_login") ? true : false;
-
   // const [isLike, setIsLike] = useState(isLiking);
   const post_one = useSelector((state) => state.post.one_post);
 
@@ -56,26 +54,18 @@ const Detail = (props) => {
     dispatch(postActions.deletePostFB(postId));
   };
 
-  // if(!post_one[0]){
-  //   return null;
-  // }
-
   const liked = (props) => {
-    if (!is_local) {
+    if (!userId) {
       window.alert("로그인 후 이용가능합니다!");
       return;
     }
     const like_cnt = post_one.likeCnt;
     const isLiking = post_one.isLiking;
 
-    dispatch(postActions.LikePostFB(postId, isLiking, like_cnt));
+    !isLike
+      ? dispatch(postActions.LikePostFB(postId, isLiking, like_cnt))
+      : dispatch(postActions.DeleteLikeFB(postId, isLike, like_cnt));
   };
-
-  const cancelLiked = (props) => {
-    const like_cnt = post_one.likeCnt;
-    const isLiking = post_one.isLiking;
-    dispatch(postActions.DeleteLikeFB(postId, isLike, like_cnt))
-  }
 
   return (
     <div style={{ backgroundColor: "#fff" }}>
@@ -104,30 +94,12 @@ const Detail = (props) => {
               {moment(post_one.createdAt).format("YYYY-MM-DD")}
             </div>
           </div>
-
-          {isLike ? (
+          <ButtonWrap>
             <HeartWrap
               style={{
-                color: "white",
-                backgroundColor: "#20c997",
-                borderColor: "#20c997",
-              }}
-              onClick={cancelLiked}
-            >
-              <FavoriteIcon
-                style={{
-                  fontSize: "medium",
-                  marginRight: "5px",
-                }}
-              />
-              {post_one.likeCnt}개
-            </HeartWrap>
-          ) : (
-            <HeartWrap
-              style={{
-                color: "#adb5bd",
-                backgroundColor: "white",
-                borderColor: "#adb5bd",
+                color: isLike ? "white" : "",
+                backgroundColor: isLike ? "#20c997" : "",
+                borderColor: isLike ? "#20c997" : "",
               }}
               onClick={liked}
             >
@@ -139,7 +111,7 @@ const Detail = (props) => {
               />
               {post_one.likeCnt}개
             </HeartWrap>
-          )}
+          </ButtonWrap>
         </Info>
 
         <Thumbnail thumbnail={post_one.thumbnail} />
@@ -214,20 +186,12 @@ const Info = styled.div`
   align-items: center;
 `;
 
-// const ButtonWrap = styled.div`
-//   width: 80px;
-//   height: 30px;
-//   border: 1px solid #adb5bd;
-//   border-radius: 20px;
-//   text-align: center;
-//   /* justify-content: center; */
-// `;
-
-const HeartWrap = styled.div`
+const ButtonWrap = styled.div`
   width: 80px;
   height: 30px;
   font-size: 10px;
   border: 1px solid #adb5bd;
+  font-color: '#adb5bd';
   border-radius: 20px;
   display: inline-flex;
   align-items: center;
@@ -238,6 +202,18 @@ const HeartWrap = styled.div`
     background-color: #20c997;
     color: white;
   }
+`;
+
+const HeartWrap = styled.div`
+  width: 80px;
+  height: 30px;
+  font-size: 10px;
+  border: 1px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
 const Thumbnail = styled.div`

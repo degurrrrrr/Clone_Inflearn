@@ -31,7 +31,9 @@ const loginFB = (nickname, password) => {
         dispatch(setUser(nickname));
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response)
+        window.alert(err.response.data.msg)
+
       });
   };
 };

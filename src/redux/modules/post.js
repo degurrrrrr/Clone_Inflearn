@@ -9,23 +9,23 @@ const UPDATE_POST = "UPDATE_POST";
 const ADD_POST = "ADD_POST";
 const DELETE_POST = "DELETE_POST";
 
-const GET_ONE_USER = "GET_ONE_USER";
 const LIKE_POST = "LIKE_POST";
 const DELETE_LIKE = "DELETE_LIKE";
 
+const GET_SPECIFIC = "GET_SPECIFIC";
+
+// action
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const onePost = createAction(ONE_POST, (one_post) => ({ one_post }));
 const updatePost = createAction(UPDATE_POST, () => ({}));
 const addPost = createAction(ADD_POST, (one_post) => ({ one_post }));
 const deletePost = createAction(DELETE_POST, (postId) => ({ postId }));
 
-const getOneUser = createAction(GET_ONE_USER, (nickname, postId) => ({
-  nickname,
-  postId,
-}));
-
 const likePost = createAction(LIKE_POST, (isLike, likeCnt) => ({ isLike, likeCnt }));
-const deleteLike = createAction(DELETE_LIKE, (postId, isLike, likeCnt) => ({ postId, isLike, likeCnt }));
+const deleteLike = createAction(DELETE_LIKE, (isLike, likeCnt) => ({ isLike, likeCnt }));
+
+const getSpecific = createAction(GET_SPECIFIC, (postId, userId) => (postId, userId))
+
 const initialState = {
   postId: 1,
   list: [],
@@ -103,10 +103,21 @@ const getOnePostFB = (postId) => {
   };
 };
 
-// const oneUserPostFB = (nickname, postId) => {
-//     (dispatch, getState, { history }) => {
-//     }
-// }
+const specificListFB = (userId) => {
+    return (dispatch, getState, { history }) => {
+      const userId = localStorage.getItem("userId");
+      const post_idx = getState().post.list.findIndex((p) => p.user.id === userId);
+      api_token
+      .get(`/user/${userId}/posts`)
+      .then((res) => {
+        console.log("특정 회원 게시물 조회 성공")
+      })
+      .catch((err) => {
+        console.log(err.response.data.msg);
+        console.log(err)
+      })
+    }
+}
 
 const addPostFB = (title, context, preview) => {
   return async function (dispatch, getState, { history }) {
@@ -155,7 +166,7 @@ const updateOnePostFB = (postId, title, context, preview) => {
 
 const deletePostFB = (postId = null) => {
   return (dispatch, getState, { history }) => {
-    const post_idx = getState().post.list.findIndex((p) => p.postId === postId);
+    // const post_idx = getState().post.list.findIndex((p) => p.postId === postId);
     api_token
       .delete(`/post/${postId}`, {})
       .then((res) => {
@@ -175,27 +186,30 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
     api_token
       .get(`/post/${postId}/likes`)
       .then((res) => {
+        // window.location.reload();
         console.log(res.data)
-        dispatch(likePost(res.data.isLiking,res.data.post.likeCnt))
+        let isLike = res.data.isLiking;
+        let likeCnt = res.data.post.likeCnt;
+        dispatch(likePost(isLike, likeCnt))
       })
       .catch((err) => {
-        // window.alert(err)
-        // window.alert(err.response.data.msg); //undefined
-        console.log(err)
+        console.log(err.response)
+        window.alert(err.response.data.msg)
       });
   };
 };
 
 const DeleteLikeFB = (postId, isLike, like_cnt) => {
-  console.log("좋아요 취소 시작");
   return (dispatch, getState, { history }) => {
     api_token
       .delete(`/post/${postId}/likes`)
       .then((res) => {
-        
-        console.log(res.data.msg);
-        window.alert("좋아요 취소!");
         window.location.reload()
+        console.log(res.data.msg);
+        let isLike = res.data.isLiking;
+        let likeCnt = res.data.post.likeCnt;
+        dispatch(deleteLike(isLike, likeCnt))
+
       })
       .catch((err) => {
         console.log(err);
@@ -236,7 +250,6 @@ export default handleActions(
       produce(state, (draft) => {
         draft.likeCnt = action.payload.post_one.likeCnt + 1;
         draft.isLiking = true;
-        console.log('reducer의' + draft.likeCnt)
       }),
 
     [DELETE_LIKE]: (state, action) =>
@@ -244,6 +257,12 @@ export default handleActions(
         draft.likeCnt = draft.payload.post_one.likeCnt - 1;
         draft.isLiking = false;
       }),
+    
+    [GET_SPECIFIC]: (state, action) => produce(state, (draft) => {
+      draft.userId = action.payload.user.id;
+      draft.nickname = action.payload.user.nickname;
+      draft.postId = action.payload.postId //res에는 postId 없음
+    })
     },initialState
 );
 
@@ -259,6 +278,7 @@ const actionCreator = {
   deletePostFB,
   LikePostFB,
   DeleteLikeFB,
+  specificListFB
 };
 
 export { actionCreator };

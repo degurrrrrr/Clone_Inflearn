@@ -68,7 +68,7 @@ const DIV = styled.div`
   margin: auto;
   border: 1px solid #eee;
   border-radius: 5px;
-  width: 350px;
+  min-width: 350px;
   height: 450px;
   position: relative;
   box-sizing: border-box;
@@ -82,11 +82,12 @@ const DIV = styled.div`
     -o-transform: scale(1.05);
     transform: translateY(-10px);
   }
-  /* @media screen and (max-width: 1024px) {
-    margin: 0 1%; */
-  /* }; */
+  @media screen and (max-width: 1024px) {
+    min-width: 350px;
+  }
   margin-bottom: 40px;
 `;
+
 const Title = styled.div`
   white-space: initial;
   font-size: 1rem;
@@ -110,6 +111,7 @@ const PostContent = styled.div`
   width: 296px;
   height: 110px;
   overflow: hidden;
+  word-break:break-all; //줄바꿈
 `;
 
 const PostTime = styled.div`
