@@ -54,10 +54,6 @@ const Detail = (props) => {
     dispatch(postActions.deletePostFB(postId));
   };
 
-  // if(!post_one[0]){
-  //   return null;
-  // }
-
   const liked = (props) => {
     if (!userId) {
       window.alert("로그인 후 이용가능합니다!");

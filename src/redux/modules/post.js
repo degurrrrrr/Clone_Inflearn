@@ -186,15 +186,14 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
     api_token
       .get(`/post/${postId}/likes`)
       .then((res) => {
+        // window.location.reload();
         console.log(res.data)
         let isLike = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
         dispatch(likePost(isLike, likeCnt))
-
-        window.location.reload();
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err.response)
         window.alert(err.response.data.msg)
       });
   };
@@ -205,11 +204,12 @@ const DeleteLikeFB = (postId, isLike, like_cnt) => {
     api_token
       .delete(`/post/${postId}/likes`)
       .then((res) => {
+        window.location.reload()
         console.log(res.data.msg);
         let isLike = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
         dispatch(deleteLike(isLike, likeCnt))
-        window.location.reload()
+
       })
       .catch((err) => {
         console.log(err);
