@@ -14,8 +14,6 @@ const CommentList = (props) => {
     const dispatch = useDispatch();
     const comment_list = useSelector(state => state.comment.list);
 
-    // console.log('comment_list[post_id] !! ', comment_list[post_id]);
-
     React.useEffect(() => {
         if(!comment_list[post_id]){
             dispatch(commontActions.getCommentFB(post_id));
