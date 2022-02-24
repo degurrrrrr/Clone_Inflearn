@@ -20,6 +20,10 @@ import { actionCreators as userActions } from "../redux/modules/user";
 function App() {
   const dispatch = useDispatch();
 
+  React.useEffect(() => {
+    
+  }, []);
+
   return (
     <React.Fragment>
       <Background>

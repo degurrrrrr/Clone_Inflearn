@@ -28,6 +28,10 @@ const loginFB = (nickname, password) => {
         localStorage.setItem("is_login", res.data.token);
         localStorage.setItem("nickname", res.data.nickname);
         localStorage.setItem("userId", res.data.id);
+
+        // axios.defaults.headers.common['Authorization']
+        // = `Bearer ${res.data.token}`;
+
         dispatch(setUser(nickname));
       })
       .catch((err) => {

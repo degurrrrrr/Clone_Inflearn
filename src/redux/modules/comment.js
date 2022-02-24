@@ -34,7 +34,11 @@ const getCommentFB = (post_id = null) => {
             return;
         }
 
-        await api_token.get(`/post/${post_id}/comments`)
+        await api_token.get(`/post/${post_id}/comments`,{
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("is_login")}`,
+            }
+          })
         .then((res) => {
 
             // console.log('댓글 리스트 res !! ', res.data.commentsParents); 
@@ -74,7 +78,12 @@ const addCommentFB = (post_id, contents) => {
             {
                 commentBody: contents,
                 userId: localStorage.getItem('userId'),
-            }
+            },
+            {
+                headers: {
+                  authorization: `Bearer ${localStorage.getItem("is_login")}`,
+                }
+              }
         ).then((res) => {
             const preList = getState().comment.list[post_id];
             // console.log('preList !! ',preList);
@@ -114,7 +123,12 @@ const updateCommentFB = (postId, commentId, contents) => {
         await api_token.patch(`/post/${postId}/comment/${commentId}`, 
             {
                 commentBody: contents,
-            }
+            },
+            {
+                headers: {
+                  authorization: `Bearer ${localStorage.getItem("is_login")}`,
+                }
+              }
         ).then((res) => {
 
             const preList = getState().comment.list[postId];
@@ -149,7 +163,12 @@ const removeCommentFB = (postId, commentId) => {
         // console.log('comment_id !! ',commentId);
         // console.log('postid !! ',postId);
 
-        await api_token.patch(`/post/${postId}/comment/${commentId}/disabled` 
+        await api_token.patch(`/post/${postId}/comment/${commentId}/disabled`,
+        {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("is_login")}`,
+            }
+          } 
         ).then((res) => {
 
             const preList = getState().comment.list[postId];
