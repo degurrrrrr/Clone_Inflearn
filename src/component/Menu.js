@@ -41,7 +41,7 @@ const MenuWrap = styled.div`
   margin-bottom: 38px;
   margin: 40px 5% 50px;
   @media screen and (max-width: 1024px) {
-    margin: 0 1%;
+    margin: 40px 3%;
   }
 `;
 
