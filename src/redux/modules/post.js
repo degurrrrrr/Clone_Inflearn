@@ -46,7 +46,11 @@ const getPostFB = () => {
   return (dispatch, getState, { history }) => {
     // api_token
     api_token
-      .get("/posts", {})
+      .get("/posts", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
+      })
       .then((res) => {
         const postDB = res.data;
         const post_list = [];
@@ -79,7 +83,12 @@ const getOnePostFB = (postId) => {
     const userId = localStorage.getItem("userId");
 
     await api_token
-      .get(is_local ? `/post/${postId}?id=${userId}` : `/post/${postId}`)
+      .get(is_local ? `/post/${postId}?id=${userId}` : `/post/${postId}`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
+      })
       .then((res) => {
         // console.log("상세피이지 res !! ", res.data);
 
@@ -108,7 +117,11 @@ const specificListFB = (userId) => {
       const userId = localStorage.getItem("userId");
       const post_idx = getState().post.list.findIndex((p) => p.user.id === userId);
       api_token
-      .get(`/user/${userId}/posts`)
+      .get(`/user/${userId}/posts`,{
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
+      })
       .then((res) => {
         console.log("특정 회원 게시물 조회 성공")
       })
@@ -125,12 +138,17 @@ const addPostFB = (title, context, preview) => {
     console.log("context !! ", context);
     console.log("preview !! ", preview);
 
-    await api_token
-      .post("/post", {
+    await axios
+      .post("http://velog.milagros.shop/api/post", {
         title,
         context,
         preview,
-      })
+      },{
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
+      }
+      )
       .then((res) => {
         console.log("작성 res !! ", res.data);
         history.replace("/");
@@ -152,6 +170,10 @@ const updateOnePostFB = (postId, title, context, preview) => {
         title,
         context,
         preview,
+      },{
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
       })
       .then((res) => {
         console.log("수정하기 res !! ", res.data);
@@ -168,7 +190,11 @@ const deletePostFB = (postId = null) => {
   return (dispatch, getState, { history }) => {
     // const post_idx = getState().post.list.findIndex((p) => p.postId === postId);
     api_token
-      .delete(`/post/${postId}`, {})
+      .delete(`/post/${postId}`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
+      })
       .then((res) => {
         console.log(res.data.msg);
         window.alert("삭제가 완료되었습니다");
@@ -184,7 +210,11 @@ const deletePostFB = (postId = null) => {
 const LikePostFB = (postId, isLiking, likeCnt) => {
   return (dispatch, getState, { history }) => {
     api_token
-      .get(`/post/${postId}/likes`)
+      .get(`/post/${postId}/likes`,{
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
+      })
       .then((res) => {
         // window.location.reload();
         console.log(res.data)
@@ -194,7 +224,7 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
       })
       .catch((err) => {
         console.log(err.response)
-        window.alert(err.response.data.msg)
+        // window.alert(err.response.data.msg)
       });
   };
 };
@@ -202,7 +232,11 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
 const DeleteLikeFB = (postId, isLike, like_cnt) => {
   return (dispatch, getState, { history }) => {
     api_token
-      .delete(`/post/${postId}/likes`)
+      .delete(`/post/${postId}/likes`,{
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("is_login")}`,
+        }
+      })
       .then((res) => {
         window.location.reload()
         console.log(res.data.msg);
@@ -248,13 +282,13 @@ export default handleActions(
 
     [LIKE_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.likeCnt = action.payload.post_one.likeCnt + 1;
+        draft.likeCnt = action.payload.one_post.likeCnt + 1;
         draft.isLiking = true;
       }),
 
     [DELETE_LIKE]: (state, action) =>
       produce(state, (draft) => {
-        draft.likeCnt = draft.payload.post_one.likeCnt - 1;
+        draft.likeCnt = draft.payload.one_post.likeCnt - 1;
         draft.isLiking = false;
       }),
     
