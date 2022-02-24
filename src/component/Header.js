@@ -146,7 +146,8 @@ const LoginBtn = styled.button`
   cursor: pointer;
 `;
 
-const NewPostWrite = styled.button`
+const NewPostWrite = styled.button` 
+  width: 99px;
   border: 1px solid black;
   margin-left: 20px;
   height: 2rem;

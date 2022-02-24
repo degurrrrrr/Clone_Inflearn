@@ -217,19 +217,18 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
       })
       .then((res) => {
         // window.location.reload();
-        console.log(res.data)
         let isLike = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
-        dispatch(likePost(isLike, likeCnt))
+        dispatch(likePost(isLike, likeCnt));
       })
       .catch((err) => {
-        console.log(err.response)
-        // window.alert(err.response.data.msg)
+        console.log(err)
+        // window.alert(err)
       });
   };
 };
 
-const DeleteLikeFB = (postId, isLike, like_cnt) => {
+const DeleteLikeFB = (postId, isLiking, like_cnt) => {
   return (dispatch, getState, { history }) => {
     api_token
       .delete(`/post/${postId}/likes`,{
@@ -238,12 +237,11 @@ const DeleteLikeFB = (postId, isLike, like_cnt) => {
         }
       })
       .then((res) => {
-        window.location.reload()
+        // window.location.reload()
         console.log(res.data.msg);
-        let isLike = res.data.isLiking;
+        let isLiking = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
-        dispatch(deleteLike(isLike, likeCnt))
-
+        dispatch(deleteLike(isLiking, likeCnt))
       })
       .catch((err) => {
         console.log(err);
@@ -282,14 +280,15 @@ export default handleActions(
 
     [LIKE_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.likeCnt = action.payload.one_post.likeCnt + 1;
-        draft.isLiking = true;
+        console.log(action.payload)
+        draft.one_post.likeCnt = action.payload.likeCnt ;
+        draft.one_post.isLiking = action.payload.isLike;
       }),
 
     [DELETE_LIKE]: (state, action) =>
       produce(state, (draft) => {
-        draft.likeCnt = draft.payload.one_post.likeCnt - 1;
-        draft.isLiking = false;
+        draft.one_post.likeCnt = action.payload.likeCnt ;
+        draft.one_post.isLiking = action.payload.isLike;
       }),
     
     [GET_SPECIFIC]: (state, action) => produce(state, (draft) => {

@@ -30,7 +30,7 @@ const Image = (props) => {
 };
 
 Image.defaultProps = {
-  src: "https://ilovecharacter.com/news/data/20210122/p179568629887999_597.jpg",
+  src: "https://nitter.net/pic/pbs.twimg.com%2Fprofile_images%2F1228368893321736193%2FOv0og7E8_400x400.jpg",
   width: '450px',
   height: '450px', 
   size: 36,

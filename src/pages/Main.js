@@ -7,7 +7,7 @@ import { actionCreator as postActions } from "../redux/modules/post";
 import Post from "../component/Post";
 import Header from "../component/Header";
 import Menu from "../component/Menu";
-import Likes from '../element/Likes';
+import Likes from "../element/Likes";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -15,10 +15,8 @@ const Main = () => {
   console.log(post_list.length);
 
   React.useEffect(() => {
-    
-      dispatch(postActions.getPostFB());
-    
-  },[]);
+    dispatch(postActions.getPostFB());
+  }, []);
 
   return (
     <React.Fragment>
@@ -38,12 +36,13 @@ const Main = () => {
 // background-color : #F8F9FA;
 
 const MainWrap = styled.div`
-  margin: 0% 5%;
-  /* box-sizing: border-box; */
 `;
 
 const PostList = styled.div`
-  width: 95vw;
+  margin: 0 5%;
+  @media screen and (max-width: 1024px) {
+    margin: 0 1%;
+  }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   justify-content: space-evenly;

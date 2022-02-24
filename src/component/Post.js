@@ -67,8 +67,8 @@ Post.defaultProps = {
 const DIV = styled.div`
   margin: auto;
   border: 1px solid #eee;
-  border-radius: 5px;
-  min-width: 350px;
+  border-radius: 8px;
+  min-width: 300px;
   height: 450px;
   position: relative;
   box-sizing: border-box;

@@ -194,7 +194,7 @@ const Text2 = styled.span`
 const ProfileImg = styled.div`
     width: 60px;
     height: 60px;
-    background-image: url("https://ilovecharacter.com/news/data/20210122/p179568629887999_597.jpg");
+    background-image: url("https://nitter.net/pic/pbs.twimg.com%2Fprofile_images%2F1228368893321736193%2FOv0og7E8_400x400.jpg");
     background-position: center;
     background-size: cover;
     border-radius: 30px;
