@@ -59,7 +59,7 @@ const Detail = (props) => {
   // }
 
   const liked = (props) => {
-    if (!is_local) {
+    if (!userId) {
       window.alert("로그인 후 이용가능합니다!");
       return;
     }

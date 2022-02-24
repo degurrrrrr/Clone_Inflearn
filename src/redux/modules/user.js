@@ -32,7 +32,7 @@ const loginFB = (nickname, password) => {
       })
       .catch((err) => {
         console.log(err.response)
-        window.alert(err.response.data)
+        window.alert(err.response.data.msg)
 
       });
   };

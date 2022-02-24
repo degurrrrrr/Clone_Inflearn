@@ -21,7 +21,9 @@ const Menu = () => {
           <AccessTimeIcon style={{ marginLeft: "20px", marginRight: "8px" }} />
           최신순
         </Updated>
-        <MyPost>내가 쓴 글</MyPost>
+        <MyPost onClick={() => {
+            history.push("/specificlist");
+          }}>내가 쓴 글</MyPost>
       </MenuWrap>
     </React.Fragment>
   );

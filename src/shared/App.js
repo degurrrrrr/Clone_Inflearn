@@ -7,7 +7,7 @@ import Main from "../pages/Main";
 import SignUp from "../pages/SignUp";
 import Write from "../pages/Write";
 import Detail from "../pages/Detail";
-import Detail2 from '../pages/Detail2';
+import SpecificList from "../pages/SpecificList";
 import UpdatePage from "../pages/UpdatePage";
 
 import { BrowserRouter } from "react-router-dom";
@@ -29,6 +29,7 @@ function App() {
           <Route path="/write" component={Write} />
           <Route path="/detail/:postId" component={Detail} />
           <Route path="/update/:postId" component={UpdatePage} />
+          <Route path="/specificlist/:userId" component={SpecificList} />
         </ConnectedRouter>
       </Background>
     </React.Fragment>

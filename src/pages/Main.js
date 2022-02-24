@@ -31,7 +31,6 @@ const Main = () => {
           })}
         </PostList>
       </MainWrap>
-      <Likes />
     </React.Fragment>
   );
 };
