@@ -10,8 +10,13 @@ import {api_token} from '../shared/api';
 const SpecificList = (props) => {
     // const specificList = useSelector
 
-    const userId = props.match.params.userId
-    
+    // const userId = props.match.params.userId
+    // const isLocal = localStorage.getItem("userId");
+
+    const userId = localStorage.getItem("userId");
+
+    const specificList = useSelector((state) => state.post)
+
     return (
         <React.Fragment>
             <Header />
