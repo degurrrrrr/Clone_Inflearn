@@ -36,13 +36,13 @@ const Main = () => {
 // background-color : #F8F9FA;
 
 const MainWrap = styled.div`
-  @media screen and (max-width: 1024px) {
-    margin: 0 1%;
-  }
 `;
 
 const PostList = styled.div`
-  width: 95vw;
+  margin: 0 5%;
+  @media screen and (max-width: 1024px) {
+    margin: 0 1%;
+  }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   justify-content: space-evenly;

@@ -187,10 +187,9 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
       .get(`/post/${postId}/likes`)
       .then((res) => {
         window.location.reload();
-        console.log(res.data)
         let isLike = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
-        dispatch(likePost(isLike, likeCnt))
+        dispatch(likePost(isLike, likeCnt));
       })
       .catch((err) => {
         console.log(err)

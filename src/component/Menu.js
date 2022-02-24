@@ -34,13 +34,14 @@ const Menu = () => {
 };
 
 const MenuWrap = styled.div`
-  margin-right: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-top: 30px;
   margin-bottom: 38px;
+  margin: 40px 5% 50px;
   @media screen and (max-width: 1024px) {
+    margin: 0 1%;
   }
 `;
 
