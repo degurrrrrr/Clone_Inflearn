@@ -58,9 +58,6 @@ const getCommentFB = (post_id = null) => {
                 return acc;
             }, []);
 
-            // console.log('commentList !! ',commentList);
-
-
             dispatch(getComment(post_id, commentList))
 
         })
@@ -86,7 +83,6 @@ const addCommentFB = (post_id, contents) => {
               }
         ).then((res) => {
             const preList = getState().comment.list[post_id];
-            // console.log('preList !! ',preList);
             console.log('addCommentFb !! ', res.data.comment);
 
             const newComment = {
@@ -101,8 +97,6 @@ const addCommentFB = (post_id, contents) => {
 
             const addList = [...preList, newComment];
 
-            // console.log('addList !! ',addList);
-
             dispatch(getComment(post_id, addList))
 
 
@@ -116,10 +110,6 @@ const addCommentFB = (post_id, contents) => {
 
 const updateCommentFB = (postId, commentId, contents) => {
     return async function(dispatch, getState, {history}) {
-
-        // console.log('comment_id !! ',commentId);
-        // console.log('postid !! ',postId);
-
         await api_token.patch(`/post/${postId}/comment/${commentId}`, 
             {
                 commentBody: contents,
@@ -132,10 +122,6 @@ const updateCommentFB = (postId, commentId, contents) => {
         ).then((res) => {
 
             const preList = getState().comment.list[postId];
-            // console.log('preList !! ',preList);
-
-            // console.log('updateCommentFb !! ', res);
-
             const upDateList = preList.reduce((arr, cur, i) => {    
                 if(cur.commentId === commentId){
                     arr.push({...cur, commentBody: contents});
@@ -145,9 +131,6 @@ const updateCommentFB = (postId, commentId, contents) => {
                 
                 return arr;
             }, []);
-
-            // console.log('upDateList !! ',upDateList);
-
             dispatch(getComment(postId, upDateList));
 
         }).catch((err) => {
@@ -159,10 +142,6 @@ const updateCommentFB = (postId, commentId, contents) => {
 
 const removeCommentFB = (postId, commentId) => {
     return async function(dispatch, getState, {history}) {
-
-        // console.log('comment_id !! ',commentId);
-        // console.log('postid !! ',postId);
-
         await api_token.patch(`/post/${postId}/comment/${commentId}/disabled`,
         {
             headers: {
@@ -170,23 +149,15 @@ const removeCommentFB = (postId, commentId) => {
             }
           } 
         ).then((res) => {
-
             const preList = getState().comment.list[postId];
-            // console.log('preList !! ',preList);
-
             const deleteList = preList.filter((item) => item.commentId !== commentId);
-
-            // console.log('deleteList !! ', deleteList);
-
             console.log('removeCommentFB !! ', res);
 
             dispatch(getComment(postId, deleteList));
 
-
         }).catch((err) => {
             console.log(err);
         })
-
     }
 }
 

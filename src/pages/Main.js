@@ -33,8 +33,6 @@ const Main = () => {
   );
 };
 
-// background-color : #F8F9FA;
-
 const MainWrap = styled.div`
 `;
 

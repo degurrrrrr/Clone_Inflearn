@@ -17,7 +17,6 @@ const Image = (props) => {
 
   if (shape === 'circle') {
     return (
-      //속성이 styles?
       <ImageCircle {...styles}></ImageCircle>
     );
   }
