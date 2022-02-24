@@ -186,14 +186,14 @@ const LikePostFB = (postId, isLiking, likeCnt) => {
     api_token
       .get(`/post/${postId}/likes`)
       .then((res) => {
-        // window.location.reload();
+        window.location.reload();
         console.log(res.data)
         let isLike = res.data.isLiking;
         let likeCnt = res.data.post.likeCnt;
         dispatch(likePost(isLike, likeCnt))
       })
       .catch((err) => {
-        console.log(err.response)
+        console.log(err)
         window.alert(err.response.data.msg)
       });
   };

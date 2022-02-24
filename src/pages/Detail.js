@@ -61,6 +61,8 @@ const Detail = (props) => {
     }
     const like_cnt = post_one.likeCnt;
     const isLiking = post_one.isLiking;
+    
+    if(like_cnt < 0) return;
 
     !isLike
       ? dispatch(postActions.LikePostFB(postId, isLiking, like_cnt))
@@ -94,12 +96,12 @@ const Detail = (props) => {
               {moment(post_one.createdAt).format("YYYY-MM-DD")}
             </div>
           </div>
-          <ButtonWrap>
+        
             <HeartWrap
               style={{
-                color: isLike ? "white" : "",
+                color: isLike ? "white" : "#868e96",
                 backgroundColor: isLike ? "#20c997" : "",
-                borderColor: isLike ? "#20c997" : "",
+                borderColor: isLike ? "#20c997" : "#868e96"
               }}
               onClick={liked}
             >
@@ -111,7 +113,6 @@ const Detail = (props) => {
               />
               {post_one.likeCnt}개
             </HeartWrap>
-          </ButtonWrap>
         </Info>
 
         <Thumbnail thumbnail={post_one.thumbnail} />
@@ -186,29 +187,11 @@ const Info = styled.div`
   align-items: center;
 `;
 
-const ButtonWrap = styled.div`
-  width: 80px;
-  height: 30px;
-  font-size: 10px;
-  border: 1px solid #adb5bd;
-  font-color: '#adb5bd';
-  border-radius: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  &:hover {
-    border-color: #20c997;
-    background-color: #20c997;
-    color: white;
-  }
-`;
-
 const HeartWrap = styled.div`
   width: 80px;
   height: 30px;
   font-size: 10px;
-  border: 1px;
+  border: 0.7px solid #20c997;
   border-radius: 20px;
   display: inline-flex;
   align-items: center;
