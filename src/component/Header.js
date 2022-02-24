@@ -44,11 +44,12 @@ const Header = (props) => {
         <HeaderContainer>
           <Wrap>
             <Logo>
-              <a href="/">
+              <a href="/" style={{textDecoration: "none", color: "inherit",
+              display:"flex", alignItems:"center"}}>
                 {currentUrl.indexOf('detail') !== -1 ?
                 <React.Fragment>
                   <img src={detailImg} alt="로고" />
-                  <span>{detailNickName}</span>
+                  <DetailNick>{detailNickName}</DetailNick>
                 </React.Fragment>
                  :
                 <img src={LogoImg} alt="로고" /> }
@@ -110,7 +111,16 @@ const Wrap = styled.div`
   }
 `;
 
-const Logo = styled.div``;
+const Logo = styled.div`
+  
+`;
+
+const DetailNick = styled.span`
+    display: block;
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 1.125rem;
+`;
 
 const HeadItem = styled.div`
   display: flex;
