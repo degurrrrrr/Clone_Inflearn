@@ -100,7 +100,6 @@ const Title = styled.div`
 `;
 
 const Contents = styled.div`
-  /* white-space: initial; */
   padding: 1rem;
   display: flex;
   flex: 1;

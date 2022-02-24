@@ -2,14 +2,11 @@ import axios from "axios";
 
 const accessToken = localStorage.getItem("is_login");
 
-// console.log('accessToken !! ',accessToken);
-
 export const api_token = axios.create({
   baseURL: "http://velog.milagros.shop/api",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json,",
-    // authorization: `Bearer ${accessToken}`,
   },
 });
 

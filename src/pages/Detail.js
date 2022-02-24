@@ -24,20 +24,16 @@ import moment from "moment";
 const Detail = (props) => {
   const dispatch = useDispatch();
   const is_local = localStorage.getItem("is_login") ? true : false;
+  const userId = localStorage.getItem("userId");
 
-  // const [isLike, setIsLike] = useState(isLiking);
   const post_one = useSelector((state) => state.post.one_post);
 
-  const userId = localStorage.getItem("userId");
   const postId = props.match.params.postId;
 
   const viewerRef = useRef();
-  console.log("post_one !! ", post_one);
 
   React.useEffect(() => {
-    // if(!post_one[0]){
     dispatch(postActions.getOnePostFB(postId));
-    // }
     
     viewerRef.current
       .getInstance()
@@ -52,10 +48,6 @@ const Detail = (props) => {
   const onDelete = () => {
     dispatch(postActions.deletePostFB(postId));
   };
-
-  // if(!post_one[0]){
-  //   return null;
-  // }
 
   const liked = (props) => {
     if (!is_local) {
@@ -197,7 +189,6 @@ const DeleteBtn = styled.div`
 
 const EditDelBtn = styled.div`
   height: 20px;
-  /* color: #ccc; */
   float: right;
   display: flex;
   margin-bottom: 20px;
