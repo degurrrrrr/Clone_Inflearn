@@ -282,13 +282,13 @@ export default handleActions(
       produce(state, (draft) => {
         console.log(action.payload)
         draft.one_post.likeCnt = action.payload.likeCnt ;
-        draft.one_post.isLiking = action.payload.isLiking;
+        draft.one_post.isLiking = action.payload.isLike;
       }),
 
     [DELETE_LIKE]: (state, action) =>
       produce(state, (draft) => {
         draft.one_post.likeCnt = action.payload.likeCnt ;
-        draft.one_post.isLiking = action.payload.isLiking;
+        draft.one_post.isLiking = action.payload.isLike;
       }),
     
     [GET_SPECIFIC]: (state, action) => produce(state, (draft) => {
