@@ -29,5 +29,4 @@
   - 마크다운 에디터 적용
 
 ### 💚 구현영상
-https://youtu.be/2P_GhEMri3k
-  <strong>FE</strong>: 이규리(조장)  송원석   
+https://youtu.be/2P_GhEMri3k 
